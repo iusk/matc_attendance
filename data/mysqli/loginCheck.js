@@ -1,0 +1,1 @@
+export default url = 'http://iusk.000webhostapp.com/matc_attendance/login_check.php';

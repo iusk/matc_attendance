@@ -4,12 +4,12 @@ import styles from './styles';
 import { Icon } from 'react-native-elements';
 
 class InputWithLabel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: ''
-        }
-    }
+    // TODO: Learn about prop type validation
+    // static propTypes = {
+    //     name: React.propTypes.string.isRequired,
+    //     icon: React.propTypes.string.isRequired,
+    // }
+
     render() {
         const secure = (this.props.name === 'Password');
         return (
@@ -22,12 +22,11 @@ class InputWithLabel extends React.Component {
                 <TextInput
                     style={styles.input}
                     placeholder={this.props.name}
-                    value={this.state.text}
-                    onChangeText={(text)=>this.setState({text})}
+                    value={this.props.value}
+                    onChangeText={this.props.onChangeText}
                     secureTextEntry={secure}
                 />
             </View>
-            
         );
     }
 }

@@ -9,12 +9,12 @@ export default StyleSheet.create({
         backgroundColor: '#d00000'
     },
     titleWrapper: {
-        flex:3,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
     formWrapper: {
-        flex: 4,
+        flex: 1,
         alignItems: 'center',
     },
     organization: {
@@ -34,6 +34,9 @@ export default StyleSheet.create({
         fontFamily: 'sans-serif-medium',
         color: '#fefdfa'
     },
+    gap: {
+        height: 30
+    },
     button: {
         width: 300,
         marginTop: 10,
@@ -43,4 +46,4 @@ export default StyleSheet.create({
         color: '#d00000',
         fontFamily: 'sans-serif-medium'
     }
-})
+});
