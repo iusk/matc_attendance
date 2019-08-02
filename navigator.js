@@ -1,7 +1,8 @@
 import { createSwitchNavigator, createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
+import AuthLoadingScreen from './screens/authloading';
 import LoginScreen from './screens/login';
 import HomeScreen from './screens/home';
-import AuthLoadingScreen from './screens/authloading';
+import ProfileScreen from './screens/profile';
 
 // creating a stack for authentication pages
 const AuthStack = createStackNavigator({
@@ -13,9 +14,15 @@ const HomeStack = createStackNavigator({
     Home: HomeScreen
 });
 
+// creating a stack for profile pages
+const ProfileStack = createStackNavigator({
+    Profile: ProfileScreen
+});
+
 // combining the stacks (except authentication stack) to create a bottom tab navigator
 const AppTabNavigator = createBottomTabNavigator({
-    Home: HomeStack
+    Home: HomeStack,
+    Profile: ProfileStack
 });
 
 // combining the tab navigator, authentication stack and authentication screen

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, AsyncStorage, Button } from 'react-native'
+import { View, Text, Button } from 'react-native'
+import { getUserId, signOut } from '../../data/asyncStorage';
 import styles from './styles';
 
 class HomeScreen extends React.Component {
@@ -20,12 +21,12 @@ class HomeScreen extends React.Component {
     }
 
     _getUserId = async () => {
-        const userId = await AsyncStorage.getItem('userId')
+        const userId = await getUserId();
         this.setState( {userId: userId} );
     }
 
-    signOut = async () => {
-        await AsyncStorage.clear();
+    _signOut = () => {
+        signOut();
         this.props.navigation.navigate('Auth');
     }
 
@@ -33,7 +34,7 @@ class HomeScreen extends React.Component {
         return (
             <View style={styles.contentWrapper}>
             <Text>Mentor Id: {this.state.userId}</Text>
-                <Button onPress={this.signOut} title="Sign Out" />
+                <Button onPress={this._signOut} title="Sign Out" />
             </View>
         );
     }

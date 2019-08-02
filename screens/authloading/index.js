@@ -1,19 +1,15 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    AsyncStorage,
-    StatusBar,
-    View
-} from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
+import { getUserId } from '../../data/asyncStorage';
 
 class AuthLoadingScreen extends React.Component {
     constructor(props) {
         super(props);
-        this._bootstrapAsync();
+        this._checkSignedIn();
     }
 
-    _bootstrapAsync = async () => {
-        const userId = await AsyncStorage.getItem('userId');
+    _checkSignedIn = async () => {
+        const userId = getUserId();
         this.props.navigation.navigate(userId ? 'Home' : 'Login');
     };
 
