@@ -7,29 +7,33 @@ class HomeScreen extends React.Component {
         title: 'Home'
     };
 
-    state = { 
-        userId: 0
+    constructor(props) {
+        super(props);
+
+        this.state = { 
+            userId: 0 
+        };
+    }
+
+    componentDidMount() {
+        this._getUserId();
     }
 
     _getUserId = async () => {
-        const userId = await AsyncStorage.getItem('userId');
-        console.log(userId);
+        const userId = await AsyncStorage.getItem('userId')
         this.setState( {userId: userId} );
     }
 
     signOut = async () => {
         await AsyncStorage.clear();
-        console.log('cleared');
         this.props.navigation.navigate('Auth');
     }
 
     render() {
-        this._getUserId;
         return (
             <View style={styles.contentWrapper}>
             <Text>Mentor Id: {this.state.userId}</Text>
                 <Button onPress={this.signOut} title="Sign Out" />
-                <Button title="userid" onPress={this._getUserId} />
             </View>
         );
     }
