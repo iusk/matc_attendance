@@ -10,7 +10,7 @@ const AuthStack = createStackNavigator({
 });
 
 // creating a stack for home pages
-const HomeStack = createStackNavigator({ 
+const HomeStack = createStackNavigator({
     Home: HomeScreen
 });
 
@@ -23,7 +23,16 @@ const ProfileStack = createStackNavigator({
 const AppTabNavigator = createBottomTabNavigator({
     Home: HomeStack,
     Profile: ProfileStack
-});
+},
+{
+    tabBarOptions: {
+        activeBackgroundColor: '#d00000',
+        inactiveBackgroundColor: 'tomato',
+        activeTintColor: '#fefdfa',
+        inactiveTintColor: '#fefdfa'
+    }
+}
+);
 
 // combining the tab navigator, authentication stack and authentication screen
 // and separating their stacks, which prevents users from pressing back to go to

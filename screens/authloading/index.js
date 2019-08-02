@@ -9,7 +9,7 @@ class AuthLoadingScreen extends React.Component {
     }
 
     _checkSignedIn = async () => {
-        const userId = getUserId();
+        const userId = await getUserId();
         this.props.navigation.navigate(userId ? 'Home' : 'Login');
     };
 

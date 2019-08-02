@@ -34,7 +34,7 @@ class LoginScreen extends React.Component {
 
     _signIn = (responseJson) => {
         signIn(responseJson);
-        this.props.navigation.navigate('Home');
+        this.props.navigation.navigate('AuthLoading');
     }
 
     userLoginFunction = () => {

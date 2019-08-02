@@ -5,7 +5,14 @@ import styles from './styles';
 
 class HomeScreen extends React.Component {
     static navigationOptions = {
-        title: 'Home'
+        title: 'Home',
+        headerStyle: {
+            backgroundColor: '#d00000'
+        },
+        headerTintColor: '#fefdfa',
+        headerTitleStyle: {
+            color: '#fefdfa'
+        }
     };
 
     constructor(props) {
@@ -28,6 +35,9 @@ class HomeScreen extends React.Component {
     _signOut = () => {
         signOut();
         this.props.navigation.navigate('Auth');
+        // going to authloading instead causes the app to stay on home screen until pressed again
+        // because it takes a while to clear the id, so authloading sees that the id is still there
+        // immediately after signing out
     }
 
     render() {
