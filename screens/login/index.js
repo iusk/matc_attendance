@@ -33,6 +33,7 @@ class LoginScreen extends React.Component {
 
     _signInAsync = async (responseJson) => {
         await AsyncStorage.setItem('userId', responseJson);
+        console.log('signInAsync: ' + AsyncStorage.getItem('userId'));
         this.props.navigation.navigate('Home');
     }
 
