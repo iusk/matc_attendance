@@ -12,8 +12,5 @@ export default StyleSheet.create({
         paddingLeft: 5,
         width: 300,
         color: '#fefdfa'
-    },
-    icon: {
-        marginTop: 5
     }
 });

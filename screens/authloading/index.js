@@ -26,7 +26,6 @@ class AuthLoadingScreen extends React.Component {
         } else {
             this.props.navigation.navigate('Login');
         }
-        
     };
 
     render() {
