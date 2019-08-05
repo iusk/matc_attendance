@@ -17,7 +17,8 @@ class LoginScreen extends React.Component {
         this.state = { 
             email: '',
             password: '',
-            errMessage: ''
+            errMessage: '',
+            loading: false
         };
 
         this._onChangeEmail = this._onChangeEmail.bind(this);
@@ -38,6 +39,7 @@ class LoginScreen extends React.Component {
     }
 
     userLoginFunction = () => {
+        this.setState( {loading: true} );
         const givenEmail = this.state.email;
         const givenPassword = this.state.password;
 
@@ -54,7 +56,10 @@ class LoginScreen extends React.Component {
         }).then((response) => response.json())
         .then((responseJson) => {
             if (responseJson === 'Username/Password not recognized.') {
-                this.setState( {errMessage: responseJson} );
+                this.setState({
+                    errMessage: responseJson,
+                    loading: false
+                });
             } else {
                 this._signIn(responseJson);
             }
@@ -98,6 +103,8 @@ class LoginScreen extends React.Component {
                         titleStyle={styles.buttonText}
                         buttonStyle={styles.button}
                         onPress={this.userLoginFunction}
+                        loading={this.state.loading}
+                        loadingProps={styles.buttonLoading}
                     />
                 </View>
             </View>

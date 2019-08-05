@@ -16,7 +16,7 @@ export default StyleSheet.create({
     },
     iconSize: wp(15),
     text: {
-        fontSize: 20,
+        fontSize: wp(5),
         color: '#d00000',
         textAlign: 'center'
     }
