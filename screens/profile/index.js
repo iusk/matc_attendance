@@ -1,8 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import getUserInfo from '../../data/mysqli/getUserInfo';
-import { getUserId } from '../../data/asyncStorage/index';
-// import { getUserInfo } from '../../data/redux';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 class ProfileScreen extends React.Component {
@@ -25,31 +22,25 @@ class ProfileScreen extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this._getUserInfo();
-    }
-
-    _getUserInfo = async () => {
-        const id = await getUserId();
-        getUserInfo(id, (userInfo) => {
-            this.setState( {name: userInfo['username']} );
-            this.render();
-        }); 
+    componentWillMount = () => {
+        console.log(this.props.userInfo);
+        this.setState( {name: this.props.userInfo.username} )
     }
     
     render() {
         return (
             <View>
-                <Text>{this.props.userInfo}</Text>
-                <Button title="fn" onPress={getUserInfo(1)} />
+                <Text>{this.state.name}</Text>
             </View>
         );
     }
 }
 
-
-const mapStateToProps = (state) => ({
-    userInfo: state.userInfo
-});
+// get data through props
+const mapStateToProps = (user) => {
+    return {
+        userInfo: user
+    }
+}
 
 export default connect(mapStateToProps)(ProfileScreen);

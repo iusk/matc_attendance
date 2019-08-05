@@ -1,16 +1,21 @@
-import { createSlice, configureStore } from 'redux-starter-kit'; 
+import { createSlice, configureStore } from 'redux-starter-kit';
+
+// creating action and reducer at the same time, i.e slice
+// defining name of slice, initial state and the reducer function
+// the type of the action is defined by the keys of reducer object
+// action => setting the user's name and checking if he/she is an admin (setUser)
 
 const userSlice = createSlice({
-    slice: 'user', // name of the slice
+    slice: 'user',
     initialState: {
         username: '',
         admin: 0,
-    }, // define initial state
-    reducers: { // creates action and reducer at the same time
-        setUser: (action) => {
-            state.username = action.payload.username;
-            state.admin = action.payload.admin
-        } // action.type = setUsername, don't need switch statements to see type
+    },
+    reducers: {
+        setUser: (user=initialState, action) => {
+            user.username = action.payload.username;
+            user.admin = action.payload.admin
+        }
     }
 });
 
@@ -18,30 +23,7 @@ const userSlice = createSlice({
 const { actions, reducer } = userSlice;
 
 // defining different types of actions
-const { setUser } = actions;
-
-export function getUserInfo(id) {
-    console.log('inside');
-    const payload = { username: 'test', admin: 1 };
-    setUser(payload);
-    // fetch('https://iusk.000webhostapp.com/matc_attendance/getUserInfo.php', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         id: id
-    //     })
-    // }).then((response) => response.json())
-    // .then((responseJson) => {
-    //     console.log('inside ' + responseJson);
-    //     const payload = { username: responseJson['username'], admin: responseJson['admin'] };
-    //     dispatch(setUser(payload));
-    // }).catch((error) => {
-    //     console.warn(error);
-    // })
-}
+export const { setUser } = actions;
 
 // combining reducers and creating store
 const store = configureStore({

@@ -1,5 +1,4 @@
 const getUserInfo = (id, callback) => {
-    console.log(id);
     fetch('https://iusk.000webhostapp.com/matc_attendance/getUserInfo.php', {
         method: 'POST',
         headers: {
@@ -11,7 +10,6 @@ const getUserInfo = (id, callback) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        console.log('inside ' + responseJson);
         callback(responseJson);
     }).catch((error) => {
         console.warn(error);
