@@ -20,7 +20,7 @@ class ProfileScreen extends React.Component {
     };
 
     componentWillMount() {
-        this.props.navigation.setParams( {title: this.props.userInfo.username} );
+        this.props.navigation.setParams( {title: this.props.username} );
     }
 
     _signOut = () => {
@@ -41,7 +41,15 @@ class ProfileScreen extends React.Component {
             ],
             { cancelable: true }
         );
-        
+    }
+
+    _gotoAdmin = () => {
+        this.props.navigation.navigate(
+            'Loading',
+            {
+                loadingType: 'getAdminInfo'
+            }
+        )
     }
     
     render() {
@@ -57,11 +65,12 @@ class ProfileScreen extends React.Component {
                     iconName='calendar-range'
                     iconType='material-community'
                 />
-                {(this.props.userInfo.admin === '1') ?
+                {(this.props.admin === '1') ?
                 <BoxLink 
                     name='Admin Control Panel'
                     iconName='account-key'
                     iconType='material-community'
+                    onPress={this._gotoAdmin}
                 />: null}
                 <BoxLink 
                     name='Logout'
@@ -77,7 +86,8 @@ class ProfileScreen extends React.Component {
 // get data through props
 const mapStateToProps = (user) => {
     return {
-        userInfo: user
+        username: user.username,
+        admin: user.admin
     }
 }
 
