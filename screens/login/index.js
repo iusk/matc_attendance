@@ -3,8 +3,7 @@ import { View, Text, Modal, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import InputWithLabel from '../../components/inputWithLabel';
-import ModalLoading from '../../components/loading';
+import { InputWithLabel, ModalLoading } from '../../components';
 
 import { signIn } from '../../data/asyncStorage';
 import { setUser } from '../../data/redux';

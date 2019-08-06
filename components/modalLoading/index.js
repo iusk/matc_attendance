@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal, View, Text, ActivityIndicator} from 'react-native';
 import styles from './styles';
 
-class Loading extends React.Component {
+class ModalLoading extends React.Component {
     render() {
         return (
             <Modal visible={this.props.visible} transparent={true} animationType='slide'>
@@ -17,4 +17,4 @@ class Loading extends React.Component {
     }
 }
 
-export default Loading;
+export default ModalLoading;

@@ -1,32 +1,35 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
+import { View } from 'react-native';
+import { BoxLink } from '../../../components';
+import styles from './styles';
 
 class AdminScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Admin Control Panel',
+        headerStyle: {
+            backgroundColor: '#d00000'
+        },
+        headerTintColor: '#fefdfa',
+        headerTitleStyle: {
+            color: '#fefdfa'
+        }
+    };
     constructor(props) {
         super(props);
     }
 
+    _gotoManageLocations = () => {
+        this.props.navigation.navigate('ManageLocations');
+    }
+
     render() {
         return (
-            <View style={ {backgroundColor: 'blue'} }>
-                <Text>
-                    {this.props.locations}
-                </Text>
-                <Text>
-                    {this.props.users}
-                </Text>
+            <View style={styles.wrapper}>
+                <BoxLink name='Manage Locations' iconName='map-marker' onPress={this._gotoManageLocations} />
+                <BoxLink name='Manage Users' iconName='account-multiple'/>
             </View>
         );
     }
 }
 
-// get data through props
-const mapStateToProps = (state) => {
-    return {
-        locations: state.adminInfo.locations,
-        users: state.userInfo.users
-    }
-}
-
-export default connect(mapStateToProps)(AdminScreen);
+export default AdminScreen;

@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { signOut } from '../../data/asyncStorage';
-import BoxLink from '../../components/boxLink';
-import ModalLoading from '../../components/loading';
+import { BoxLink, ModalLoading } from '../../components';
 import { getAdminInfo } from '../../data/mysqli/getInfo';
 import { setAdminInfo } from '../../data/redux';
 import styles from './styles';
@@ -70,29 +69,12 @@ class ProfileScreen extends React.Component {
     render() {
         return (
             <View style={styles.wrapper}>
-                <BoxLink 
-                    name='Change Password'
-                    iconName='key-variant'
-                    iconType='material-community'
-                />
-                <BoxLink 
-                    name='View Schedule'
-                    iconName='calendar-range'
-                    iconType='material-community'
-                />
+                <BoxLink name='Change Password' iconName='key-variant' />
+                <BoxLink name='View Schedule' iconName='calendar-range' />
                 {(this.props.admin === '1') ?
-                <BoxLink 
-                    name='Admin Control Panel'
-                    iconName='account-key'
-                    iconType='material-community'
-                    onPress={this._gotoAdmin}
-                />: null}
-                <BoxLink 
-                    name='Logout'
-                    iconName='logout'
-                    iconType='material-community'
-                    onPress={this._signOut}
-                />
+                <BoxLink name='Admin Control Panel' iconName='account-key' onPress={this._gotoAdmin} />
+                : null}
+                <BoxLink name='Logout' iconName='logout' onPress={this._signOut} />
                 <ModalLoading visible={this.state.modalLoading} />
             </View>
         );
