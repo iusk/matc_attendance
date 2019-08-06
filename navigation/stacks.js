@@ -3,6 +3,7 @@ import LoginScreen from '../screens/login';
 import HomeScreen from '../screens/home';
 import ReportScreen from '../screens/report';
 import ProfileScreen from '../screens/profile';
+import AdminScreen from '../screens/profile/admin';
 
 // creating a stack for authentication pages
 const AuthStack = createStackNavigator({
@@ -20,7 +21,8 @@ const ReportStack = createStackNavigator({
 
 // creating a stack for profile pages
 const ProfileStack = createStackNavigator({
-    Profile: ProfileScreen
+    Profile: ProfileScreen,
+    Admin: AdminScreen
 });
 
 export { AuthStack, HomeStack, ReportStack, ProfileStack };

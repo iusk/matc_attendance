@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Modal, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+
 import InputWithLabel from '../../components/inputWithLabel';
-import styles from './styles';
-import URL from '../../data/mysqli/loginCheck';
+import ModalLoading from '../../components/loading';
+
 import { signIn } from '../../data/asyncStorage';
+import { setUser } from '../../data/redux';
+
+import { checkSignedIn, userLoginFunction } from '../../utils/loadingFunctions';
+
+import styles from './styles';
 
 class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -14,15 +21,29 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { 
+        this.state = {
             email: '',
             password: '',
             errMessage: '',
-            loading: false
+            buttonLoading: false,
+            modalLoading: true
         };
 
         this._onChangeEmail = this._onChangeEmail.bind(this);
         this._onChangePassword = this._onChangePassword.bind(this);
+
+        checkSignedIn(this._saveUserInfo, this.props.navigation);
+    }
+
+    componentWillMount() {
+        this.setState( {modalLoading: false} )
+    }
+
+    _saveUserInfo = (response) => {
+        this.props.setUser(
+            response.username, 
+            response.admin
+        );
     }
 
     _onChangeEmail = (text) => {
@@ -32,41 +53,23 @@ class LoginScreen extends React.Component {
     _onChangePassword = (text) => {
         this.setState( {password: text} );
     }
-
-    _signIn = (responseJson) => {
-        signIn(responseJson);
-        this.props.navigation.navigate('AuthLoading');
+    
+    _login = (response) => {
+        if (response === 'Username/Password not recognized.') {
+            this.setState({
+                errMessage: response,
+                buttonLoading: false
+            });
+        } else {
+            signIn(response, checkSignedIn, this._saveUserInfo, this.props.navigation);
+        }
     }
-
-    userLoginFunction = () => {
-        this.setState( {loading: true} );
-        const givenEmail = this.state.email;
-        const givenPassword = this.state.password;
-
-        fetch(URL, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: givenEmail,
-                password: givenPassword
-            })
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            if (responseJson === 'Username/Password not recognized.') {
-                this.setState({
-                    errMessage: responseJson,
-                    loading: false
-                });
-            } else {
-                this._signIn(responseJson);
-            }
-        }).catch((error) => {
-            console.warn(error);
-        })
+    
+    submitForm = () => {
+        this.setState( {buttonLoading: true} );
+        userLoginFunction(this.state.email, this.state.password, this._login);
     };
+
 
     render() {
         // TODO: Add "Register" Button - After Admin Control Panel
@@ -102,14 +105,24 @@ class LoginScreen extends React.Component {
                         title="Login"
                         titleStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={this.userLoginFunction}
-                        loading={this.state.loading}
+                        onPress={this.submitForm}
+                        loading={this.state.buttonLoading}
                         loadingProps={styles.buttonLoading}
                     />
                 </View>
+                <ModalLoading visible={this.state.modalLoading} />
             </View>
         );
     }
 }
 
-export default LoginScreen;
+// set data through props
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: (username, admin) => {
+            dispatch(setUser( {username: username, admin: admin} ))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);

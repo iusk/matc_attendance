@@ -33,7 +33,7 @@ const userSlice = createSlice({
 const { actions, reducer } = userSlice;
 
 // defining different types of actions
-export const { setUser } = actions;
+export const { setUser, setAdminInfo } = actions;
 
 // combining reducers and creating store
 const store = configureStore({

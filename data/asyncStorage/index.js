@@ -1,11 +1,13 @@
 import { AsyncStorage } from 'react-native';
 
-const signIn = async (responseJson) => {
+const signIn = async (responseJson, checkSignedIn, saveUserInfo, navigation) => {
     await AsyncStorage.setItem('userId', responseJson);
+    checkSignedIn(saveUserInfo, navigation);
 }
 
-const signOut = async () => {
+const signOut = async (navigation) => {
     await AsyncStorage.clear();
+    navigation.navigate('Auth');
 }
 
 const getUserId = async () => {

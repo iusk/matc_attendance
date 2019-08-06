@@ -1,5 +1,4 @@
 import { AuthStack } from './stacks';
-import LoadingScreen from '../screens/loading';
 import BottomTabNavigator from './bottomTabNavigator';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
@@ -8,11 +7,10 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 // another stack but still allows going back on the same stack
 export default createAppContainer(createSwitchNavigator(
     {
-        Loading: LoadingScreen,
         App: BottomTabNavigator,
         Auth: AuthStack
     },
     {
-        initialRouteName: 'Loading'
+        initialRouteName: 'Auth'
     }
 ));
