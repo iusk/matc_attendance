@@ -16,4 +16,19 @@ const getUserInfo = (id, callback) => {
     })
 }
 
-export default getUserInfo;
+const getAdminInfo = (callback) => {
+    fetch('https://iusk.000webhostapp.com/matc_attendance/getAdminInfo.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        callback(responseJson);
+    }).catch((error) => {
+        console.warn(error);
+    })
+}
+
+export { getUserInfo, getAdminInfo };

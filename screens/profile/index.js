@@ -84,10 +84,10 @@ class ProfileScreen extends React.Component {
 }
 
 // get data through props
-const mapStateToProps = (user) => {
+const mapStateToProps = (state) => {
     return {
-        username: user.username,
-        admin: user.admin
+        username: state.userInfo.username,
+        admin: state.userInfo.admin
     }
 }
 

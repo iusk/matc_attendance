@@ -8,13 +8,23 @@ import { createSlice, configureStore } from 'redux-starter-kit';
 const userSlice = createSlice({
     slice: 'user',
     initialState: {
-        username: '',
-        admin: 0,
+        userInfo: {
+            username: '',
+            admin: 0,
+        },
+        adminInfo:{
+            locations: [], // array of strings
+            users: [] // array of map of userId, username, admin, verified
+        }
     },
     reducers: {
-        setUser: (user=initialState, action) => {
-            user.username = action.payload.username;
-            user.admin = action.payload.admin
+        setUser: (state, action) => {
+            state.userInfo.username = action.payload.username;
+            state.userInfo.admin = action.payload.admin
+        },
+        setAdminInfo: (state, action) => {
+            state.adminInfo.locations = action.payload.locations;
+            state.adminInfo.users = action.payload.users;
         }
     }
 });

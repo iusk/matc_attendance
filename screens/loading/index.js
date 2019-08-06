@@ -1,7 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, StatusBar, View, Text } from 'react-native';
+import { ActivityIndicator, StatusBar, View, Text, Alert } from 'react-native';
 import { getUserId } from '../../data/asyncStorage';
-import getUserInfo from '../../data/mysqli/getUserInfo';
+import { getUserInfo, getAdminInfo } from '../../data/mysqli/getInfo';
 import { setUser } from '../../data/redux';
 import { connect } from 'react-redux';
 import styles from './styles';
@@ -11,11 +11,35 @@ class LoadingScreen extends React.Component {
         super(props);
         switch (this.props.navigation.getParam('loadingType')) {
             case 'getAdminInfo':
-                // TODO: Implement Admin Screen
-                return 0;
+                this._verifyAdmin();
             default:
                 this._checkSignedIn();
         }
+    }
+
+    _verifyAdmin = () => {
+        if (this.props.admin === '1') {
+            getAdminInfo(this._saveAdminInfo);
+            this.props.navigation.navigate('Admin');
+        } else {
+            Alert.alert(
+                'Access Denied',
+                'You are not allowed to view this page.',
+                [
+                    {
+                        text: 'Ok',
+                    }
+                ],
+                { cancelable: true }
+            );
+        }
+    }
+
+    _saveAdminInfo = (response) => {
+        this.props.setAdminInfo(
+            response.locations,
+            response.users
+        );
     }
 
     _checkSignedIn = async () => {
@@ -29,10 +53,10 @@ class LoadingScreen extends React.Component {
     };
 
     _saveUserInfo = (response) => {
-        this.props.setUser({
-            username: response.username, 
-            admin: response.admin
-        });
+        this.props.setUser(
+            response.username, 
+            response.admin
+        );
     }
 
     render() {
@@ -46,13 +70,24 @@ class LoadingScreen extends React.Component {
     }
 }
 
+// get data through props
+const mapStateToProps = (state) => {
+    return {
+        username: state.userInfo.username,
+        admin: state.userInfo.admin
+    }
+}
+
 // set data through props
 const mapDispatchToProps = dispatch => {
     return {
-        setUser: ({username: username, admin: admin}) => {
-            dispatch(setUser({username: username, admin: admin}))
+        setUser: (username, admin) => {
+            dispatch(setUser( {username: username, admin: admin} ))
+        },
+        setAdminInfo: (locations, users) => {
+            dispatch(setAdminInfo( {locations: locations, users: users} ))
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(LoadingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);
