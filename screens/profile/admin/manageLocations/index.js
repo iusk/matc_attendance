@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { LocationList } from '../../../../components';
+import { CustomAdminList } from '../../../../components';
 import styles from './styles';
 
 class ManageLocationsScreen extends React.Component {
@@ -22,7 +22,7 @@ class ManageLocationsScreen extends React.Component {
     render() {
         return (
             <View>
-                {this.props.locations.map(location => <LocationList key={location.id} name={location.name} />)}
+                {this.props.locations.map(location => <CustomAdminList key={location.id} id={location.id} name={location.name} type='location' />)}
             </View>
         );
     }

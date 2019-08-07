@@ -25,6 +25,9 @@ const userSlice = createSlice({
         setAdminInfo: (state, action) => {
             state.adminInfo.locations = action.payload.locations;
             state.adminInfo.users = action.payload.users;
+        },
+        updateLocations: (state, action) => {
+            state.adminInfo.locations = action.payload;
         }
     }
 });
@@ -33,7 +36,7 @@ const userSlice = createSlice({
 const { actions, reducer } = userSlice;
 
 // defining different types of actions
-export const { setUser, setAdminInfo } = actions;
+export const { setUser, setAdminInfo, updateLocations } = actions;
 
 // combining reducers and creating store
 const store = configureStore({
