@@ -12,10 +12,10 @@ class LocationList extends React.Component {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.textWrapper}>
-                    <Text style={styles.text}>{this.props.name}</Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{this.props.name}</Text>
                 </View>
                 <View style={styles.touchableOpacityWrapper}>
-                    <TouchableOpacity style={styles.touchableOpacitySecWrapper}>
+                    <TouchableOpacity style={styles.iconWrapper}>
                         <Icon type='material-icons' name='edit-location' size={styles.iconSize} color='#d00000' />
                     </TouchableOpacity>
                 </View>

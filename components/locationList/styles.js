@@ -11,23 +11,25 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     textWrapper: {
-        flex: 7
+        flex: 8
     },
     touchableOpacityWrapper: {
-        flex: 3,
+        flex: 2,
         height: hp(10),
-        alignItems: 'center'
+        justifyContent: 'center'
     },
-    touchableOpacitySecWrapper: {
+    iconWrapper: {
         borderWidth: 1,
-        borderRadius: hp(5),
-        height: hp(10),
-        width: hp(10)
+        borderRadius: hp(4),
+        borderColor: '#b3b3b3',
+        height: hp(8),
+        width: hp(8),
+        justifyContent: 'center'
     },
     text: {
         fontSize: wp(5),
         color: '#d00000',
         marginLeft: wp(2.5)
     },
-    iconSize: wp(10)
+    iconSize: wp(12)
 });
