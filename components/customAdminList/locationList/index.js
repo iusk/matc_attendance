@@ -19,20 +19,30 @@ class LocationList extends React.Component {
         this.closeForm = this.closeForm.bind(this);
     }
 
+    _isMounted = true; // to prevent memory leaks when you delete a list and still try to call closeForm()
+
+    componentDidMount() {
+        this._isMounted = true;
+    }
+    
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     openForm = () => {
         this.setState( {formVisible: true} );
     }
 
     closeForm = () => {
-        this.setState( {formVisible: false} );
+        if (this._isMounted) this.setState( {formVisible: false} );
     }
 
     checkError = (response, type) => {
-        if (response === 'SUCCESS') {
-            this._displaySuccessMessage(type);
-        } else {
-            this._displayErrorMessage(type);
-        }
+        // if (response === 'SUCCESS') {
+        //     this._displaySuccessMessage(type);
+        // } else {
+        //     this._displayErrorMessage(type);
+        // }
     }
 
     _displaySuccessMessage = (type) => {
@@ -76,9 +86,10 @@ class LocationList extends React.Component {
                     type='Edit'
                     closeForm={this.closeForm}
                 />
-                <ModalMessage 
+                <ModalMessage
+                    name='Location'
                     visible={this.state.messageModalVisible} 
-                    type={this.statemessageModalType} 
+                    type={this.state.messageModalType} 
                     success={this.state.messageModalSuccess}
                 />
             </View>

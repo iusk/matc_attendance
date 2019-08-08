@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements';
 import LocationList from './locationList';
 import UserList from './userList';
 import LocationForm from './locationList/locationForm';
+import ModalMessage from './modalMessage';
 import styles from './styles';
 
 class CustomAdminList extends React.Component {
@@ -17,20 +18,30 @@ class CustomAdminList extends React.Component {
         }
     }
 
+    _isMounted = true; // to prevent memory leaks when you delete a list and still try to call closeForm()
+
+    componentDidMount() {
+        this._isMounted = true;
+    }
+    
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     openForm = () => {
         this.setState( {formVisible: true} );
     }
 
     closeForm = () => {
-        this.setState( {formVisible: false} );
+        if (this._isMounted) this.setState( {formVisible: false} );
     }
 
     checkError = (response) => {
-        if (response === 'SUCCESS') {
-            this._displaySuccessMessage();
-        } else {
-            this._displayErrorMessage();
-        }
+        // if (response === 'SUCCESS') {
+        //     this._displaySuccessMessage();
+        // } else {
+        //     this._displayErrorMessage();
+        // }
     }
 
     _displaySuccessMessage = () => {
@@ -68,6 +79,12 @@ class CustomAdminList extends React.Component {
                         type='Add'
                         closeForm={this.closeForm}
                     />
+                    <ModalMessage
+                        name='Location'
+                        visible={this.state.messageModalVisible} 
+                        type='Add'
+                        success={this.state.messageModalSuccess}
+                    />
                 </React.Fragment>
             );
         } else if (this.props.type === 'user') {
@@ -77,6 +94,19 @@ class CustomAdminList extends React.Component {
                     <TouchableOpacity style={styles.addButtonWrapper}>
                         <Icon type='material-community' name='account-plus' />
                     </TouchableOpacity>
+                    <LocationForm 
+                        visible={this.state.formVisible}
+                        name=''
+                        checkError={this.checkError}
+                        type='Add'
+                        closeForm={this.closeForm}
+                    />
+                    <ModalMessage
+                        name='User'
+                        visible={this.state.messageModalVisible} 
+                        type='Add'
+                        success={this.state.messageModalSuccess}
+                    />
                 </React.Fragment>
             );
         }

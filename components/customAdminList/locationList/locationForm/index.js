@@ -117,7 +117,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateLocations: (locations) => {
-            console.log(locations);
             dispatch(updateLocations(locations))
         }
     }
