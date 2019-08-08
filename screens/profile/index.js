@@ -71,7 +71,7 @@ class ProfileScreen extends React.Component {
             <View style={styles.wrapper}>
                 <BoxLink name='Change Password' iconName='key-variant' />
                 <BoxLink name='View Schedule' iconName='calendar-range' />
-                {(this.props.admin === '1') ?
+                {(this.props.admin === 1) ?
                 <BoxLink name='Admin Control Panel' iconName='account-key' onPress={this._gotoAdmin} />
                 : null}
                 <BoxLink name='Logout' iconName='logout' onPress={this._signOut} />

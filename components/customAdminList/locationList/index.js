@@ -73,7 +73,7 @@ class LocationList extends React.Component {
                     name={this.props.name}
                     id={this.props.id}
                     checkError={this.checkError}
-                    type='edit'
+                    type='Edit'
                     closeForm={this.closeForm}
                 />
                 <ModalMessage 

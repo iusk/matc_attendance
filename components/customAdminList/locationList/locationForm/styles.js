@@ -29,6 +29,10 @@ export default StyleSheet.create({
         marginRight: wp(5),
         marginTop: hp(2)
     },
+    addButton: {
+        width: wp(60),
+        height: hp(5)
+    },
     updateButton: {
         width: wp(30),
         height: hp(5)

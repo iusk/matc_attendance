@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, View, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FormInput from '../../formInput';
-import { updateLocation, deleteLocation } from '../../../../data/mysqli/manageLocations';
+import { updateLocation, deleteLocation, addLocation } from '../../../../data/mysqli/manageLocations';
 import { updateLocations } from '../../../../data/redux';
 import { connect } from 'react-redux';
 import styles from './styles';
@@ -25,35 +25,42 @@ class LocationForm extends React.Component {
         this.setState( {updateName: text} );
     }
 
+    _addLocation = () => {
+        this.props.closeForm();
+        addLocation(this.state.updateName, this.props.checkError, this.addLocationRedux);
+    }
+
+    addLocationRedux = (response) => {
+        if (response === 'SUCCESS') {
+            let lastId = (this.props.locations[this.props.locations.length - 1]).id;
+            let newLocations = [...this.props.locations, {'id': ++lastId, 'name': this.state.updateName}];
+            this.props.updateLocations(newLocations);
+        }
+    }
+
     _updateLocation = () => {
         this.props.closeForm();
-        updateLocation(this.props.id, this.state.updateName, this.props.checkError, this.updateLocationRedux)
+        updateLocation(this.props.id, this.state.updateName, this.props.checkError, this.updateLocationRedux);
     }
 
     updateLocationRedux = (response) => {
         if (response === 'SUCCESS') {
-            let locations = this.props.locations;
-            index = locations.findIndex((obj => obj.id === this.props.id));
-            console.log(locations);
-            console.log(index);
-            locations[index].name = this.props.updateName;
-            console.log(locations);
-            console.log(index);
-            this.props.updateLocations(locations);
-            console.log('done');
-            console.log(this.props.locations);
+            let newLocations = this.props.locations.filter((obj => obj.id !== this.props.id));
+            newLocations = [...newLocations, {'id': this.props.id, 'name': this.state.updateName}];
+            newLocations.sort((a, b) => (a.id - b.id)); // this little function is amazing btw
+            this.props.updateLocations(newLocations);
         }
     }
 
     _deleteLocation = () => {
-        this.setState( {locationModalVisible: false} );
+        this.props.closeForm();
         Alert.alert(
             'Are you sure?',
-            'Deleting this location will also remove any schedule of users for this location.',
+            'Deleting this location will remove all the schedules for this location too.',
             [
                 {
                     text: 'Yes', 
-                    onPress: () => deleteLocation(this.props.id, this.props.checkError)
+                    onPress: () => deleteLocation(this.props.id, this.props.checkError, this.deleteLocationRedux)
                 },
                 {
                     text: 'No',
@@ -63,6 +70,13 @@ class LocationForm extends React.Component {
             {cancelable: true},
           );
         
+    }
+
+    deleteLocationRedux = (response) => {
+        if (response === 'SUCCESS') {
+            let newLocations = this.props.locations.filter((obj => obj.id !== this.props.id));
+            this.props.updateLocations(newLocations);
+        }
     }
 
     render() {
@@ -78,8 +92,12 @@ class LocationForm extends React.Component {
                             <FormInput name='Name' value={this.state.updateName} onChangeText={this._onChangeLocation} />
                         </View>
                         <View style={styles.buttonWrapper}>
-                            <Button buttonStyle={styles.updateButton} title='Update' onPress={this._updateLocation} />
-                            <Button buttonStyle={styles.deleteButton} title='Delete' onPress={this._deleteLocation} />
+                            {(this.props.type === 'Edit') ?
+                            <React.Fragment>
+                                <Button buttonStyle={styles.updateButton} title='Update' onPress={this._updateLocation} />
+                                <Button buttonStyle={styles.deleteButton} title='Delete' onPress={this._deleteLocation} />
+                            </React.Fragment> :
+                            <Button buttonStyle={styles.addButton} title='Add' onPress={this._addLocation} />}
                         </View>
                     </View>
                 </View>
@@ -99,6 +117,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateLocations: (locations) => {
+            console.log(locations);
             dispatch(updateLocations(locations))
         }
     }
