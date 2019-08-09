@@ -12,8 +12,8 @@ const addLocation = (name, checkError, addLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        checkError(responseJson);
         addLocationRedux(responseJson);
+        checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
     })
@@ -34,8 +34,8 @@ const updateLocation = (id, name, checkError, updateLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        checkError(responseJson, type);
         updateLocationRedux(responseJson);
+        checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
     })
@@ -55,8 +55,8 @@ const deleteLocation = (id, checkError, deleteLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        checkError(responseJson, type);
         deleteLocationRedux(responseJson);
+        checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
     })

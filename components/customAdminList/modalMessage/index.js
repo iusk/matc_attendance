@@ -5,14 +5,16 @@ import styles from './styles';
 class ModalMessage extends React.Component {
     render() {
         let msg = '';
-        // props -> success, type, visible, name
         switch(this.props.type) {
             case 'Update':
                 msg = (this.props.success) ? this.props.name + ' updated successfully.' : this.props.name + ' couldn\'t be updated.';
+                break;
             case 'Delete':
                 msg = (this.props.success) ? this.props.name + ' removed successfully.' : this.props.name + ' couldn\'t be removed.';
+                break;
             case 'Add':
                 msg = (this.props.success) ? this.props.name + ' added successfully.' : this.props.name + 'couldn\'t be added.';
+                break;
         }
         return (
             <Modal visible={this.props.visible} transparent={true} animationType='fade'>

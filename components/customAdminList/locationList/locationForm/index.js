@@ -18,7 +18,10 @@ class LocationForm extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState( {visible: props.visible} );
+        this.setState({ 
+            visible: props.visible,
+            updateName: props.name
+        });
     }
 
     _onChangeLocation = (text) => {
@@ -49,6 +52,8 @@ class LocationForm extends React.Component {
             newLocations = [...newLocations, {'id': this.props.id, 'name': this.state.updateName}];
             newLocations.sort((a, b) => (a.id - b.id)); // this little function is amazing btw
             this.props.updateLocations(newLocations);
+            console.log('redux');
+            console.log(this.props.locations);
         }
     }
 
