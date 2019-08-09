@@ -12,7 +12,7 @@ const addLocation = (name, checkError, addLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        addLocationRedux(responseJson);
+        addLocationRedux(responseJson, name);
         checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
@@ -34,7 +34,7 @@ const updateLocation = (id, name, checkError, updateLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        updateLocationRedux(responseJson);
+        updateLocationRedux(responseJson, name);
         checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);

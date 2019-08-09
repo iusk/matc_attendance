@@ -33,10 +33,10 @@ class LocationForm extends React.Component {
         addLocation(this.state.updateName, this.props.checkError, this.addLocationRedux);
     }
 
-    addLocationRedux = (response) => {
+    addLocationRedux = (response, updateName) => {
         if (response === 'SUCCESS') {
             let lastId = (this.props.locations[this.props.locations.length - 1]).id;
-            let newLocations = [...this.props.locations, {'id': ++lastId, 'name': this.state.updateName}];
+            let newLocations = [...this.props.locations, {'id': ++lastId, 'name': updateName}];
             this.props.updateLocations(newLocations);
         }
     }
@@ -46,14 +46,12 @@ class LocationForm extends React.Component {
         updateLocation(this.props.id, this.state.updateName, this.props.checkError, this.updateLocationRedux);
     }
 
-    updateLocationRedux = (response) => {
+    updateLocationRedux = (response, updateName) => {
         if (response === 'SUCCESS') {
             let newLocations = this.props.locations.filter((obj => obj.id !== this.props.id));
-            newLocations = [...newLocations, {'id': this.props.id, 'name': this.state.updateName}];
+            newLocations = [...newLocations, {'id': this.props.id, 'name': updateName}];
             newLocations.sort((a, b) => (a.id - b.id)); // this little function is amazing btw
             this.props.updateLocations(newLocations);
-            console.log('redux');
-            console.log(this.props.locations);
         }
     }
 
@@ -122,7 +120,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateLocations: (locations) => {
-            dispatch(updateLocations(locations))
+            dispatch(updateLocations(locations));
         }
     }
 }

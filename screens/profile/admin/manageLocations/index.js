@@ -27,6 +27,10 @@ class ManageLocationsScreen extends React.Component {
         }
     }
 
+    // componentDidUpdate(props) {
+    //     console.log(props);
+    // }
+
     openForm = (name, type, id) => {
         this.setState( {
             formType: type,
@@ -41,7 +45,6 @@ class ManageLocationsScreen extends React.Component {
     }
     
     checkError = (response, type) => {
-        console.log(this.props.locations);
         if (response === 'SUCCESS') {
             this._displaySuccessMessage(type);
         } else {
