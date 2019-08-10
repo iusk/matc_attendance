@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CustomAdminList, ModalMessage, LocationForm } from '../../../../components';
+import { CustomAdminList, ModalMessage, UserForm } from '../../../../components';
 
-class ManageLocationsScreen extends React.Component {
+class ManageUsersScreen extends React.Component {
     static navigationOptions = {
-        title: 'Manage Locations',
+        title: 'Manage Users',
         headerStyle: {
             backgroundColor: '#d00000'
         },
@@ -17,7 +17,7 @@ class ManageLocationsScreen extends React.Component {
         super(props);
 
         this.state = {
-            locations: this.props.locations,
+            users: this.props.users,
             formVisible: false,
             name: '',
             formType: '',
@@ -27,11 +27,13 @@ class ManageLocationsScreen extends React.Component {
         }
     }
 
-    openForm = (id, name, type) => {
+    openForm = (id, name, email, admin, type) => {
         this.setState( {
+            formType: type,
             id: id,
             name: name,
-            formType: type,
+            email: email,
+            admin: admin,
             formVisible: true,
         } );
     }
@@ -50,7 +52,7 @@ class ManageLocationsScreen extends React.Component {
 
     _displaySuccessMessage = (type) => {
         this.setState( {
-            locations: this.props.locations,
+            users: this.props.users,
             messageModalVisible: true,
             messageModalSuccess: true,
             messageModalType: type
@@ -62,7 +64,7 @@ class ManageLocationsScreen extends React.Component {
 
     _displayErrorMessage = (type) => {
         this.setState( {
-            locations: this.props.locations,
+            users: this.props.users,
             messageModalVisible: true,
             messageModalSuccess: false,
             messageModalType: type
@@ -76,26 +78,27 @@ class ManageLocationsScreen extends React.Component {
         let key = 0;
         return (
             <React.Fragment>
-                {this.state.locations.map( location => 
+                {this.state.users.map( user => 
                     <CustomAdminList 
                         key={key++} 
-                        id={location.id} 
-                        name={location.name} 
-                        type='Location'
-                        checkError={this.checkError}
+                        id={user.id} 
+                        name={user.username}
+                        type='User'
                         openForm={this.openForm}
                     />)
                 }
                 <ModalMessage
-                    name='Location'
+                    name='User'
                     visible={this.state.messageModalVisible} 
                     type={this.state.messageModalType}
                     success={this.state.messageModalSuccess}
                 />
-                <LocationForm 
+                <UserForm 
                     visible={this.state.formVisible}
-                    name={this.state.name}
                     id={this.state.id}
+                    name={this.state.name}
+                    email={this.state.email}
+                    admin={this.state.admin}
                     checkError={this.checkError}
                     type={this.state.formType}
                     closeForm={this.closeForm}
@@ -108,8 +111,8 @@ class ManageLocationsScreen extends React.Component {
 // get data through props
 const mapStateToProps = (state) => {
     return {
-        locations: state.adminInfo.locations
+        users: state.adminInfo.users
     }
 }
 
-export default connect(mapStateToProps)(ManageLocationsScreen);
+export default connect(mapStateToProps)(ManageUsersScreen);

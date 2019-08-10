@@ -1,6 +1,6 @@
-const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageLocations.php';
+const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageUsers.php';
 
-const addLocation = (name, checkError, addLocationRedux) => {
+const addUser = (name, email, admin, verified, checkError, addLocationRedux) => {
     const type = 'Add';
     fetch(URL, {
         method: 'POST',
@@ -10,18 +10,22 @@ const addLocation = (name, checkError, addLocationRedux) => {
         },
         body: JSON.stringify({
             type: type,
-            name: name
+            name: name,
+            email: email,
+            admin: admin,
+            verified: verified,
+            year: new Date().getFullYear()
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        addLocationRedux(responseJson, name);
+        addLocationRedux(responseJson, name, email, admin, verified);
         checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
     })
 }
 
-const updateLocation = (id, name, checkError, updateLocationRedux) => {
+const updateUser = (id, name, email, admin, checkError, updateLocationRedux) => {
     const type = 'Update';
     fetch(URL, {
         method: 'POST',
@@ -32,18 +36,20 @@ const updateLocation = (id, name, checkError, updateLocationRedux) => {
         body: JSON.stringify({
             type: type,
             id: id,
-            name: name
+            name: name,
+            email: email,
+            admin: admin
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        updateLocationRedux(responseJson, name);
+        updateLocationRedux(responseJson, name, email, admin);
         checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
     })
 }
 
-const deleteLocation = (id, checkError, deleteLocationRedux) => {
+const deleteUser = (id, checkError, deleteLocationRedux) => {
     const type = 'Delete';
     fetch(URL, {
         method: 'POST',
@@ -64,4 +70,4 @@ const deleteLocation = (id, checkError, deleteLocationRedux) => {
     })
 }
 
-export { updateLocation, deleteLocation, addLocation };
+export { updateUser, deleteUser, addUser };

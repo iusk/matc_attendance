@@ -10,26 +10,30 @@ class CustomAdminList extends React.Component {
         super(props);
     }
 
-    _openForm = () => {
-        this.props.openForm('', 'Add', null);
+    _openLocationForm = () => {
+        this.props.openForm(null, '', 'Add');
+    }
+
+    _openUserForm = () => {
+        this.props.openForm(null, '', '', 0, 'Add');
     }
 
     render() {
-        if (this.props.type === 'location') {
+        if (this.props.type === 'Location') {
             return (
                 <React.Fragment>
                     <LocationList name={this.props.name} id={this.props.id} checkError={this.props.checkError} openForm={this.props.openForm} />
-                    <TouchableOpacity style={styles.addButtonWrapper} onPress={this._openForm}>
+                    <TouchableOpacity style={styles.addButtonWrapper} onPress={this._openLocationForm}>
                         <Icon type='material-community' name='map-marker-plus' color='#d00000' size={styles.iconSize} />
                     </TouchableOpacity>
                 </React.Fragment>
             );
-        } else if (this.props.type === 'user') {
+        } else if (this.props.type === 'User') {
             return (
                 <React.Fragment>
-                    <UserList name={this.props.name} id={this.props.id} checkError={this.props.checkError} />
-                    <TouchableOpacity style={styles.addButtonWrapper}>
-                        <Icon type='material-community' name='account-plus' />
+                    <UserList name={this.props.name} openForm={this.props.openForm} />
+                    <TouchableOpacity style={styles.addButtonWrapper} onPress={this._openUserForm}>
+                        <Icon type='material-community' name='account-plus' color='#d00000' size={styles.iconSize} />
                     </TouchableOpacity>
                 </React.Fragment>
             );

@@ -3,7 +3,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 export default StyleSheet.create({
     wrapper: {
-        height: hp(20)
+        height: hp(10)
     },
     label: {
         color: '#8c8c8c',

@@ -22,11 +22,15 @@ class AdminScreen extends React.Component {
         this.props.navigation.navigate('ManageLocations');
     }
 
+    _gotoManageUsers = () => {
+        this.props.navigation.navigate('ManageUsers');
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
                 <BoxLink name='Manage Locations' iconName='map-marker' onPress={this._gotoManageLocations} />
-                <BoxLink name='Manage Users' iconName='account-multiple'/>
+                <BoxLink name='Manage Users' iconName='account-multiple' onPress={this._gotoManageUsers} />
             </View>
         );
     }

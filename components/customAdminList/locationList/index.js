@@ -10,7 +10,7 @@ class LocationList extends React.Component {
     
     _openForm = () => {
         const name = this.props.name;
-        this.props.openForm(name, 'Edit', this.props.id);
+        this.props.openForm(this.props.id, name, 'Edit');
     }
 
     render() {
