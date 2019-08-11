@@ -20,6 +20,8 @@ class ManageUsersScreen extends React.Component {
             users: this.props.users,
             formVisible: false,
             name: '',
+            email: '',
+            admin: 0,
             formType: '',
             messageModalVisible: false,
             messageModalSuccess: true,
@@ -83,6 +85,8 @@ class ManageUsersScreen extends React.Component {
                         key={key++} 
                         id={user.id} 
                         name={user.username}
+                        email={user.email}
+                        admin={user.admin}
                         type='User'
                         openForm={this.openForm}
                     />)

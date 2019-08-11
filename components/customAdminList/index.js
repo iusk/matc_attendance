@@ -31,7 +31,7 @@ class CustomAdminList extends React.Component {
         } else if (this.props.type === 'User') {
             return (
                 <React.Fragment>
-                    <UserList name={this.props.name} openForm={this.props.openForm} />
+                    <UserList id={this.props.id} name={this.props.name} email={this.props.email} admin={this.props.admin} openForm={this.props.openForm} />
                     <TouchableOpacity style={styles.addButtonWrapper} onPress={this._openUserForm}>
                         <Icon type='material-community' name='account-plus' color='#d00000' size={styles.iconSize} />
                     </TouchableOpacity>

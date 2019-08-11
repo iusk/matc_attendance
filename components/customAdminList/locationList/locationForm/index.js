@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, View, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import FormInput from '../../formInput';
+import FormInput from '../../../formInput';
 import { updateLocation, deleteLocation, addLocation } from '../../../../data/mysqli/manageLocations';
 import { updateLocations } from '../../../../data/redux';
 import { connect } from 'react-redux';

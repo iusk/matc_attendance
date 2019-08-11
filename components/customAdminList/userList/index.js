@@ -9,8 +9,12 @@ class UserList extends React.Component {
     }
     
     _openForm = () => {
-        const name = this.props.name;
-        this.props.openForm(this.props.id, name, 'Edit');
+        this.props.openForm(
+            this.props.id, 
+            this.props.name,
+            this.props.email,
+            this.props.admin,
+            'Edit');
     }
 
     render() {

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, View, Alert } from 'react-native';
+import { Modal, View, Alert, Picker } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import FormInput from '../../formInput';
+import FormInput from '../../../formInput';
+import FormSelect from '../../../formSelect';
 import { updateUser, deleteUser, addUser } from '../../../../data/mysqli/manageUsers';
 import { updateUsers } from '../../../../data/redux';
 import { connect } from 'react-redux';
@@ -12,8 +13,9 @@ class UserForm extends React.Component {
         super(props);
 
         this.state = {
-            updateName: this.props.name,
-            updateEmail: this.props.email,
+            updateName: '',
+            updateEmail: '',
+            updateAdmin: '',
             visible: this.props.visible
         }
     }
@@ -22,7 +24,8 @@ class UserForm extends React.Component {
         this.setState({ 
             visible: props.visible,
             updateName: props.name,
-            updateEmail: props.email
+            updateEmail: props.email,
+            updateAdmin: props.admin
         });
     }
 
@@ -32,6 +35,10 @@ class UserForm extends React.Component {
 
     _onChangeEmail = (text) => {
         this.setState( {updateEmail: text} );
+    }
+
+    _onChangeAdmin = (value) => {
+        this.setState( {updateAdmin: value} );
     }
 
     _addUser = () => {
@@ -104,6 +111,7 @@ class UserForm extends React.Component {
                         <View style={styles.inputWrapper}>
                             <FormInput name='Name' value={this.state.updateName} onChangeText={this._onChangeUserName} />
                             <FormInput name='Email' value={this.state.updateEmail} onChangeText={this._onChangeEmail} />
+                            <FormSelect name='User Type' value={this.state.updateAdmin} onChangeValue={this._onChangeAdmin} />
                         </View>
                         <View style={styles.buttonWrapper}>
                             {(this.props.type === 'Edit') ?
