@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, View, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FormInput from '../../../formInput';
+import FormSelect from '../../../formSelect';
+import FormTime from '../../../formTime';
 import { updateLocation, deleteLocation, addLocation } from '../../../../data/mysqli/manageLocations';
 import { updateLocations } from '../../../../data/redux';
 import { connect } from 'react-redux';
@@ -13,6 +15,9 @@ class LocationForm extends React.Component {
 
         this.state = {
             updateName: this.props.name,
+            updateDay: this.props.day,
+            updateStartTime: this.props.startTime,
+            updateEndTime: this.props.endTime,
             visible: this.props.visible
         }
     }
@@ -20,7 +25,10 @@ class LocationForm extends React.Component {
     componentWillReceiveProps(props) {
         this.setState({ 
             visible: props.visible,
-            updateName: props.name
+            updateName: props.name,
+            updateDay: props.day,
+            updateStartTime: props.startTime,
+            updateEndTime: props.endTime
         });
     }
 
@@ -28,28 +36,48 @@ class LocationForm extends React.Component {
         this.setState( {updateName: text} );
     }
 
-    _addLocation = () => {
-        this.props.closeForm();
-        addLocation(this.state.updateName, this.props.checkError, this.addLocationRedux);
+    _onChangeDay = (value) => {
+        this.setState( {updateDay: value} );
     }
 
-    addLocationRedux = (response, updateName) => {
+    _onSelectStartTime = (value) => {
+        this.setState( {updateStartTime: value} );
+    }
+
+    _onSelectEndTime = (value) => {
+        this.setState( {updateEndTime: value} );
+    }
+
+    _addLocation = () => {
+        this.props.closeForm();
+        addLocation(this.state.updateName, this.state.updateDay, this.state.updateStartTime, 
+            this.state.updateEndTime, this.props.checkError, this.addLocationRedux);
+    }
+
+    addLocationRedux = (response, updateName, updateDay, updateStartTime, updateEndTime) => {
         if (response === 'SUCCESS') {
             let lastId = (this.props.locations[this.props.locations.length - 1]).id;
-            let newLocations = [...this.props.locations, {'id': ++lastId, 'name': updateName}];
+            let newLocations = [...this.props.locations, {
+                'id': ++lastId, 'name': updateName,
+                'day': updateDay, 'startTime': updateStartTime, 'endTime': updateEndTime
+            }];
             this.props.updateLocations(newLocations);
         }
     }
 
     _updateLocation = () => {
         this.props.closeForm();
-        updateLocation(this.props.id, this.state.updateName, this.props.checkError, this.updateLocationRedux);
+        updateLocation(this.props.id, this.state.updateName, this.state.updateDay, 
+            this.state.updateStartTime, this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
     }
 
-    updateLocationRedux = (response, updateName) => {
+    updateLocationRedux = (response, updateName, updateDay, updateStartTime, updateEndTime) => {
         if (response === 'SUCCESS') {
             let newLocations = this.props.locations.filter((obj => obj.id !== this.props.id));
-            newLocations = [...newLocations, {'id': this.props.id, 'name': updateName}];
+            newLocations = [...newLocations, {
+                'id': this.props.id, 'name': updateName,
+                'day': updateDay, 'startTime': updateStartTime, 'endTime': updateEndTime
+            }];
             newLocations.sort((a, b) => (a.id - b.id)); // this little function is amazing btw
             this.props.updateLocations(newLocations);
         }
@@ -93,6 +121,10 @@ class LocationForm extends React.Component {
                         </View>
                         <View style={styles.inputWrapper}>
                             <FormInput name='Name' value={this.state.updateName} onChangeText={this._onChangeLocation} />
+                            <FormSelect name="Day" selectedValue={this.state.updateDay} onChangeValue={this._onChangeDay} 
+                                values={['Choose One', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']} />
+                            <FormTime name="Start Time" value={this.state.updateStartTime} timeSetAction={this._onSelectStartTime} />
+                            <FormTime name="End Time" value={this.state.updateEndTime} timeSetAction={this._onSelectEndTime} />
                         </View>
                         <View style={styles.buttonWrapper}>
                             {(this.props.type === 'Edit') ?

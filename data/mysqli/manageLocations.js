@@ -1,6 +1,6 @@
 const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageLocations.php';
 
-const addLocation = (name, checkError, addLocationRedux) => {
+const addLocation = (name, day, startTime, endTime, checkError, addLocationRedux) => {
     const type = 'Add';
     fetch(URL, {
         method: 'POST',
@@ -10,18 +10,21 @@ const addLocation = (name, checkError, addLocationRedux) => {
         },
         body: JSON.stringify({
             type: type,
-            name: name
+            name: name,
+            day: day,
+            startTime: startTime,
+            endTime: endTime,
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        addLocationRedux(responseJson, name);
+        addLocationRedux(responseJson, name, day, startTime, endTime);
         checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);
     })
 }
 
-const updateLocation = (id, name, checkError, updateLocationRedux) => {
+const updateLocation = (id, name, day, startTime, endTime, checkError, updateLocationRedux) => {
     const type = 'Update';
     fetch(URL, {
         method: 'POST',
@@ -32,11 +35,14 @@ const updateLocation = (id, name, checkError, updateLocationRedux) => {
         body: JSON.stringify({
             type: type,
             id: id,
-            name: name
+            name: name,
+            day: day,
+            startTime: startTime,
+            endTime: endTime
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        updateLocationRedux(responseJson, name);
+        updateLocationRedux(responseJson, name, day, startTime, endTime);
         checkError(responseJson, type);
     }).catch((error) => {
         console.warn(error);

@@ -20,6 +20,9 @@ class ManageLocationsScreen extends React.Component {
             locations: this.props.locations,
             formVisible: false,
             name: '',
+            day: 0,
+            startTime: '',
+            endTime: '',
             formType: '',
             messageModalVisible: false,
             messageModalSuccess: true,
@@ -27,10 +30,13 @@ class ManageLocationsScreen extends React.Component {
         }
     }
 
-    openForm = (id, name, type) => {
+    openForm = (id, name, day, startTime, endTime, type) => {
         this.setState( {
             id: id,
             name: name,
+            day: day,
+            startTime: startTime,
+            endTime: endTime,
             formType: type,
             formVisible: true,
         } );
@@ -49,7 +55,7 @@ class ManageLocationsScreen extends React.Component {
     }
 
     _displaySuccessMessage = (type) => {
-        this.setState( {
+        this.setState({
             locations: this.props.locations,
             messageModalVisible: true,
             messageModalSuccess: true,
@@ -80,7 +86,10 @@ class ManageLocationsScreen extends React.Component {
                     <CustomAdminList 
                         key={key++} 
                         id={location.id} 
-                        name={location.name} 
+                        name={location.name}
+                        day={location.day}
+                        startTime={location.startTime}
+                        endTime={location.endTime}
                         type='Location'
                         checkError={this.checkError}
                         openForm={this.openForm}
@@ -94,8 +103,11 @@ class ManageLocationsScreen extends React.Component {
                 />
                 <LocationForm 
                     visible={this.state.formVisible}
-                    name={this.state.name}
                     id={this.state.id}
+                    name={this.state.name}
+                    day={this.state.day}
+                    startTime={this.state.startTime}
+                    endTime={this.state.endTime}
                     checkError={this.checkError}
                     type={this.state.formType}
                     closeForm={this.closeForm}

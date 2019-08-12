@@ -111,7 +111,8 @@ class UserForm extends React.Component {
                         <View style={styles.inputWrapper}>
                             <FormInput name='Name' value={this.state.updateName} onChangeText={this._onChangeUserName} />
                             <FormInput name='Email' value={this.state.updateEmail} onChangeText={this._onChangeEmail} />
-                            <FormSelect name='User Type' value={this.state.updateAdmin} onChangeValue={this._onChangeAdmin} />
+                            <FormSelect name='User Type' selectedValue={this.state.updateAdmin} onChangeValue={this._onChangeAdmin} 
+                                values={['Mentor', 'Admin']} />
                         </View>
                         <View style={styles.buttonWrapper}>
                             {(this.props.type === 'Edit') ?

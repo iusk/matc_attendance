@@ -9,11 +9,12 @@ class FormSelect extends React.Component {
                 <Text style={styles.label}>{this.props.name}</Text>
                 <Picker
                     style={styles.picker}
-                    selectedValue={this.props.value}
+                    selectedValue={this.props.selectedValue}
                     onValueChange={this.props.onChangeValue}
                 >
-                    <Picker.Item label="Mentor" value={0} />
-                    <Picker.Item label="Admin" value={1} />
+                    {this.props.values.map((valueLabel, index) =>
+                        <Picker.Item key={index} label={valueLabel} value={index} />
+                    )}
                 </Picker>
             </View>
             

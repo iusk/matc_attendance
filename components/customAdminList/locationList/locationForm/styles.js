@@ -10,7 +10,7 @@ export default StyleSheet.create({
     },
     innerWrapper: {
         width: wp(75),
-        height: hp(30),
+        height: hp(60),
         backgroundColor: '#fefdfa'
     },
     cancelWrapper: {
@@ -18,11 +18,11 @@ export default StyleSheet.create({
         flexDirection: 'row-reverse'
     },
     inputWrapper: {
-        flex: 4,
+        flex: 7,
         justifyContent: 'center'
     },
     buttonWrapper: {
-        flex: 3,
+        flex: 2,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'

@@ -11,7 +11,7 @@ class CustomAdminList extends React.Component {
     }
 
     _openLocationForm = () => {
-        this.props.openForm(null, '', 'Add');
+        this.props.openForm(null, '', 0, null, null, 'Add');
     }
 
     _openUserForm = () => {
@@ -22,7 +22,8 @@ class CustomAdminList extends React.Component {
         if (this.props.type === 'Location') {
             return (
                 <React.Fragment>
-                    <LocationList name={this.props.name} id={this.props.id} checkError={this.props.checkError} openForm={this.props.openForm} />
+                    <LocationList id={this.props.id} name={this.props.name} day={this.props.day} startTime={this.props.startTime} 
+                        endTime={this.props.endTime} checkError={this.props.checkError} openForm={this.props.openForm} />
                     <TouchableOpacity style={styles.addButtonWrapper} onPress={this._openLocationForm}>
                         <Icon type='material-community' name='map-marker-plus' color='#d00000' size={styles.iconSize} />
                     </TouchableOpacity>
@@ -31,7 +32,8 @@ class CustomAdminList extends React.Component {
         } else if (this.props.type === 'User') {
             return (
                 <React.Fragment>
-                    <UserList id={this.props.id} name={this.props.name} email={this.props.email} admin={this.props.admin} openForm={this.props.openForm} />
+                    <UserList id={this.props.id} name={this.props.name} 
+                        email={this.props.email} admin={this.props.admin} openForm={this.props.openForm} />
                     <TouchableOpacity style={styles.addButtonWrapper} onPress={this._openUserForm}>
                         <Icon type='material-community' name='account-plus' color='#d00000' size={styles.iconSize} />
                     </TouchableOpacity>
