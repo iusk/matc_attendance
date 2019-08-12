@@ -18,12 +18,14 @@ export default StyleSheet.create({
         flexDirection: 'row-reverse'
     },
     inputWrapper: {
-        flex: 2,
+        flex: 4,
+        justifyContent: 'center'
     },
     buttonWrapper: {
-        flex: 2,
+        flex: 3,
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     cancelButton: {
         marginRight: wp(5),
