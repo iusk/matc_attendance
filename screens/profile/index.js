@@ -55,7 +55,8 @@ class ProfileScreen extends React.Component {
     _saveAdminInfo = (response) => {
         this.props.setAdminInfo(
             response.locations,
-            response.users
+            response.users,
+            response.users_locations
         );
     }
 
@@ -93,7 +94,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         setAdminInfo: (locations, users) => {
-            dispatch(setAdminInfo( {locations: locations, users: users} ))
+            dispatch(setAdminInfo( {locations: locations, users: users, users_locations: users_locations} ))
         }
     }
 }

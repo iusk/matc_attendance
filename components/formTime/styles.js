@@ -13,6 +13,7 @@ export default StyleSheet.create({
     },
     input: {
         marginLeft: wp(2.5),
+        borderColor: '#c7c8ca',
         height: hp(5),
         width: wp(50),
         borderWidth: 1,

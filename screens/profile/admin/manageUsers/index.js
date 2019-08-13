@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { ModalMessage, UserForm, UserList } from '../../../../components';
+import { ModalMessage, UserForm, UserList, UserLocationForm } from '../../../../components';
 import styles from './styles';
 
 class ManageUsersScreen extends React.Component {
@@ -16,6 +16,7 @@ class ManageUsersScreen extends React.Component {
             color: '#fefdfa'
         }
     };
+
     constructor(props) {
         super(props);
 
@@ -33,14 +34,14 @@ class ManageUsersScreen extends React.Component {
     }
 
     openForm = (id, name, email, admin, type) => {
-        this.setState( {
+        this.setState({
             formType: type,
             id: id,
             name: name,
             email: email,
             admin: admin,
             formVisible: true,
-        } );
+        });
     }
 
     closeForm = () => {
@@ -110,6 +111,10 @@ class ManageUsersScreen extends React.Component {
                     checkError={this.checkError}
                     type={this.state.formType}
                     closeForm={this.closeForm}
+                />
+                <UserLocationForm
+                    visible={this.state.userLocationFormVisible}
+                    userId={this.state.id}
                 />
                 <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 'Add')}>
                     <Icon type='material-community' name='account-plus' color='#fefdfa' size={styles.iconSize} />

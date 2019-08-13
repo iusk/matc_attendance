@@ -25,6 +25,7 @@ const userSlice = createSlice({
         setAdminInfo: (state, action) => {
             state.adminInfo.locations = action.payload.locations;
             state.adminInfo.users = action.payload.users;
+            state.adminInfo.users_locations = actions.payload.users_locations;
         },
         updateLocations: (state, action) => {
             state.adminInfo.locations = action.payload;
