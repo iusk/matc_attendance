@@ -1,11 +1,11 @@
 import React from 'react';
 import { Modal, View, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import FormInput from '../../../formInput';
-import FormSelect from '../../../formSelect';
-import FormTime from '../../../formTime';
-import { updateLocation, deleteLocation, addLocation } from '../../../../data/mysqli/manageLocations';
-import { updateLocations } from '../../../../data/redux';
+import FormInput from '../../formInput';
+import FormSelect from '../../formSelect';
+import FormTime from '../../formTime';
+import { updateLocation, deleteLocation, addLocation } from '../../../data/mysqli/manageLocations';
+import { updateLocations } from '../../../data/redux';
 import { connect } from 'react-redux';
 import styles from './styles';
 

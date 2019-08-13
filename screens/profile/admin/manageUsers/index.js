@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CustomAdminList, ModalMessage, UserForm } from '../../../../components';
+import { TouchableOpacity, ScrollView } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { ModalMessage, UserForm, UserList } from '../../../../components';
+import styles from './styles';
 
 class ManageUsersScreen extends React.Component {
     static navigationOptions = {
@@ -80,17 +83,18 @@ class ManageUsersScreen extends React.Component {
         let key = 0;
         return (
             <React.Fragment>
-                {this.state.users.map( user => 
-                    <CustomAdminList 
-                        key={key++} 
-                        id={user.id} 
-                        name={user.username}
-                        email={user.email}
-                        admin={user.admin}
-                        type='User'
-                        openForm={this.openForm}
-                    />)
-                }
+                <ScrollView>
+                    {this.state.users.map( user => 
+                        <UserList
+                            key={key++}
+                            id={user.id}
+                            name={user.username}
+                            email={user.email}
+                            admin={user.admin}
+                            openForm={this.openForm} 
+                        />)
+                    }
+                </ScrollView>
                 <ModalMessage
                     name='User'
                     visible={this.state.messageModalVisible} 
@@ -107,6 +111,9 @@ class ManageUsersScreen extends React.Component {
                     type={this.state.formType}
                     closeForm={this.closeForm}
                 />
+                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 'Add')}>
+                    <Icon type='material-community' name='account-plus' color='#fefdfa' size={styles.iconSize} />
+                </TouchableOpacity>
             </React.Fragment>
         );
     }

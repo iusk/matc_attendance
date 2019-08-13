@@ -1,6 +1,9 @@
 import React from 'react';
+import { TouchableOpacity, ScrollView } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { CustomAdminList, ModalMessage, LocationForm } from '../../../../components';
+import { ModalMessage, LocationForm, LocationList } from '../../../../components';
+import styles from './styles';
 
 class ManageLocationsScreen extends React.Component {
     static navigationOptions = {
@@ -31,7 +34,7 @@ class ManageLocationsScreen extends React.Component {
     }
 
     openForm = (id, name, day, startTime, endTime, type) => {
-        this.setState( {
+        this.setState({
             id: id,
             name: name,
             day: day,
@@ -39,7 +42,7 @@ class ManageLocationsScreen extends React.Component {
             endTime: endTime,
             formType: type,
             formVisible: true,
-        } );
+        });
     }
 
     closeForm = () => {
@@ -82,19 +85,20 @@ class ManageLocationsScreen extends React.Component {
         let key = 0;
         return (
             <React.Fragment>
-                {this.state.locations.map( location => 
-                    <CustomAdminList 
-                        key={key++} 
-                        id={location.id} 
-                        name={location.name}
-                        day={location.day}
-                        startTime={location.startTime}
-                        endTime={location.endTime}
-                        type='Location'
-                        checkError={this.checkError}
-                        openForm={this.openForm}
-                    />)
-                }
+                <ScrollView>
+                    {this.state.locations.map( location => 
+                        <LocationList 
+                            key={key++} 
+                            id={location.id} 
+                            name={location.name}
+                            day={location.day}
+                            startTime={location.startTime}
+                            endTime={location.endTime}
+                            checkError={this.checkError}
+                            openForm={this.openForm}
+                        />)
+                    }
+                </ScrollView>
                 <ModalMessage
                     name='Location'
                     visible={this.state.messageModalVisible} 
@@ -112,6 +116,9 @@ class ManageLocationsScreen extends React.Component {
                     type={this.state.formType}
                     closeForm={this.closeForm}
                 />
+                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', 0, null, null, 'Add')}>
+                    <Icon type='material-community' name='map-marker-plus' color='#fefdfa' size={styles.iconSize} />
+                </TouchableOpacity>
             </React.Fragment>
         );
     }

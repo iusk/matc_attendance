@@ -11,19 +11,21 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     textWrapper: {
-        flex: 8
+        flex: 12
     },
     touchableOpacityWrapper: {
         flex: 2,
         height: hp(10),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     iconWrapper: {
         borderWidth: 1,
-        borderRadius: hp(4),
-        borderColor: '#b3b3b3',
-        height: hp(8),
-        width: hp(8),
+        borderRadius: hp(3),
+        borderColor: '#d00000',
+        backgroundColor: '#d00000',
+        height: hp(6),
+        width: hp(6),
         justifyContent: 'center'
     },
     text: {
@@ -31,5 +33,5 @@ export default StyleSheet.create({
         color: '#d00000',
         marginLeft: wp(2.5)
     },
-    iconSize: wp(12)
+    iconSize: wp(8)
 });

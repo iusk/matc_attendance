@@ -1,9 +1,10 @@
 import BoxLink from './boxLink';
 import InputWithLabel from './inputWithLabel';
 import ModalLoading from './modalLoading';
-import CustomAdminList from './customAdminList';
 import ModalMessage from './modalMessage';
-import LocationForm from './customAdminList/locationList/locationForm';
-import UserForm from './customAdminList/userList/userForm';
+import LocationForm from './locationList/locationForm';
+import UserForm from './userList/userForm';
+import LocationList from './locationList';
+import UserList from './userList'
 
-export { BoxLink, InputWithLabel, ModalLoading, CustomAdminList, ModalMessage, LocationForm, UserForm };
+export { BoxLink, InputWithLabel, ModalLoading, ModalMessage, LocationForm, UserForm, LocationList, UserList };

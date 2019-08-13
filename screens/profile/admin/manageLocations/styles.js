@@ -4,16 +4,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 export default StyleSheet.create({
     addButtonWrapper: {
         position: 'absolute',
-        left: wp(75),
-        top: hp(65),
+        left: wp(82),
+        top: hp(72),
         borderWidth: 1,
-        height: hp(10),
-        width: hp(10),
-        borderRadius: hp(5),
-        borderColor: '#b3b3b3',
+        height: hp(8),
+        width: hp(8),
+        borderRadius: hp(4),
+        borderColor: '#d00000',
+        backgroundColor: '#d00000',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f2f2f2'
     },
-    iconSize: wp(12)
+    iconSize: wp(8)
 });
