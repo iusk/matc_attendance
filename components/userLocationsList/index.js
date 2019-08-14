@@ -12,7 +12,7 @@ class UserLocationsList extends React.Component {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.touchableOpacityWrapper}>
-                    <TouchableOpacity style={styles.iconWrapper}>
+                    <TouchableOpacity style={styles.iconWrapper} onPress={() => this.props.manageLocation(this.props.id)}>
                         <Icon type='material-community' name={this.props.iconName} size={styles.iconSize} color='#fefdfa' />
                     </TouchableOpacity>
                 </View>

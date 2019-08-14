@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, Text } from 'react-native';
+import { Modal, View, Text, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { addLocation, removeLocation } from '../../data/mysqli/manageUserLocations';
 import UserLocationsList from '../userLocationsList';
@@ -16,23 +16,19 @@ class UserLocationsForm extends React.Component {
             visible: this.props.visible,
             assignedLocations: [],
             unassignedLocations: []
-        }
+        }        
     }
 
     componentWillReceiveProps(props) {
+        // getting an array of location objects that have been assigned and
+        // mapping just the ids of the objects
 
         const assignedLocationIds = (props.userLocations.filter(
-                                            obj => obj.user_id === props.userId)).map(
-                                            assignedUserLocations => assignedUserLocations.location_id);
+            obj =>  obj.userId === props.userId )).map(
+            assignedUserLocations => assignedUserLocations.locationId);
 
-        const unassignedLocationIds = (props.userLocations.filter(
-                                                obj => obj.user_id !== props.userId)).map(
-                                                unassignedLocations => unassignedLocations.location_id);
-
-        console.log(unassignedLocationIds);
-
-        const assignedLocations = this.props.locations.filter(obj => assignedLocationIds.includes(obj.id));
-        const unassignedLocations = this.props.locations.filter(obj => unassignedLocationIds.includes(obj.id));
+        const assignedLocations = props.locations.filter(obj => assignedLocationIds.includes(obj.id));
+        const unassignedLocations = props.locations.filter(obj => !assignedLocationIds.includes(obj.id));
 
         this.setState({ 
             visible: props.visible,
@@ -50,7 +46,7 @@ class UserLocationsForm extends React.Component {
         if (response === 'SUCCESS') {
             let lastId = (this.props.userLocations[this.props.userLocations.length - 1]).id;
             let newUserLocations = [...this.props.userLocations, {
-                'id': ++lastId, 'user_id': userId, 'location_id': locationId
+                'id': ++lastId, 'userId': userId, 'locationId': locationId
             }];
             this.props.updateUserLocations(newUserLocations);
         }
@@ -63,7 +59,7 @@ class UserLocationsForm extends React.Component {
     removeLocationRedux = (response, locationId) => {
         if (response === 'SUCCESS') {
             let newUserLocations = this.props.userLocations.filter(obj => 
-                obj.location_id !== locationId || obj.user_id !== this.state.userId
+                obj.locationId !== locationId || obj.userId !== this.state.userId
             );
             this.props.updateUserLocations(newUserLocations);
         }
@@ -81,26 +77,32 @@ class UserLocationsForm extends React.Component {
                                 name='close' color='#d00000' onPress={this.props.closeForm} />
                         </View>
                         <View style={styles.locationWrapper}>
-                            <Text>Assigned Locations:</Text>
-                            {this.state.assignedLocations.map( assignedLocation => 
-                                <UserLocationsList
-                                    key={assignedKey++}
-                                    name={assignedLocation.name}
-                                    iconName='map-marker-off'
-                                    manageLocation={this._removeLocation}
-                                />
-                            )}
+                            <Text style={styles.label}>Assigned Locations:</Text>
+                            <ScrollView>
+                                {this.state.assignedLocations.map( assignedLocation => 
+                                    <UserLocationsList
+                                        key={assignedKey++}
+                                        id={assignedLocation.id}
+                                        name={assignedLocation.name}
+                                        iconName='map-marker-off'
+                                        manageLocation={this._removeLocation}
+                                    />
+                                )}
+                            </ScrollView>
                         </View>
                         <View style={styles.locationWrapper}>
-                            <Text>Unassigned Locations:</Text>
-                            {this.state.unassignedLocations.map( unassignedLocation =>
-                                <UserLocationsList
-                                    key={unassignedKey++}
-                                    name={unassignedLocation.name}
-                                    iconName='map-marker-plus'
-                                    manageLocation={this._addLocation}
-                                />
-                            )}
+                            <Text style={styles.label}>Unassigned Locations:</Text>
+                            <ScrollView>
+                                {this.state.unassignedLocations.map( unassignedLocation =>
+                                    <UserLocationsList
+                                        key={unassignedKey++}
+                                        id={unassignedLocation.id}
+                                        name={unassignedLocation.name}
+                                        iconName='map-marker-plus'
+                                        manageLocation={this._addLocation}
+                                    />
+                                )}
+                            </ScrollView>
                         </View>
                     </View>
                 </View>
@@ -113,7 +115,7 @@ class UserLocationsForm extends React.Component {
 const mapStateToProps = (state) => {
     return {
         locations: state.adminInfo.locations,
-        userLocations: state.adminInfo.user_locations
+        userLocations: state.adminInfo.userLocations
     }
 }
 
