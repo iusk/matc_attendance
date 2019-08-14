@@ -6,7 +6,7 @@ import LocationForm from './locationForm';
 import UserForm from './userForm';
 import LocationList from './locationList';
 import UserList from './userList';
-import UserLocationForm from './userLocationForm';
+import UserLocationsForm from './userLocationsForm';
 
 export { BoxLink, 
         InputWithLabel, 
@@ -16,5 +16,5 @@ export { BoxLink,
         UserForm, 
         LocationList, 
         UserList,
-        UserLocationForm
+        UserLocationsForm
     };

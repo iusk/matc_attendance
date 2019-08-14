@@ -16,7 +16,7 @@ const getUserInfo = (id, callback) => {
     })
 }
 
-const getAdminInfo = (callback) => {
+const getAdminInfo = (setAdminInfoRedux) => {
     fetch('https://iusk.000webhostapp.com/matc_attendance/getAdminInfo.php', {
         method: 'POST',
         headers: {
@@ -25,7 +25,7 @@ const getAdminInfo = (callback) => {
         }
     }).then((response) => response.json())
     .then((responseJson) => {
-        callback(responseJson);
+        setAdminInfoRedux(responseJson);
     }).catch((error) => {
         console.warn(error);
     })

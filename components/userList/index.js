@@ -21,7 +21,7 @@ class UserList extends React.Component {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.touchableOpacityWrapper}>
-                    <TouchableOpacity style={styles.iconWrapper} onPress={this._openForm}>
+                    <TouchableOpacity style={styles.iconWrapper} onPress={() => this.props.openLocationsForm(this.props.id)}>
                         <Icon type='material-community' name='map-marker' size={styles.iconSize} color='#fefdfa' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.iconWrapper} onPress={this._openForm}>

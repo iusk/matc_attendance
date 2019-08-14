@@ -52,18 +52,19 @@ class ProfileScreen extends React.Component {
         );
     }
 
-    _saveAdminInfo = (response) => {
+    _setAdminInfoRedux = (response) => {
+        // console.log(response);
         this.props.setAdminInfo(
             response.locations,
             response.users,
-            response.users_locations
+            response.user_locations
         );
+        this.setState( {modalLoading: false} );
     }
 
     _gotoAdmin = () => {
         this.setState( {modalLoading: true} );
-        getAdminInfo(this._saveAdminInfo);
-        this.setState( {modalLoading: false} );
+        getAdminInfo(this._setAdminInfoRedux);
         this.props.navigation.navigate('Admin');
     }
     
@@ -93,8 +94,8 @@ const mapStateToProps = (state) => {
 // set data through props
 const mapDispatchToProps = dispatch => {
     return {
-        setAdminInfo: (locations, users) => {
-            dispatch(setAdminInfo( {locations: locations, users: users, users_locations: users_locations} ))
+        setAdminInfo: (locations, users, user_locations) => {
+            dispatch(setAdminInfo( {locations: locations, users: users, user_locations: user_locations} ))
         }
     }
 }

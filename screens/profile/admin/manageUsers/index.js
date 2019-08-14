@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { ModalMessage, UserForm, UserList, UserLocationForm } from '../../../../components';
+import { ModalMessage, UserForm, UserList, UserLocationsForm } from '../../../../components';
 import styles from './styles';
 
 class ManageUsersScreen extends React.Component {
@@ -23,6 +23,7 @@ class ManageUsersScreen extends React.Component {
         this.state = {
             users: this.props.users,
             formVisible: false,
+            locationsFormVisible: false,
             name: '',
             email: '',
             admin: 0,
@@ -46,6 +47,17 @@ class ManageUsersScreen extends React.Component {
 
     closeForm = () => {
         this.setState( {formVisible: false} );
+    }
+
+    openLocationsForm = (id) => {
+        this.setState({
+            id: id,
+            locationsFormVisible: true
+        });
+    }
+
+    closeLocationsForm = () => {
+        this.setState( { locationsFormVisible: false} );
     }
     
     checkError = (response, type) => {
@@ -93,6 +105,7 @@ class ManageUsersScreen extends React.Component {
                             email={user.email}
                             admin={user.admin}
                             openForm={this.openForm} 
+                            openLocationsForm={this.openLocationsForm}
                         />)
                     }
                 </ScrollView>
@@ -112,9 +125,10 @@ class ManageUsersScreen extends React.Component {
                     type={this.state.formType}
                     closeForm={this.closeForm}
                 />
-                <UserLocationForm
-                    visible={this.state.userLocationFormVisible}
+                <UserLocationsForm
+                    visible={this.state.locationsFormVisible}
                     userId={this.state.id}
+                    closeForm={this.closeLocationsForm}
                 />
                 <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 'Add')}>
                     <Icon type='material-community' name='account-plus' color='#fefdfa' size={styles.iconSize} />
