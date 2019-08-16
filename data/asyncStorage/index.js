@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 
 const signIn = async (responseJson, checkSignedIn, saveUserInfo, navigation) => {
-    await AsyncStorage.setItem('userId', responseJson);
+    await AsyncStorage.setItem('userId', responseJson.toString());
     checkSignedIn(saveUserInfo, navigation);
 }
 
@@ -11,7 +11,18 @@ const signOut = async (navigation) => {
 }
 
 const getUserId = async () => {
-    return await AsyncStorage.getItem('userId');
+    return parseInt(await AsyncStorage.getItem('userId'), 10);
 }
 
-export { signIn, signOut, getUserId };
+const setDefaultLocationId = async (defaultLocationId, callback=null) => {
+    await AsyncStorage.setItem('defaultLocationId', defaultLocationId.toString());
+    if (callback !== null) {
+        callback();
+    }
+}
+
+const getDefaultLocationId = async () => {
+    return parseInt(await AsyncStorage.getItem('defaultLocationId'), 10);
+}
+
+export { signIn, signOut, getUserId, setDefaultLocationId, getDefaultLocationId };

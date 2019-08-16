@@ -91,11 +91,12 @@ class ManageLocationsScreen extends React.Component {
                             key={key++} 
                             id={location.id} 
                             name={location.name}
+                            iconName='edit-location'
                             day={location.day}
                             startTime={location.startTime}
                             endTime={location.endTime}
                             checkError={this.checkError}
-                            openForm={this.openForm}
+                            onPress={this.openForm}
                         />)
                     }
                 </ScrollView>

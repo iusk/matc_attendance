@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, Modal, ActivityIndicator } from 'react-native';
+import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { InputWithLabel, ModalLoading } from '../../components';
+import { InputWithLabel } from '../../components';
 
-import { signIn } from '../../data/asyncStorage';
+import { signIn, getDefaultLocationId, setDefaultLocationId } from '../../data/asyncStorage';
 import { setUser } from '../../data/redux';
 
 import { checkSignedIn, userLoginFunction } from '../../utils/loadingFunctions';
@@ -24,25 +24,25 @@ class LoginScreen extends React.Component {
             email: '',
             password: '',
             errMessage: '',
-            buttonLoading: false,
-            modalLoading: true
+            buttonLoading: false
         };
 
         this._onChangeEmail = this._onChangeEmail.bind(this);
         this._onChangePassword = this._onChangePassword.bind(this);
 
-        checkSignedIn(this._saveUserInfo, this.props.navigation);
+        checkSignedIn(this.saveUserInfo, this.props.navigation);
     }
 
-    componentWillMount() {
-        this.setState( {modalLoading: false} )
-    }
-
-    _saveUserInfo = (response) => {
+    saveUserInfo = async (response) => {
         this.props.setUser(
             response.username, 
-            response.admin
+            response.admin,
+            response.locations
         );
+        const defaultLocationId = await getDefaultLocationId();
+        if (!defaultLocationId && response.locations.length > 0) {
+            setDefaultLocationId(response.locations[0].id);
+        }
     }
 
     _onChangeEmail = (text) => {
@@ -60,7 +60,7 @@ class LoginScreen extends React.Component {
                 buttonLoading: false
             });
         } else {
-            signIn(response, checkSignedIn, this._saveUserInfo, this.props.navigation);
+            signIn(response, checkSignedIn, this.saveUserInfo, this.props.navigation);
         }
     }
     
@@ -109,7 +109,6 @@ class LoginScreen extends React.Component {
                         loadingProps={styles.buttonLoading}
                     />
                 </View>
-                <ModalLoading visible={this.state.modalLoading} />
             </View>
         );
     }
@@ -118,8 +117,8 @@ class LoginScreen extends React.Component {
 // set data through props
 const mapDispatchToProps = dispatch => {
     return {
-        setUser: (username, admin) => {
-            dispatch(setUser( {username: username, admin: admin} ))
+        setUser: (username, admin, locations) => {
+            dispatch(setUser( {username: username, admin: admin, locations: locations} ))
         }
     }
 }

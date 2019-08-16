@@ -7,7 +7,7 @@ class BoxLink extends React.Component {
     render() {
         return (
             <TouchableOpacity style={styles.contentWrapper} onPress={this.props.onPress}>
-                <Icon name={this.props.iconName} type='material-community'
+                <Icon name={this.props.iconName} type={this.props.iconType}
                 size={styles.iconSize} color='#d00000' iconStyle={styles.icon} />
                 <Text style={styles.text}>{this.props.name}</Text>
             </TouchableOpacity>

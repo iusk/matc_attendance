@@ -8,16 +8,20 @@ class LocationList extends React.Component {
         super(props);
     }
     
-    _openForm = () => {
-        this.props.openForm(this.props.id, this.props.name, this.props.day, this.props.startTime, this.props.endTime, 'Edit');
+    _onPress = () => {
+        if (this.props.iconName === 'edit-location') {
+            this.props.onPress(this.props.id, this.props.name, this.props.day, this.props.startTime, this.props.endTime, 'Edit');
+        } else {
+            this.props.onPress(this.props.id);
+        }        
     }
 
     render() {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.touchableOpacityWrapper}>
-                    <TouchableOpacity style={styles.iconWrapper} onPress={this._openForm}>
-                        <Icon type='material-icons' name='edit-location' size={styles.iconSize} color='#fefdfa' />
+                    <TouchableOpacity style={styles.iconWrapper} onPress={this._onPress}>
+                        <Icon type='material' name={this.props.iconName} size={styles.iconSize} color='#fefdfa' />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.textWrapper}>

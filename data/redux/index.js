@@ -20,7 +20,8 @@ const userSlice = createSlice({
     reducers: {
         setUser: (state, action) => {
             state.userInfo.username = action.payload.username;
-            state.userInfo.admin = action.payload.admin
+            state.userInfo.admin = action.payload.admin;
+            state.userInfo.locations = action.payload.locations;
         },
         setAdminInfo: (state, action) => {
             state.adminInfo.locations = action.payload.locations;

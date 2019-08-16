@@ -2,7 +2,7 @@ import { getUserId } from '../../data/asyncStorage';
 import { getUserInfo } from '../../data/mysqli/getInfo';
 import URL from '../../data/mysqli/loginCheck';
 
-const userLoginFunction = (givenEmail, givenPassword, callback) => {
+const userLoginFunction = (givenEmail, givenPassword, login) => {
     fetch(URL, {
         method: 'POST',
         headers: {
@@ -15,7 +15,7 @@ const userLoginFunction = (givenEmail, givenPassword, callback) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        callback(responseJson);
+        login(responseJson);
     }).catch((error) => {
         console.warn(error);
     })

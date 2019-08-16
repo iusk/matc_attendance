@@ -1,4 +1,4 @@
-const getUserInfo = (id, callback) => {
+const getUserInfo = (id, setUserInfo) => {
     fetch('https://iusk.000webhostapp.com/matc_attendance/getUserInfo.php', {
         method: 'POST',
         headers: {
@@ -10,7 +10,7 @@ const getUserInfo = (id, callback) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        callback(responseJson);
+        setUserInfo(responseJson);
     }).catch((error) => {
         console.warn(error);
     })

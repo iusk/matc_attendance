@@ -29,8 +29,8 @@ class AdminScreen extends React.Component {
     render() {
         return (
             <View style={styles.wrapper}>
-                <BoxLink name='Manage Locations' iconName='map-marker' onPress={this._gotoManageLocations} />
-                <BoxLink name='Manage Users' iconName='account-multiple' onPress={this._gotoManageUsers} />
+                <BoxLink name='Manage Locations' iconName='map-marker' iconType='material-community' onPress={this._gotoManageLocations} />
+                <BoxLink name='Manage Users' iconName='account-multiple' iconType='material-community' onPress={this._gotoManageUsers} />
             </View>
         );
     }
