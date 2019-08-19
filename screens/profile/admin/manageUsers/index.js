@@ -60,8 +60,8 @@ class ManageUsersScreen extends React.Component {
         this.setState( { locationsFormVisible: false} );
     }
     
-    checkError = (response, type) => {
-        if (response === 'SUCCESS') {
+    checkError = (type, error) => {
+        if (!error) {
             this._displaySuccessMessage(type);
         } else {
             this._displayErrorMessage(type);

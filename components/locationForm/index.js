@@ -51,36 +51,13 @@ class LocationForm extends React.Component {
     _addLocation = () => {
         this.props.closeForm();
         addLocation(this.state.updateName, this.state.updateDay, this.state.updateStartTime, 
-            this.state.updateEndTime, this.props.checkError, this.addLocationRedux);
-    }
-
-    addLocationRedux = (response, updateName, updateDay, updateStartTime, updateEndTime) => {
-        if (response === 'SUCCESS') {
-            let lastId = (this.props.locations[this.props.locations.length - 1]).id;
-            let newLocations = [...this.props.locations, {
-                'id': ++lastId, 'name': updateName,
-                'day': updateDay, 'startTime': updateStartTime, 'endTime': updateEndTime
-            }];
-            this.props.updateLocations(newLocations);
-        }
+            this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
     }
 
     _updateLocation = () => {
         this.props.closeForm();
         updateLocation(this.props.id, this.state.updateName, this.state.updateDay, 
             this.state.updateStartTime, this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
-    }
-
-    updateLocationRedux = (response, updateName, updateDay, updateStartTime, updateEndTime) => {
-        if (response === 'SUCCESS') {
-            let newLocations = this.props.locations.filter((obj => obj.id !== this.props.id));
-            newLocations = [...newLocations, {
-                'id': this.props.id, 'name': updateName,
-                'day': updateDay, 'startTime': updateStartTime, 'endTime': updateEndTime
-            }];
-            newLocations.sort((a, b) => (a.id - b.id)); // this little function is amazing btw
-            this.props.updateLocations(newLocations);
-        }
     }
 
     _deleteLocation = () => {
@@ -91,7 +68,7 @@ class LocationForm extends React.Component {
             [
                 {
                     text: 'Yes', 
-                    onPress: () => deleteLocation(this.props.id, this.props.checkError, this.deleteLocationRedux)
+                    onPress: () => deleteLocation(this.props.id, this.props.checkError, this.updateLocationRedux)
                 },
                 {
                     text: 'No',
@@ -103,11 +80,8 @@ class LocationForm extends React.Component {
         
     }
 
-    deleteLocationRedux = (response) => {
-        if (response === 'SUCCESS') {
-            let newLocations = this.props.locations.filter((obj => obj.id !== this.props.id));
-            this.props.updateLocations(newLocations);
-        }
+    updateLocationRedux = (response) => {
+        this.props.updateLocations(response);
     }
 
     render() {

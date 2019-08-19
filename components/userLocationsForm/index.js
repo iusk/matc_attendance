@@ -39,30 +39,15 @@ class UserLocationsForm extends React.Component {
     }
 
     _addLocation = (locationId) => {
-        addLocation(this.state.userId, locationId, this.addLocationRedux);
-    }
-
-    addLocationRedux = (response, userId, locationId) => {
-        if (response === 'SUCCESS') {
-            let lastId = (this.props.userLocations[this.props.userLocations.length - 1]).id;
-            let newUserLocations = [...this.props.userLocations, {
-                'id': ++lastId, 'userId': userId, 'locationId': locationId
-            }];
-            this.props.updateUserLocations(newUserLocations);
-        }
+        addLocation(this.state.userId, locationId, this.updateLocationRedux);
     }
 
     _removeLocation = (locationId) => {
-        removeLocation(this.state.userId, locationId, this.removeLocationRedux);
+        removeLocation(this.state.userId, locationId, this.updateLocationRedux);
     }
 
-    removeLocationRedux = (response, locationId) => {
-        if (response === 'SUCCESS') {
-            let newUserLocations = this.props.userLocations.filter(obj => 
-                obj.locationId !== locationId || obj.userId !== this.state.userId
-            );
-            this.props.updateUserLocations(newUserLocations);
-        }
+    updateLocationRedux = (response) => {
+        this.props.updateUserLocations(response);
     }
 
     render() {

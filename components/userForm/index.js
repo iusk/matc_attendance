@@ -43,33 +43,12 @@ class UserForm extends React.Component {
 
     _addUser = () => {
         this.props.closeForm();
-        addUser(this.state.updateName, this.state.updateEmail, this.state.updateAdmin, 1, this.props.checkError, this.addUserRedux);
-    }
-
-    addUserRedux = (response, updateName, updateEmail, admin, verified) => {
-        if (response === 'SUCCESS') {
-            let lastId = (this.props.users[this.props.users.length - 1]).id;
-            let newUsers = [...this.props.users, {
-                'id': ++lastId, 'username': updateName, 'email': updateEmail, 'admin': admin, 'verified': verified
-            }];
-            this.props.updateUsers(newUsers);
-        }
+        addUser(this.state.updateName, this.state.updateEmail, this.state.updateAdmin, 1, this.props.checkError, this.updateUserRedux);
     }
 
     _updateUser = () => {
         this.props.closeForm();
         updateUser(this.props.id, this.state.updateName, this.state.updateEmail, this.state.updateAdmin, this.props.checkError, this.updateUserRedux);
-    }
-
-    updateUserRedux = (response, updateName, updateEmail, admin) => {
-        if (response === 'SUCCESS') {
-            let newUsers = this.props.users.filter((obj => obj.id !== this.props.id));
-            newUsers = [...newUsers, {
-                'id': this.props.id, 'username': updateName, 'email': updateEmail, 'admin': admin, 'verified': 1
-        }];
-            newUsers.sort((a, b) => (a.id - b.id)); // this little function is amazing btw
-            this.props.updateUsers(newUsers);
-        }
     }
 
     _deleteUser = () => {
@@ -80,7 +59,7 @@ class UserForm extends React.Component {
             [
                 {
                     text: 'Yes', 
-                    onPress: () => deleteUser(this.props.id, this.props.checkError, this.deleteUserRedux)
+                    onPress: () => deleteUser(this.props.id, this.props.checkError, this.updateUserRedux)
                 },
                 {
                     text: 'No',
@@ -92,11 +71,8 @@ class UserForm extends React.Component {
         
     }
 
-    deleteUserRedux = (response) => {
-        if (response === 'SUCCESS') {
-            let newUsers = this.props.users.filter((obj => obj.id !== this.props.id));
-            this.props.updateUsers(newUsers);
-        }
+    updateUserRedux = (response) => {
+        this.props.updateUsers(response);
     }
 
     render() {

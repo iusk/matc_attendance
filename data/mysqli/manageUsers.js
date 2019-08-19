@@ -1,6 +1,6 @@
 const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageUsers.php';
 
-const addUser = (name, email, admin, verified, checkError, addUserRedux) => {
+const addUser = (name, email, admin, verified, checkError, updateUserRedux) => {
     const type = 'Add';
     fetch(URL, {
         method: 'POST',
@@ -18,9 +18,10 @@ const addUser = (name, email, admin, verified, checkError, addUserRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        addUserRedux(responseJson, name, email, admin, verified);
-        checkError(responseJson, type);
+        updateUserRedux(responseJson);
+        checkError(type, 0);
     }).catch((error) => {
+        checkError(type, 1);
         console.warn(error);
     })
 }
@@ -42,14 +43,15 @@ const updateUser = (id, name, email, admin, checkError, updateUserRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        updateUserRedux(responseJson, name, email, admin);
-        checkError(responseJson, type);
+        updateUserRedux(responseJson);
+        checkError(type, 0);
     }).catch((error) => {
+        checkError(type, 1);
         console.warn(error);
     })
 }
 
-const deleteUser = (id, checkError, deleteUserRedux) => {
+const deleteUser = (id, checkError, updateUserRedux) => {
     const type = 'Delete';
     fetch(URL, {
         method: 'POST',
@@ -63,9 +65,10 @@ const deleteUser = (id, checkError, deleteUserRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        deleteUserRedux(responseJson);
-        checkError(responseJson, type);
+        updateUserRedux(responseJson);
+        checkError(type, 0);
     }).catch((error) => {
+        checkError(type, 1);
         console.warn(error);
     })
 }

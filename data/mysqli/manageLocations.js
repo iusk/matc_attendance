@@ -1,6 +1,6 @@
 const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageLocations.php';
 
-const addLocation = (name, day, startTime, endTime, checkError, addLocationRedux) => {
+const addLocation = (name, day, startTime, endTime, checkError, updateLocationRedux) => {
     const type = 'Add';
     fetch(URL, {
         method: 'POST',
@@ -17,9 +17,10 @@ const addLocation = (name, day, startTime, endTime, checkError, addLocationRedux
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        addLocationRedux(responseJson, name, day, startTime, endTime);
-        checkError(responseJson, type);
+        updateLocationRedux(responseJson);
+        checkError(type, 0);
     }).catch((error) => {
+        checkError(type, 1);
         console.warn(error);
     })
 }
@@ -42,14 +43,15 @@ const updateLocation = (id, name, day, startTime, endTime, checkError, updateLoc
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        updateLocationRedux(responseJson, name, day, startTime, endTime);
-        checkError(responseJson, type);
+        updateLocationRedux(responseJson);
+        checkError(type, 0);
     }).catch((error) => {
+        checkError(type, 1);
         console.warn(error);
     })
 }
 
-const deleteLocation = (id, checkError, deleteLocationRedux) => {
+const deleteLocation = (id, checkError, updateLocationRedux) => {
     const type = 'Delete';
     fetch(URL, {
         method: 'POST',
@@ -63,9 +65,10 @@ const deleteLocation = (id, checkError, deleteLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        deleteLocationRedux(responseJson);
-        checkError(responseJson, type);
+        updateLocationRedux(responseJson);
+        checkError(type, 0);
     }).catch((error) => {
+        checkError(type, 1);
         console.warn(error);
     })
 }

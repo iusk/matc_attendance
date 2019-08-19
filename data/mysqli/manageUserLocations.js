@@ -15,7 +15,7 @@ const addLocation = (userId, locationId, addLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        addLocationRedux(responseJson, userId, locationId);
+        addLocationRedux(responseJson);
     }).catch((error) => {
         console.warn(error);
     })
@@ -36,7 +36,7 @@ const removeLocation = (userId, locationId, removeLocationRedux) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        removeLocationRedux(responseJson, locationId);
+        removeLocationRedux(responseJson);
     }).catch((error) => {
         console.warn(error);
     })
