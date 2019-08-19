@@ -1,4 +1,4 @@
-const getUserInfo = (id, setUserInfo) => {
+const getUserInfo = (id, saveUserInfo) => {
     fetch('https://iusk.000webhostapp.com/matc_attendance/getUserInfo.php', {
         method: 'POST',
         headers: {
@@ -10,7 +10,25 @@ const getUserInfo = (id, setUserInfo) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        setUserInfo(responseJson);
+        saveUserInfo(responseJson, getStudentsInfo);
+    }).catch((error) => {
+        console.warn(error);
+    })
+}
+
+const getStudentsInfo = (locationId, saveStudentsInfo) => {
+    fetch('https://iusk.000webhostapp.com/matc_attendance/getStudentsInfo.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            locationId: locationId
+        })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        saveStudentsInfo(responseJson);
     }).catch((error) => {
         console.warn(error);
     })
@@ -31,4 +49,4 @@ const getAdminInfo = (setAdminInfoRedux) => {
     })
 }
 
-export { getUserInfo, getAdminInfo };
+export { getUserInfo, getStudentsInfo, getAdminInfo };

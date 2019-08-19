@@ -8,15 +8,17 @@ import { setAdminInfo } from '../../data/redux';
 import styles from './styles';
 
 class ProfileScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Profile',
-        headerStyle: {
-            backgroundColor: '#d00000'
-        },
-        headerTintColor: '#fefdfa',
-        headerTitleStyle: {
-            color: '#fefdfa'
-        }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: navigation.getParam('Title', 'Profile'),
+            headerStyle: {
+                backgroundColor: '#d00000'
+            },
+            headerTintColor: '#fefdfa',
+            headerTitleStyle: {
+                color: '#fefdfa'
+            }
+        };
     };
 
     constructor(props) {
@@ -25,6 +27,10 @@ class ProfileScreen extends React.Component {
         this.state = {
             modalLoading: false
         };
+    }
+
+    componentWillMount() {
+        this.props.navigation.setParams({ Title: this.props.username });
     }
 
     _signOut = () => {

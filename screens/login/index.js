@@ -3,10 +3,10 @@ import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { InputWithLabel } from '../../components';
+import { InputWithLabel, ModalLoading } from '../../components';
 
 import { signIn, getDefaultLocationId, setDefaultLocationId } from '../../data/asyncStorage';
-import { setUser } from '../../data/redux';
+import { setUser, setDefaultLocationStudents } from '../../data/redux';
 
 import { checkSignedIn, userLoginFunction } from '../../utils/loadingFunctions';
 
@@ -21,35 +21,46 @@ class LoginScreen extends React.Component {
         super(props);
 
         this.state = {
+            modalLoading: true,
             email: '',
             password: '',
             errMessage: '',
             buttonLoading: false
         };
 
-        this._onChangeEmail = this._onChangeEmail.bind(this);
-        this._onChangePassword = this._onChangePassword.bind(this);
-
-        checkSignedIn(this.saveUserInfo, this.props.navigation);
+        checkSignedIn(this.saveUserInfo, this.saveStudentsInfo, this.disableLoadingScreen);
     }
 
-    saveUserInfo = async (response) => {
+    disableLoadingScreen = () => {
+        this.setState({ modalLoading: false });
+    }
+
+    saveUserInfo = async (response, getStudentsInfo) => {
         this.props.setUser(
             response.username, 
             response.admin,
             response.locations
         );
-        const defaultLocationId = await getDefaultLocationId();
+        let defaultLocationId = await getDefaultLocationId();
         if (!defaultLocationId && response.locations.length > 0) {
-            setDefaultLocationId(response.locations[0].id);
+            defaultLocationId = response.locations[0].id;
+            setDefaultLocationId(defaultLocationId);
         }
+        getStudentsInfo(defaultLocationId, this.saveStudentsInfo);
     }
 
-    _onChangeEmail = (text) => {
+    saveStudentsInfo = (response) => {
+        this.props.setDefaultLocationStudents(
+            response
+        );
+        this.props.navigation.navigate('Home');
+    }
+
+    onChangeEmail = (text) => {
         this.setState( {email: text} );
     }
 
-    _onChangePassword = (text) => {
+    onChangePassword = (text) => {
         this.setState( {password: text} );
     }
     
@@ -60,7 +71,7 @@ class LoginScreen extends React.Component {
                 buttonLoading: false
             });
         } else {
-            signIn(response, checkSignedIn, this.saveUserInfo, this.props.navigation);
+            signIn(response, checkSignedIn, this.saveUserInfo, this.disableLoadingScreen);
         }
     }
     
@@ -91,13 +102,13 @@ class LoginScreen extends React.Component {
                     <InputWithLabel 
                         icon="user" 
                         name="Email Address" 
-                        onChangeText={this._onChangeEmail} 
+                        onChangeText={this.onChangeEmail} 
                         value={this.state.email} 
                     />
                     <InputWithLabel 
                         icon="lock" 
                         name="Password" 
-                        onChangeText={this._onChangePassword} 
+                        onChangeText={this.onChangePassword} 
                         value={this.state.password} 
                     />
                     <Button
@@ -109,6 +120,7 @@ class LoginScreen extends React.Component {
                         loadingProps={styles.buttonLoading}
                     />
                 </View>
+                <ModalLoading visible={this.state.modalLoading} />
             </View>
         );
     }
@@ -119,6 +131,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setUser: (username, admin, locations) => {
             dispatch(setUser( {username: username, admin: admin, locations: locations} ))
+        },
+        setDefaultLocationStudents: (students) => {
+            dispatch(setDefaultLocationStudents(students))
         }
     }
 }

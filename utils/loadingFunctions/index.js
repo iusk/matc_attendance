@@ -21,11 +21,12 @@ const userLoginFunction = (givenEmail, givenPassword, login) => {
     })
 };
 
-const checkSignedIn = async (saveUserInfo, navigation) => {
+const checkSignedIn = async (saveUserInfo, disableLoadingScreen) => {
     const userId = await getUserId();
     if (userId) {
         getUserInfo(userId, saveUserInfo);
-        navigation.navigate('Home');
+    } else {
+        disableLoadingScreen();
     }
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, Button } from 'react-native'
+import { connect } from 'react-redux';
 import { getUserId } from '../../data/asyncStorage';
 import styles from './styles';
 
@@ -24,7 +25,13 @@ class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.log('home');
+        console.log(this.props.students);
         this._getUserId();
+    }
+
+    temp = () => {
+        console.log(this.props.students);
     }
 
     _getUserId = async () => {
@@ -36,9 +43,17 @@ class HomeScreen extends React.Component {
         return (
             <View style={styles.contentWrapper}>
                 <Text>Mentor Id: {this.state.userId}</Text>
+                <Button title='Test' onPress={this.temp} />
             </View>
         );
     }
 }
 
-export default HomeScreen;
+// get data through props
+const mapStateToProps = (state) => {
+    return {
+        students: state.userInfo.students
+    }
+}
+
+export default connect(mapStateToProps)(HomeScreen);

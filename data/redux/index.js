@@ -18,22 +18,31 @@ const userSlice = createSlice({
         }
     },
     reducers: {
+        // save user's basic information when the app gets loaded
         setUser: (state, action) => {
             state.userInfo.username = action.payload.username;
             state.userInfo.admin = action.payload.admin;
             state.userInfo.locations = action.payload.locations;
         },
+        // save user's students names based on default location when app starts and default location changes
+        setDefaultLocationStudents: (state, action) => {
+            state.userInfo.students = action.payload;
+        },
+        // get the locations and users when admins go to admin control panel
         setAdminInfo: (state, action) => {
             state.adminInfo.locations = action.payload.locations;
             state.adminInfo.users = action.payload.users;
             state.adminInfo.userLocations = action.payload.userLocations;
         },
+        // update locations when admins add/remove/update location
         updateLocations: (state, action) => {
             state.adminInfo.locations = action.payload;
         },
+        // update users when admins add/remove/update location
         updateUsers: (state, action) => {
             state.adminInfo.users = action.payload;
         },
+        // update the assignment of users to locations upon admin request
         updateUserLocations: (state, action) => {
             state.adminInfo.userLocations = action.payload;
         }
@@ -44,7 +53,7 @@ const userSlice = createSlice({
 const { actions, reducer } = userSlice;
 
 // defining different types of actions
-export const { setUser, setAdminInfo, updateLocations, updateUsers, updateUserLocations } = actions;
+export const { setUser, setDefaultLocationStudents, setAdminInfo, updateLocations, updateUsers, updateUserLocations } = actions;
 
 // combining reducers and creating store
 const store = configureStore({
