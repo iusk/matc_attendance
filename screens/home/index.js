@@ -25,8 +25,8 @@ class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log('home');
-        console.log(this.props.students);
+        // console.log('home');
+        // console.log(this.props.students);
         this._getUserId();
     }
 

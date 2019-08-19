@@ -76,7 +76,8 @@ class ProfileScreen extends React.Component {
             <View style={styles.wrapper}>
                 <BoxLink name='Change Password' iconName='key-variant' iconType='material-community' />
                 <BoxLink name='View Schedule' iconName='calendar-range' iconType='material-community' />
-                <BoxLink name='Manage Students' iconName='users' iconType='font-awesome' />
+                <BoxLink name='Manage Students' iconName='users' iconType='font-awesome' 
+                        onPress={() => this.props.navigation.navigate('ManageStudents')} />
                 {((this.props.locations !== undefined) && (this.props.locations.length > 0)) ?
                 <BoxLink name='Set Current Location' iconName='my-location' iconType='material' onPress={this._gotoSetLocation} />
                 : null}
