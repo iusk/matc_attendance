@@ -70,12 +70,16 @@ class ProfileScreen extends React.Component {
     _gotoSetLocation = () => {
         this.props.navigation.navigate('SetCurrentLocation');
     }
+
+    _gotoViewSchedule = () => {
+        this.props.navigation.navigate('ViewSchedule');
+    }
     
     render() {
         return (
             <View style={styles.wrapper}>
                 <BoxLink name='Change Password' iconName='key-variant' iconType='material-community' />
-                <BoxLink name='View Schedule' iconName='calendar-range' iconType='material-community' />
+                <BoxLink name='View Schedule' iconName='calendar-range' iconType='material-community' onPress={this._gotoViewSchedule} />
                 <BoxLink name='Manage Students' iconName='users' iconType='font-awesome' 
                         onPress={() => this.props.navigation.navigate('ManageStudents')} />
                 {((this.props.locations !== undefined) && (this.props.locations.length > 0)) ?

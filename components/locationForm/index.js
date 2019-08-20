@@ -5,7 +5,8 @@ import FormInput from '../formInput';
 import FormSelect from '../formSelect';
 import FormTime from '../formTime';
 import { updateLocation, deleteLocation, addLocation } from '../../data/mysqli/manageLocations';
-import { updateLocations } from '../../data/redux';
+import { updateLocations, updateUserInfoLocations } from '../../data/redux';
+import { getUserId } from '../../data/asyncStorage';
 import { connect } from 'react-redux';
 import styles from './styles';
 
@@ -77,11 +78,17 @@ class LocationForm extends React.Component {
             ],
             {cancelable: true},
           );
-        
     }
 
-    updateLocationRedux = (response) => {
-        this.props.updateLocations(response);
+    updateLocationRedux = async (locations, checkError, type) => {
+        const userId = await getUserId();
+        const userLocationIds = (this.props.userLocations.filter(
+                                obj =>  obj.userId === userId )).map(
+                                userLocations => userLocations.locationId);
+        const userLocations = locations.filter(obj => userLocationIds.includes(obj.id));
+        this.props.updateLocations(locations);
+        this.props.updateUserInfoLocations(userLocations);
+        checkError(type, 0);
     }
 
     render() {
@@ -118,7 +125,8 @@ class LocationForm extends React.Component {
 // get data through props
 const mapStateToProps = (state) => {
     return {
-        locations: state.adminInfo.locations
+        locations: state.adminInfo.locations,
+        userLocations: state.adminInfo.userLocations
     }
 }
 
@@ -127,6 +135,9 @@ const mapDispatchToProps = dispatch => {
     return {
         updateLocations: (locations) => {
             dispatch(updateLocations(locations));
+        },
+        updateUserInfoLocations: (locations) => {
+            dispatch(updateUserInfoLocations(locations));
         }
     }
 }

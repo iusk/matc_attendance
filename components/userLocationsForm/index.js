@@ -3,7 +3,8 @@ import { Modal, View, Text, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { addLocation, removeLocation } from '../../data/mysqli/manageUserLocations';
 import UserLocationsList from '../userLocationsList';
-import { updateUserLocations } from '../../data/redux';
+import { updateUserLocations, updateUserInfoLocations } from '../../data/redux';
+import { getUserId } from '../../data/asyncStorage';
 import { connect } from 'react-redux';
 import styles from './styles';
 
@@ -46,8 +47,14 @@ class UserLocationsForm extends React.Component {
         removeLocation(this.state.userId, locationId, this.updateLocationRedux);
     }
 
-    updateLocationRedux = (response) => {
-        this.props.updateUserLocations(response);
+    updateLocationRedux = async (userLocations) => {
+        const userId = await getUserId();
+        const userLocationIds = (userLocations.filter(
+                                obj =>  obj.userId === userId )).map(
+                                userLocations => userLocations.locationId);
+        const userInfoLocations = this.props.locations.filter(obj => userLocationIds.includes(obj.id));
+        this.props.updateUserInfoLocations(userInfoLocations);
+        this.props.updateUserLocations(userLocations);
     }
 
     render() {
@@ -109,6 +116,9 @@ const mapDispatchToProps = dispatch => {
     return {
         updateUserLocations: (userLocations) => {
             dispatch(updateUserLocations(userLocations));
+        },
+        updateUserInfoLocations: (locations) => {
+            dispatch(updateUserInfoLocations(locations));
         }
     }
 }

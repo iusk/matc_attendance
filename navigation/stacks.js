@@ -8,6 +8,7 @@ import ManageLocationsScreen from '../screens/profile/admin/manageLocations'
 import ManageUsersScreen from '../screens/profile/admin/manageUsers';
 import SetLocationScreen from '../screens/profile/setLocation';
 import ManageStudentsScreen from '../screens/profile/manageStudents';
+import ViewScheduleScreen from '../screens/profile/viewSchedule';
 
 // creating a stack for authentication pages
 const AuthStack = createStackNavigator({
@@ -30,7 +31,8 @@ const ProfileStack = createStackNavigator({
     ManageLocations: ManageLocationsScreen,
     ManageUsers: ManageUsersScreen,
     SetCurrentLocation: SetLocationScreen,
-    ManageStudents: ManageStudentsScreen
+    ManageStudents: ManageStudentsScreen,
+    ViewSchedule: ViewScheduleScreen
 });
 
 export { AuthStack, HomeStack, ReportStack, ProfileStack };
