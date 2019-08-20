@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native'
+import { View, Text, ScrollView } from 'react-native';
+import { CheckBox, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { getUserId } from '../../data/asyncStorage';
 import styles from './styles';
 
 class HomeScreen extends React.Component {
     static navigationOptions = {
-        title: 'Home',
+        title: 'Take Attendance',
         headerStyle: {
             backgroundColor: '#d00000'
         },
@@ -20,31 +20,61 @@ class HomeScreen extends React.Component {
         super(props);
 
         this.state = { 
-            userId: 0 
+            userId: 0,
+            attendance: new Map() // map of studentId => attendance(boolean)
         };
+
+        // TODO: sort students alphabetically
     }
 
-    componentDidMount() {
-        // console.log('home');
-        // console.log(this.props.students);
-        this._getUserId();
+    _manageAttendance = (studentId) => {
+        const isChecked = this.state.attendance.get(studentId); // if undefined, automatically becomes false when assigning
+        let newAttendance = new Map(this.state.attendance);
+        newAttendance.set(studentId, !isChecked);
+        this.setState( { attendance: newAttendance });
     }
 
-    temp = () => {
-        console.log(this.props.students);
-    }
-
-    _getUserId = async () => {
-        const userId = await getUserId();
-        this.setState( {userId: userId} );
+    _submitForm = () => {
+        console.log(this.state.attendance);
     }
 
     render() {
         return (
-            <View style={styles.contentWrapper}>
-                <Text>Mentor Id: {this.state.userId}</Text>
-                <Button title='Test' onPress={this.temp} />
-            </View>
+            <ScrollView>
+                <View style={styles.row}>
+                    <View style={styles.firstColumn}>
+                        <Text style={styles.heading}>Student Name</Text>
+                    </View>
+                    <View style={styles.secondColumn}>
+                        <Text style={styles.heading}>Present</Text>
+                    </View>
+                </View>
+                {this.props.students.map( student => {
+                    return (
+                        <View key={student.id} style={styles.row}>
+                            <View style={styles.firstColumn}>
+                                <Text style={styles.studentName} numberOfLines={1} ellipsizeMode='tail'>
+                                    {student.firstName} {student.lastName}
+                                </Text>
+                            </View>
+                            <View style={styles.secondColumn}>
+                                <CheckBox
+                                    size={styles.checkBoxSize}
+                                    checked={this.state.attendance.get(student.id)}
+                                    checkedIcon='check-circle-o'
+                                    uncheckedIcon='circle-o'
+                                    checkedColor='green'
+                                    onPress={() => this._manageAttendance(student.id)}
+                                />
+                            </View>
+                        </View>
+                    );
+                })}
+                <View style={styles.buttonWrapper}>
+                    <Button buttonStyle={styles.submitButton} title='Submit Attendance' onPress={this._submitForm} />
+                </View>
+            </ScrollView>
+            
         );
     }
 }
