@@ -3,16 +3,20 @@ import { View, Text, ScrollView } from 'react-native';
 import { CheckBox, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import styles from './styles';
+import { getDefaultLocationId, getUserId } from '../../data/asyncStorage';
+import { takeAttendance } from '../../data/mysqli/manageAttendance';
 
 class HomeScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Take Attendance',
-        headerStyle: {
-            backgroundColor: '#d00000'
-        },
-        headerTintColor: '#fefdfa',
-        headerTitleStyle: {
-            color: '#fefdfa'
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: navigation.getParam('locationName', 'Take Attendance'),
+            headerStyle: {
+                backgroundColor: '#d00000'
+            },
+            headerTintColor: '#fefdfa',
+            headerTitleStyle: {
+                color: '#fefdfa'
+            }
         }
     };
 
@@ -24,7 +28,21 @@ class HomeScreen extends React.Component {
             attendance: new Map() // map of studentId => attendance(boolean)
         };
 
+        this.currentLocationId = 0;
+        this.userId = 0;        
         // TODO: sort students alphabetically
+    }
+
+    componentWillMount = async () => {
+        this.currentLocationId = await getDefaultLocationId();
+        this.userId = await getUserId();
+
+        if (this.currentLocationId) {
+            const locationName = this.props.locations.find(
+                obj => obj.id === this.currentLocationId
+            ).name;
+            this.props.navigation.setParams( {locationName: locationName} );
+        }
     }
 
     _manageAttendance = (studentId) => {
@@ -35,7 +53,7 @@ class HomeScreen extends React.Component {
     }
 
     _submitForm = () => {
-        console.log(this.state.attendance);
+        takeAttendance(this.state.attendance, this.currentLocationId, this.userId);
     }
 
     render() {
@@ -82,7 +100,8 @@ class HomeScreen extends React.Component {
 // get data through props
 const mapStateToProps = (state) => {
     return {
-        students: state.userInfo.students
+        students: state.userInfo.students,
+        locations: state.userInfo.locations
     }
 }
 
