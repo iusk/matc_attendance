@@ -82,13 +82,12 @@ class ManageStudentsScreen extends React.Component {
     }
 
     render() {
-        let key = 0;
         return (
             <React.Fragment>
                 <ScrollView>
                     {this.state.students.map( student => 
                         <StudentList 
-                            key={key++} 
+                            key={student.id} 
                             id={student.id}
                             locationId={student.locationId}
                             firstName={student.firstName}

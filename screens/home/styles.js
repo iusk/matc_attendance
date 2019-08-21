@@ -2,6 +2,25 @@ import { StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
+    attendanceTakenWrapper: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: wp(2),
+    },
+    attendanceTakenMsg: {
+        textAlign: 'center',
+        color: '#00b300',
+        fontSize: wp(5),
+    },
+    gap: {
+        height: hp(5)
+    },
+    attendanceTakenNote: {
+        textAlign: 'center',
+        color: '#8c8c8c',
+        fontSize: wp(4),
+    },
     row: {
         flex: 1,
         flexDirection: 'row',

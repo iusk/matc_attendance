@@ -30,7 +30,7 @@ class ProfileScreen extends React.Component {
     }
 
     componentWillMount() {
-        this.props.navigation.setParams({ Title: this.props.username });
+        this.props.navigation.setParams({ Title: 'Profile: ' + this.props.username });
     }
 
     _signOut = () => {

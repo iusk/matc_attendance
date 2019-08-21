@@ -1,4 +1,4 @@
-const takeAttendance = (attendance, locationId, userId) => {
+const takeAttendance = (attendance, locationId, userId, checkError) => {
     fetch('https://iusk.000webhostapp.com/matc_attendance/takeAttendance.php', {
         method: 'POST',
         headers: {
@@ -10,9 +10,28 @@ const takeAttendance = (attendance, locationId, userId) => {
             locationId: locationId,
             userId: userId
         })
-    }).then((response) => response.text())
+    }).then((response) => response.json())
     .then((responseJson) => {
-        console.log(responseJson);
+        checkError(responseJson);
+    }).catch((error) => {
+        checkError(error);
+        console.warn(error);
+    })
+}
+
+const checkAttendance = (locationId, callback) => {
+    fetch('https://iusk.000webhostapp.com/matc_attendance/checkAttendance.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            locationId: locationId
+        })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        callback(responseJson)
     }).catch((error) => {
         console.warn(error);
     })
@@ -36,4 +55,4 @@ const getAttendance = (locationId) => {
     })
 }
 
-export { takeAttendance, getAttendance }
+export { takeAttendance, getAttendance, checkAttendance }
