@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     mainWrapper: {
@@ -18,32 +19,36 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     organization: {
-        fontSize: 30,
+        fontSize: wp(8),
         fontWeight: 'bold',
         fontFamily: 'sans-serif-medium',
         color: '#fefdfa'
     },
     horizontalRule: {
-        width: 100,
-        margin: 30,
+        width: wp(30),
+        margin: wp(10),
         borderBottomWidth: 1,
         borderColor: '#fefdfa'
     },
     heading: {
-        fontSize: 20,
+        fontSize: wp(6),
         fontFamily: 'sans-serif-medium',
         color: '#fefdfa'
     },
     gap: {
-        height: 30
+        height: wp(5)
     },
     button: {
-        width: 300,
-        marginTop: 10,
+        width: wp(50),
+        marginTop: wp(8),
         backgroundColor: '#fefdfa',
     },
     buttonText: {
+        fontSize: wp(4),
         color: '#d00000',
         fontFamily: 'sans-serif-medium'
+    },
+    buttonLoading: {
+        color: '#d00000'
     }
 });

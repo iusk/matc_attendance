@@ -1,10 +1,14 @@
 import React from 'react';
-import AppContainer from './navigator';
+import AppContainer from './navigation';
+import store from './data/redux';
+import { Provider } from 'react-redux';
 
 class App extends React.Component {
   render() {
     return (
-      <AppContainer />
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
     );
   }
 }

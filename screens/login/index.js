@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, Text, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
-import InputWithLabel from '../../components/inputWithLabel';
+import { connect } from 'react-redux';
+
+import { InputWithLabel, ModalLoading } from '../../components';
+
+import { signIn, getDefaultLocationId, setDefaultLocationId } from '../../data/asyncStorage';
+import { setUser, setDefaultLocationStudents } from '../../data/redux';
+
+import { checkSignedIn, userLoginFunction } from '../../utils/loadingFunctions';
+
 import styles from './styles';
-import URL from '../../data/mysqli/loginCheck';
 
 class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -13,55 +20,66 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { 
+        this.state = {
+            modalLoading: true,
             email: '',
             password: '',
-            errMessage: ''
+            errMessage: '',
+            buttonLoading: false
         };
 
-        this._onChangeEmail = this._onChangeEmail.bind(this);
-        this._onChangePassword = this._onChangePassword.bind(this);
+        checkSignedIn(this.saveUserInfo, this.saveStudentsInfo, this.disableLoadingScreen);
     }
 
-    _onChangeEmail = (text) => {
-        this.setState( {email: text} );
+    disableLoadingScreen = () => {
+        this.setState({ modalLoading: false });
     }
 
-    _onChangePassword = (text) => {
-        this.setState( {password: text} );
+    saveUserInfo = async (response, getStudentsInfo) => {
+        this.props.setUser(
+            response.username, 
+            response.admin,
+            response.locations
+        );
+        let defaultLocationId = await getDefaultLocationId();
+        if (!defaultLocationId && response.locations.length > 0) {
+            defaultLocationId = response.locations[0].id;
+            setDefaultLocationId(defaultLocationId);
+        }
+        getStudentsInfo(defaultLocationId, this.saveStudentsInfo);
     }
 
-    _signInAsync = async (responseJson) => {
-        await AsyncStorage.setItem('userId', responseJson);
+    saveStudentsInfo = (response) => {
+        this.props.setDefaultLocationStudents(
+            response
+        );
         this.props.navigation.navigate('Home');
     }
 
-    userLoginFunction = () => {
-        const givenEmail = this.state.email;
-        const givenPassword = this.state.password;
+    onChangeEmail = (text) => {
+        this.setState( {email: text} );
+    }
 
-        fetch(URL, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: givenEmail,
-                password: givenPassword
-            })
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            if (responseJson === 'Username/Password not recognized.') {
-                this.setState( {errMessage: responseJson} );
-            } else {
-                this._signInAsync(responseJson);
-            }
-            console.log(responseJson);
-        }).catch((error) => {
-            console.warn(error);
-        })
+    onChangePassword = (text) => {
+        this.setState( {password: text} );
+    }
+    
+    _login = (response) => {
+        if (response === 'Username/Password not recognized.') {
+            this.setState({
+                errMessage: response,
+                buttonLoading: false
+            });
+        } else {
+            signIn(response, checkSignedIn, this.saveUserInfo, this.disableLoadingScreen);
+        }
+    }
+    
+    submitForm = () => {
+        this.setState( {buttonLoading: true} );
+        userLoginFunction(this.state.email, this.state.password, this._login);
     };
+
 
     render() {
         // TODO: Add "Register" Button - After Admin Control Panel
@@ -84,25 +102,40 @@ class LoginScreen extends React.Component {
                     <InputWithLabel 
                         icon="user" 
                         name="Email Address" 
-                        onChangeText={this._onChangeEmail} 
+                        onChangeText={this.onChangeEmail} 
                         value={this.state.email} 
                     />
                     <InputWithLabel 
                         icon="lock" 
                         name="Password" 
-                        onChangeText={this._onChangePassword} 
+                        onChangeText={this.onChangePassword} 
                         value={this.state.password} 
                     />
                     <Button
                         title="Login"
                         titleStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={this.userLoginFunction}
+                        onPress={this.submitForm}
+                        loading={this.state.buttonLoading}
+                        loadingProps={styles.buttonLoading}
                     />
                 </View>
+                <ModalLoading visible={this.state.modalLoading} />
             </View>
         );
     }
 }
 
-export default LoginScreen;
+// set data through props
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: (username, admin, locations) => {
+            dispatch(setUser( {username: username, admin: admin, locations: locations} ))
+        },
+        setDefaultLocationStudents: (students) => {
+            dispatch(setDefaultLocationStudents(students))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);
