@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 import InputWithLabel from '../../components/inputWithLabel';
 import styles from './styles';
@@ -31,6 +31,11 @@ class LoginScreen extends React.Component {
         this.setState( {password: text} );
     }
 
+    _signInAsync = async (responseJson) => {
+        await AsyncStorage.setItem('userId', responseJson);
+        this.props.navigation.navigate('Home');
+    }
+
     userLoginFunction = () => {
         const givenEmail = this.state.email;
         const givenPassword = this.state.password;
@@ -50,9 +55,7 @@ class LoginScreen extends React.Component {
             if (responseJson === 'Username/Password not recognized.') {
                 this.setState( {errMessage: responseJson} );
             } else {
-                this.props.navigation.navigate('Home', {
-                    mentorId: responseJson
-                });
+                this._signInAsync(responseJson);
             }
             console.log(responseJson);
         }).catch((error) => {
