@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { CheckBox, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { getDefaultLocationId, getUserId } from '../../data/asyncStorage';
 import { takeAttendance, checkAttendance } from '../../data/mysqli/manageAttendance';
-import { ModalMessage } from '../../components';
+import { ModalMessage, AttendanceList } from '../../components';
 import memoize from 'memoize-one';
 
 class HomeScreen extends React.Component {
@@ -83,7 +83,7 @@ class HomeScreen extends React.Component {
         })
     }
 
-    _manageAttendance = (studentId) => {
+    manageAttendance = (studentId) => {
         const isChecked = this.state.attendance.get(studentId);
         let newAttendance = new Map(this.state.attendance);
         newAttendance.set(studentId, !isChecked);
@@ -137,7 +137,7 @@ class HomeScreen extends React.Component {
                     </Text>
                     <View style={styles.gap}></View>
                     <Text style={styles.attendanceTakenNote}>
-                        You can edit today's attendance from "View Attendance" screen if you wish to.
+                        You can edit today's attendance from "Attendance Report" screen if you wish to.
                     </Text>
                 </View>
             );
@@ -153,27 +153,16 @@ class HomeScreen extends React.Component {
                                 <Text style={styles.heading}>Present</Text>
                             </View>
                         </View>
-                        {this.sortedStudents.map( student => {
-                            return (
-                                <View key={student.id} style={styles.row}>
-                                    <View style={styles.firstColumn}>
-                                        <Text style={styles.studentName} numberOfLines={1} ellipsizeMode='tail'>
-                                            {student.firstName} {student.lastName}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.secondColumn}>
-                                        <CheckBox
-                                            size={styles.checkBoxSize}
-                                            checked={this.state.attendance.get(student.id)}
-                                            checkedIcon='check-circle-o'
-                                            uncheckedIcon='circle-o'
-                                            checkedColor='green'
-                                            onPress={() => this._manageAttendance(student.id)}
-                                        />
-                                    </View>
-                                </View>
-                            );
-                        })}
+                        {this.sortedStudents.map( student => 
+                            <AttendanceList
+                                key={student.id}
+                                id={student.id}
+                                name={student.firstName + ' ' + student.lastName}
+                                type='Take'
+                                checked={this.state.attendance.get(student.id)}
+                                onPress={this.manageAttendance}
+                            />
+                        )}
                         <View style={styles.buttonWrapper}>
                             <Button buttonStyle={styles.submitButton} title='Submit Attendance' onPress={this._submitForm} />
                         </View>

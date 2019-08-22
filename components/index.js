@@ -6,6 +6,7 @@ import LocationForm from './locationForm';
 import UserForm from './userForm';
 import LocationList from './locationList';
 import UserList from './userList';
+import AttendanceList from './attendaceList';
 import UserLocationsForm from './userLocationsForm';
 import StudentList from './studentList';
 import StudentForm from './studentForm';
@@ -20,5 +21,6 @@ export { BoxLink,
         UserList,
         UserLocationsForm,
         StudentList,
-        StudentForm
+        StudentForm,
+        AttendanceList
     };

@@ -47,11 +47,6 @@ export default StyleSheet.create({
         color: '#8c8c8c',
         fontSize: wp(5),
     },
-    studentName: {
-        fontSize: wp(5),
-        color: '#d00000'
-    },
-    checkBoxSize: wp(10),
     submitButton: {
         width: wp(80),
         height: hp(5)

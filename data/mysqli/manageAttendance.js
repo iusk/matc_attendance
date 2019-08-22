@@ -37,7 +37,7 @@ const checkAttendance = (locationId, callback) => {
     })
 }
 
-const getAttendance = (locationId) => {
+const getAttendance = (locationId, setAttendanceRedux) => {
     fetch('https://iusk.000webhostapp.com/matc_attendance/getAttendance.php', {
         method: 'POST',
         headers: {
@@ -49,7 +49,7 @@ const getAttendance = (locationId) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        console.log(responseJson)
+        setAttendanceRedux(responseJson);
     }).catch((error) => {
         console.warn(error);
     })

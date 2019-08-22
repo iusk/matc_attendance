@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import { InputWithLabel, ModalLoading } from '../../components';
 
 import { signIn, getDefaultLocationId, setDefaultLocationId } from '../../data/asyncStorage';
-import { setUser, setDefaultLocationStudents } from '../../data/redux';
-
-import { checkSignedIn, userLoginFunction } from '../../utils/loadingFunctions';
+import { setUser, setDefaultLocationStudents, setAttendance } from '../../data/redux';
+import { getAttendance } from '../../data/mysqli/manageAttendance';
+import { getUserId } from '../../data/asyncStorage';
+import { getUserInfo } from '../../data/mysqli/getInfo';
+import URL from '../../data/mysqli/loginCheck';
 
 import styles from './styles';
 
@@ -28,7 +30,7 @@ class LoginScreen extends React.Component {
             buttonLoading: false
         };
 
-        checkSignedIn(this.saveUserInfo, this.saveStudentsInfo, this.disableLoadingScreen);
+        this.checkSignedIn(this.saveUserInfo, this.saveStudentsInfo, this.disableLoadingScreen);
     }
 
     disableLoadingScreen = () => {
@@ -45,8 +47,16 @@ class LoginScreen extends React.Component {
         if (!defaultLocationId && response.locations.length > 0) {
             defaultLocationId = response.locations[0].id;
             setDefaultLocationId(defaultLocationId);
+        } else if (response.locations.length === 0) { // user hasn't been assigned any locations yet
+            this.props.navigation.navigate('Profile-Only');
+            return;
         }
+        getAttendance(defaultLocationId, this.setAttendanceRedux);
         getStudentsInfo(defaultLocationId, this.saveStudentsInfo);
+    }
+
+    setAttendanceRedux = (response) => {
+        this.props.setAttendance(response);
     }
 
     saveStudentsInfo = (response) => {
@@ -71,13 +81,41 @@ class LoginScreen extends React.Component {
                 buttonLoading: false
             });
         } else {
-            signIn(response, checkSignedIn, this.saveUserInfo, this.disableLoadingScreen);
+            signIn(response, this.checkSignedIn, this.saveUserInfo, this.disableLoadingScreen);
         }
     }
     
     submitForm = () => {
         this.setState( {buttonLoading: true} );
-        userLoginFunction(this.state.email, this.state.password, this._login);
+        this.userLoginFunction(this.state.email, this.state.password, this._login);
+    };
+
+    userLoginFunction = (givenEmail, givenPassword, login) => {
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: givenEmail,
+                password: givenPassword
+            })
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            login(responseJson);
+        }).catch((error) => {
+            console.warn(error);
+        })
+    };
+    
+    checkSignedIn = async (saveUserInfo, disableLoadingScreen) => {
+        const userId = await getUserId();
+        if (userId) {
+            getUserInfo(userId, saveUserInfo);
+        } else {
+            disableLoadingScreen();
+        }
     };
 
 
@@ -134,6 +172,9 @@ const mapDispatchToProps = dispatch => {
         },
         setDefaultLocationStudents: (students) => {
             dispatch(setDefaultLocationStudents(students))
+        },
+        setAttendance: (attendance) => {
+            dispatch(setAttendance(attendance))
         }
     }
 }

@@ -32,6 +32,10 @@ const userSlice = createSlice({
         updateUserInfoLocations: (state, action) => {
             state.userInfo.locations = action.payload;
         },
+        // get attendance when user goes to "view attendance" tab
+        setAttendance: (state, action) => {
+            state.attendanceInfo = action.payload;
+        },
         // get the locations and users when admins go to admin control panel
         setAdminInfo: (state, action) => {
             state.adminInfo.locations = action.payload.locations;
@@ -57,7 +61,16 @@ const userSlice = createSlice({
 const { actions, reducer } = userSlice;
 
 // defining different types of actions
-export const { setUser, setDefaultLocationStudents, updateUserInfoLocations, setAdminInfo, updateLocations, updateUsers, updateUserLocations } = actions;
+export const { 
+    setUser, 
+    setDefaultLocationStudents, 
+    updateUserInfoLocations, 
+    setAttendance,
+    setAdminInfo, 
+    updateLocations, 
+    updateUsers, 
+    updateUserLocations
+} = actions;
 
 // combining reducers and creating store
 const store = configureStore({
