@@ -62,21 +62,21 @@ class HomeScreen extends React.Component {
     }
 
     _checkAttendance = (response) => {
-        console.log(response);
-        // if (response === 'Taken') {
-        //     this.setState({
-        //         attendanceTaken: true
-        //     })
-        // } else if (response === 'Not Taken') {
-        //     this._sortStudents();
-        //     this.setState({
-        //         attendanceTaken: false
-        //     })
-        // }
+        if (response === 'Taken') {
+            this.setState({
+                attendanceTaken: true
+            })
+        } else if (response === 'Not Taken') {
+            this._sortStudents();
+            this.setState({
+                attendanceTaken: false
+            })
+        }
     }
 
     _sortStudents = () => {
-        this.sortedStudents = this.props.students.sort( (a,b) => {
+        const students = [...this.props.students];
+        this.sortedStudents = students.sort( (a,b) => {
             const aName = a.firstName + ' ' + a.lastName;
             const bName = b.firstName + ' ' + b.lastName;
             return (aName > bName) ? 1 : -1;
