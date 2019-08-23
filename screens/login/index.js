@@ -158,7 +158,7 @@ class LoginScreen extends React.Component {
                         loadingProps={styles.buttonLoading}
                     />
                 </View>
-                <ModalLoading visible={this.state.modalLoading} />
+                <ModalLoading visible={this.state.modalLoading} msg='Please wait while we gather your info...' />
             </View>
         );
     }

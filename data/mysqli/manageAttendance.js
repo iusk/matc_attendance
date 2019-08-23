@@ -55,4 +55,23 @@ const getAttendance = (locationId, setAttendanceRedux) => {
     })
 }
 
-export { takeAttendance, getAttendance, checkAttendance }
+const updateAttendance = (studentId, present, updateAttendanceRedux) => {
+    fetch('https://iusk.000webhostapp.com/matc_attendance/updateAttendance.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            studentId: studentId,
+            present: present
+        })
+    }).then((response) => response.text())
+    .then((responseJson) => {
+        updateAttendanceRedux(responseJson);
+    }).catch((error) => {
+        console.warn(error);
+    })
+}
+
+export { takeAttendance, getAttendance, checkAttendance, updateAttendance }

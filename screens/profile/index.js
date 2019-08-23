@@ -89,7 +89,7 @@ class ProfileScreen extends React.Component {
                 <BoxLink name='Admin Control Panel' iconName='account-key' iconType='material-community' onPress={this._gotoAdmin} />
                 : null}
                 <BoxLink name='Logout' iconName='logout' iconType='material-community' onPress={this._signOut} />
-                <ModalLoading visible={this.state.modalLoading} />
+                <ModalLoading msg='Gathering Information for Admins...' visible={this.state.modalLoading} />
             </View>
         );
     }

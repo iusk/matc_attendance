@@ -9,7 +9,7 @@ class ModalLoading extends React.Component {
                 <View style={styles.modalContentWrapper}>
                     <View style={styles.modalContentSecWrapper}>
                         <ActivityIndicator size='large' />
-                        <Text style={styles.modalText}>Please wait while we gather your info...</Text>
+                        <Text style={styles.modalText}>{this.props.msg}</Text>
                     </View>
                 </View>
             </Modal>

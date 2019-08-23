@@ -19,7 +19,14 @@ class AttendanceList extends React.Component {
     }
 
     _onPress = () => {
-        this.props.onPress(this.props.id);
+        if (this.props.type === 'Take') {
+            this.props.onPress(this.props.id);
+        } else if (this.props.type === 'View') {
+            if (this.props.updatable) {
+                this.props.onPress(this.props.id, this.props.checked);
+            }
+        }
+        
     }
 
     render() {
@@ -33,7 +40,7 @@ class AttendanceList extends React.Component {
                 <View style={styles.secondColumn}>
                     <CheckBox
                         size={styles.checkBoxSize}
-                        checked={this.props.checked}
+                        checked={(this.props.checked===1)}
                         checkedIcon='check-circle-o'
                         uncheckedIcon={this.uncheckedIcon}
                         checkedColor='green'
