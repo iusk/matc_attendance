@@ -4,8 +4,10 @@ import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { getDefaultLocationId, getUserId } from '../../data/asyncStorage';
-import { takeAttendance, checkAttendance } from '../../data/mysqli/manageAttendance';
-import { ModalMessage, AttendanceList } from '../../components';
+import { takeAttendance } from '../../data/mysqli/manageAttendance';
+import { updateAttendanceInfo } from '../../data/redux';
+import { AttendanceList } from '../../components';
+import { convertDate } from '../../utils/functions';
 import memoize from 'memoize-one';
 
 class HomeScreen extends React.Component {
@@ -28,6 +30,7 @@ class HomeScreen extends React.Component {
         this.state = {
             userId: 0,
             attendance: new Map(), // map of studentId => attendance(boolean)
+            messageModal: '',
             messageModalSuccess: true,
             messageModalVisible: false,
             attendanceTaken: false,
@@ -36,7 +39,7 @@ class HomeScreen extends React.Component {
         this.currentLocationId = 0;
         this.userId = 0;
         this.sortedStudents;
-        this._sortStudents();    
+        this.today = new Date();
     }
 
     setLocationName = memoize((currentLocationId) => {
@@ -45,7 +48,7 @@ class HomeScreen extends React.Component {
                 obj => obj.id === this.currentLocationId
             ).name;
             this.props.navigation.setParams( {locationName: locationName} );
-            checkAttendance(this.currentLocationId, this._checkAttendance);
+            this.checkAttendance();
         }
     })
 
@@ -61,27 +64,27 @@ class HomeScreen extends React.Component {
         this.setLocationName(this.currentLocationId);
     }
 
-    _checkAttendance = (response) => {
-        if (response === 'Taken') {
-            this.setState({
-                attendanceTaken: true
-            })
-        } else if (response === 'Not Taken') {
-            this._sortStudents();
-            this.setState({
-                attendanceTaken: false
-            })
+    checkAttendance = () => {
+        if (this.props.attendance !== undefined) {
+            if (this.props.attendance.hasOwnProperty(convertDate(this.today))) {
+                this.setState({
+                    attendanceTaken: true
+                })
+            } else {
+                this.setState({
+                    attendanceTaken: false
+                })
+            }
         }
     }
 
-    _sortStudents = () => {
-        const students = [...this.props.students];
+    _sortStudents = memoize((students) => {
         this.sortedStudents = students.sort( (a,b) => {
             const aName = a.firstName + ' ' + a.lastName;
             const bName = b.firstName + ' ' + b.lastName;
             return (aName > bName) ? 1 : -1;
         })
-    }
+    });
 
     manageAttendance = (studentId) => {
         const isChecked = this.state.attendance.get(studentId);
@@ -91,41 +94,11 @@ class HomeScreen extends React.Component {
     }
 
     _submitForm = () => {
-        takeAttendance(this.state.attendance, this.currentLocationId, this.userId, this.checkError);
+        takeAttendance(this.state.attendance, this.currentLocationId, this.userId, this.updateAttendanceRedux);
     }
 
-    checkError = (response) => {
-        if (response === 'SUCCESS') {
-            this._displaySuccessMessage();
-        } else {
-            this._displayErrorMessage();
-        }
-    }
-
-    _displaySuccessMessage  = () => {
-        this.setState({
-            messageModalSuccess: true,
-            messageModalVisible: true,
-            attendance: new Map()
-        });
-        setTimeout( () => {
-            this.setState({ 
-                messageModalVisible: false,
-                attendanceTaken: true,
-            })
-        }, 500
-        )
-    }
-
-    _displayErrorMessage  = () => {
-        this.setState({
-            messageModalSuccess: false,
-            messageModalVisible: true
-        });
-        setTimeout( () => {
-            this.setState({ messageModalVisible: false })
-        }, 500
-        )
+    updateAttendanceRedux = (response) => {
+        this.props.updateAttendanceInfo(response, convertDate(this.today));
     }
 
     render() {
@@ -142,6 +115,7 @@ class HomeScreen extends React.Component {
                 </View>
             );
         } else {
+            this._sortStudents([...this.props.students]);
             return (
                 <React.Fragment>
                     <ScrollView>
@@ -167,12 +141,6 @@ class HomeScreen extends React.Component {
                             <Button buttonStyle={styles.submitButton} title='Submit Attendance' onPress={this._submitForm} />
                         </View>
                     </ScrollView>
-                    <ModalMessage
-                        name='Attendance'
-                        visible={this.state.messageModalVisible} 
-                        type='Add'
-                        success={this.state.messageModalSuccess}
-                    />
                 </React.Fragment>
             );
         }
@@ -183,8 +151,18 @@ class HomeScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         students: state.userInfo.students,
-        locations: state.userInfo.locations
+        locations: state.userInfo.locations,
+        attendance: state.attendanceInfo
     }
 }
 
-export default connect(mapStateToProps)(HomeScreen);
+// set data through props
+const mapDispatchToProps = dispatch => {
+    return {
+        updateAttendanceInfo: (attendance, date) => {
+            dispatch(updateAttendanceInfo({ attendance: attendance, date: date} ));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

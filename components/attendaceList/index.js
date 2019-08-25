@@ -40,7 +40,7 @@ class AttendanceList extends React.Component {
                 <View style={styles.secondColumn}>
                     <CheckBox
                         size={styles.checkBoxSize}
-                        checked={(this.props.checked===1)}
+                        checked={(this.props.checked)}
                         checkedIcon='check-circle-o'
                         uncheckedIcon={this.uncheckedIcon}
                         checkedColor='green'

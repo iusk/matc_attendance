@@ -32,13 +32,13 @@ const userSlice = createSlice({
         updateUserInfoLocations: (state, action) => {
             state.userInfo.locations = action.payload;
         },
-        // set attendance when user submits the attendance form
+        // set attendance when user submits/updates the attendance form
         setAttendance: (state, action) => {
             state.attendanceInfo = action.payload;
         },
         // update one attendance from view attendance screen
-        updateAttendanceInfo: (state, action) => { // REMOVE THIS
-            state.attendanceInfo[action.payload.date] = [...state.attendanceInfo]
+        updateAttendanceInfo: (state, action) => {
+            state.attendanceInfo[action.payload.date] = action.payload.attendance
         },
         // get the locations and users when admins go to admin control panel
         setAdminInfo: (state, action) => {

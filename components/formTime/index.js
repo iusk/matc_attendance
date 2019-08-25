@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TimePickerAndroid } from 'react-native';
+import { convertTime } from '../../utils/functions';
 import styles from './styles';
 
 class FormTime extends React.Component {
@@ -8,30 +9,14 @@ class FormTime extends React.Component {
         super(props);
         
         this.state = {
-            value: this._convertTime(this.props.value)
+            value: convertTime(this.props.value)
         }
     }
 
     componentWillReceiveProps(props) {
         this.setState({
-            value: this._convertTime(props.value)
+            value: convertTime(props.value)
         });
-    }
-
-    _convertTime = (time) => {
-        if (typeof time === 'string') {
-            [hour, minute, _] = time.split(":");
-            let suffix = '';
-            if (hour >= 12) {
-                if (hour !== '12') hour -= 12;
-                suffix = 'PM';
-            } else {
-                suffix = 'AM';
-            }
-            return hour.toString().padStart(2, 0) + ':' + minute.toString().padStart(2, 0) + ' ' + suffix;
-        } else {
-            return '';
-        }
     }
 
     openTimePicker = async () => {

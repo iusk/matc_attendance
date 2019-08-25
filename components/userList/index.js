@@ -17,11 +17,18 @@ class UserList extends React.Component {
             'Edit');
     }
 
+    _openLocationsForm = () => {
+        this.props.openLocationsForm(
+            this.props.id,
+            this.props.admin
+        )
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
                 <View style={styles.touchableOpacityWrapper}>
-                    <TouchableOpacity style={styles.iconWrapper} onPress={() => this.props.openLocationsForm(this.props.id)}>
+                    <TouchableOpacity style={styles.iconWrapper} onPress={this._openLocationsForm}>
                         <Icon type='material-community' name='map-marker' size={styles.iconSize} color='#fefdfa' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.iconWrapper} onPress={this._openForm}>

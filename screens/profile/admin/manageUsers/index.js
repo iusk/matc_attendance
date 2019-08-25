@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TouchableOpacity, ScrollView } from 'react-native';
+import { TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { ModalMessage, UserForm, UserList, UserLocationsForm } from '../../../../components';
 import styles from './styles';
@@ -24,13 +24,14 @@ class ManageUsersScreen extends React.Component {
             users: this.props.users,
             formVisible: false,
             locationsFormVisible: false,
+            locationsAdminVisible: false,
             name: '',
             email: '',
             admin: 0,
             formType: '',
             messageModalVisible: false,
             messageModalSuccess: true,
-            messageModalType: ''
+            messageModal: ''
         }
     }
 
@@ -49,11 +50,22 @@ class ManageUsersScreen extends React.Component {
         this.setState( {formVisible: false} );
     }
 
-    openLocationsForm = (id) => {
-        this.setState({
-            id: id,
-            locationsFormVisible: true
-        });
+    openLocationsForm = (id, admin) => {
+        if (admin) {
+            this.setState({
+                messageModalVisible: true,
+                messageModalSuccess: false,
+                messageModal: 'Admins are assigned all the locations by default',
+            })
+            setTimeout(() => {
+                this.setState( { messageModalVisible: false} )
+            }, 1000);
+        } else {
+            this.setState({
+                id: id,
+                locationsFormVisible: true
+            });
+        }
     }
 
     closeLocationsForm = () => {
@@ -69,11 +81,23 @@ class ManageUsersScreen extends React.Component {
     }
 
     _displaySuccessMessage = (type) => {
+        let msg = '';
+        switch(type) {
+            case 'Add':
+                msg = 'User added successfully!';
+                break;
+            case 'Update':
+                msg = 'User updated successfully!';
+                break;
+            case 'Delete':
+                msg = 'User removed successfully!';
+                break;
+        }
         this.setState( {
             users: this.props.users,
+            messageModal: msg,
             messageModalVisible: true,
-            messageModalSuccess: true,
-            messageModalType: type
+            messageModalSuccess: true
         });
         setTimeout( () => {
             this.setState( {messageModalVisible: false})
@@ -81,11 +105,23 @@ class ManageUsersScreen extends React.Component {
     }
 
     _displayErrorMessage = (type) => {
+        let msg = '';
+        switch(type) {
+            case 'Add':
+                msg = 'User couldn\'t be added.';
+                break;
+            case 'Update':
+                msg = 'User couldn\'t be updated.';
+                break;
+            case 'Delete':
+                msg = 'User couldn\'t be deleted.';
+                break;
+        }
         this.setState( {
             users: this.props.users,
+            messageModal: msg,
             messageModalVisible: true,
-            messageModalSuccess: false,
-            messageModalType: type
+            messageModalSuccess: false
         });
         setTimeout( () => {
             this.setState( {messageModalVisible: false})
@@ -93,13 +129,12 @@ class ManageUsersScreen extends React.Component {
     }
 
     render() {
-        let key = 0;
         return (
             <React.Fragment>
                 <ScrollView>
                     {this.state.users.map( user => 
                         <UserList
-                            key={key++}
+                            key={user.id}
                             id={user.id}
                             name={user.username}
                             email={user.email}
@@ -110,9 +145,8 @@ class ManageUsersScreen extends React.Component {
                     }
                 </ScrollView>
                 <ModalMessage
-                    name='User'
-                    visible={this.state.messageModalVisible} 
-                    type={this.state.messageModalType}
+                    msg={this.state.messageModal}
+                    visible={this.state.messageModalVisible}
                     success={this.state.messageModalSuccess}
                 />
                 <UserForm 

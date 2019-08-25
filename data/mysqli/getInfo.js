@@ -1,5 +1,7 @@
+import domain from './domain';
+
 const getUserInfo = (id, saveUserInfo) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/getUserInfo.php', {
+    fetch(domain + 'getUserInfo.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -17,7 +19,7 @@ const getUserInfo = (id, saveUserInfo) => {
 }
 
 const getStudentsInfo = (locationId, saveStudentsInfo) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/getStudentsInfo.php', {
+    fetch(domain + 'getStudentsInfo.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -35,7 +37,7 @@ const getStudentsInfo = (locationId, saveStudentsInfo) => {
 }
 
 const getAdminInfo = (setAdminInfoRedux) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/getAdminInfo.php', {
+    fetch(domain + 'getAdminInfo.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

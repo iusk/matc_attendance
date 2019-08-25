@@ -1,4 +1,6 @@
-const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageUsers.php';
+import domain from './domain';
+
+const URL = domain + 'manageUsers.php';
 
 const addUser = (name, email, admin, verified, checkError, updateUserRedux) => {
     const type = 'Add';

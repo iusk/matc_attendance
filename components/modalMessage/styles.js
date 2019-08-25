@@ -9,13 +9,20 @@ export default StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
     innerWrapper: {
-        width: wp(50),
-        height: hp(10),
+        width: wp(60),
+        height: hp(15),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fefdfa'
     },
-    text: {
+    successText: {
         textAlign: 'center',
+        color: '#00b300',
+        fontSize: wp(5),
+    },
+    errorText: {
+        textAlign: 'center',
+        color: '#d00000',
+        fontSize: wp(5),
     },
 });

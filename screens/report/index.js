@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, Button, DatePickerAndroid } from 'react-native';
+import { View, Text, DatePickerAndroid, ScrollView } from 'react-native';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { updateAttendanceInfo } from '../../data/redux';
 import { updateAttendance } from '../../data/mysqli/manageAttendance';
 import { AttendanceList, ModalLoading } from '../../components';
+import { convertDate } from '../../utils/functions';
 import memoize from 'memoize-one';
+import styles from './styles';
 
 class ReportScreen extends React.Component {
     static navigationOptions = {
@@ -42,68 +45,76 @@ class ReportScreen extends React.Component {
         });
         if (action === DatePickerAndroid.dateSetAction) {
             this.setState({
-                date: this._convertDate(year, month, day),
+                date: convertDate(null, year, month, day),
                 dateSelected: true
             })
         }
     }
 
-    _convertDate = memoize((year, month, day) => {
-        return year + '-' + (month+1).toString().padStart(2, 0) + '-' + day.toString().padStart(2, 0);
-    })
-
-    manageAttendance = (studentId, present) => {
-        // this.setState({
-        //     modalVisible: true
-        // })
+    updateAttendance = (studentId, present) => {
+        this.setState({
+            modalVisible: true
+        })
         present = (present) ? 0 : 1; // make present if absent and vice versa
         updateAttendance(studentId, present, this.updateAttendanceRedux);
     }
 
     updateAttendanceRedux = (response) => {
-        let newAttendance = [...this.props.attendance];
-        newAttendance = newAttendance; // TODO: work on this
-        this.props.updateAttendanceInfo(response, this.today);
-        // this.setState({
-        //     modalVisible: false
-        // })
+        this.props.updateAttendanceInfo(response, convertDate(this.today));
+        this.setState({
+            modalVisible: false
+        })
     }
 
     sortAttendance = memoize((attendance) => {
-        console.log('memoize');
         this.sortedAttendence = attendance.sort( (a,b) => {
             return (a.name > b.name) ? 1 : -1;
         })
     })
 
     render() {
-        if (this.state.dateSelected) {
-            console.log('render');
-            const date = this.state.date;
-            const today = this._convertDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
-            this.sortAttendance(this.props.attendance[date]);
+        const date = this.state.date;
+        if (this.state.dateSelected && this.props.attendance[date] !== undefined) {
+            const today = convertDate(this.today);
+            this.sortAttendance([...this.props.attendance[date]]);
             return (
-                <React.Fragment>
-                    {this.sortedAttendence.map( student => 
-                        <AttendanceList
-                            key={student.id}
-                            id={student.id}
-                            name={student.name}
-                            type='View'
-                            updatable={today === date}
-                            checked={student.present}
-                            onPress={this.manageAttendance}
-                        />
-                    )}
+                <View style={styles.wrapper}>
+                    <View style={styles.scroll}>
+                        <ScrollView>
+                            {this.sortedAttendence.map( student => 
+                                <AttendanceList
+                                    key={student.id}
+                                    id={student.id}
+                                    name={student.name}
+                                    type='View'
+                                    updatable={today === date}
+                                    checked={(student.present===1)}
+                                    onPress={this.updateAttendance}
+                                />
+                            )}
+                        </ScrollView>
+                    </View>
+                    <View style={styles.selectDateSelected}>
+                        <Text>Selected Date: {this.state.date}</Text>
+                        <Button buttonStyle={styles.button} title='Select Another Date' onPress={this.selectDate} />
+                    </View>
                     <ModalLoading visible={this.state.modalVisible} msg='Updating Attendance - Please Wait' />
-                </React.Fragment>
+                </View>
+            );
+        } else if (this.state.dateSelected) {
+            return (
+                <View style={styles.selectDateNotSelected}>
+                    <Text>No attendance found for: {this.state.date}</Text>
+                    <Button buttonStyle={styles.button} title='Select Date' onPress={this.selectDate} />
+                </View>
             );
         } else {
             return (
-                <View>
-                    <Button title='Select Date' onPress={this.selectDate} />
+                <View style={styles.selectDateNotSelected}>
+                    <Text>Please select a date:</Text>
+                    <Button buttonStyle={styles.button} title='Select Date' onPress={this.selectDate} />
                 </View>
-            );
+            )
         }
     }
 }
@@ -119,7 +130,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateAttendanceInfo: (attendance, date) => {
-            dispatch(updateAttendanceInfo( {attendance: attendance, date: date} ))
+            dispatch(updateAttendanceInfo({ attendance: attendance, date: date} ));
         }
     }
 }

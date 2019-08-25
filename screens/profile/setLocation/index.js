@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { getDefaultLocationId, setDefaultLocationId } from '../../../data/asyncStorage';
 import { getStudentsInfo } from '../../../data/mysqli/getInfo';
-import { setDefaultLocationStudents } from '../../../data/redux';
+import { getAttendance } from '../../../data/mysqli/manageAttendance';
+import { setDefaultLocationStudents, setAttendance } from '../../../data/redux';
 import { connect } from 'react-redux';
-import { LocationList } from '../../../components';
+import { LocationList, ModalLoading } from '../../../components';
 import styles from './styles';
 
 class SetLocationScreen extends React.Component {
@@ -24,7 +25,8 @@ class SetLocationScreen extends React.Component {
 
         this.state = {
             currentLocation: {'id': 0, 'name': 'No Location Found'},
-            assignedLocations: []
+            assignedLocations: [],
+            modalLoading: false
         };
 
         this.checkAssignedLocation();
@@ -45,8 +47,19 @@ class SetLocationScreen extends React.Component {
     }
 
     setCurrentLocation = (id) => {
+        this.setState({
+            modalLoading: true
+        })
         setDefaultLocationId(id, this.checkAssignedLocation);
         getStudentsInfo(id, (response) => this.props.setDefaultLocationStudents(response));
+        getAttendance(id, this.setAttendanceRedux);
+    }
+
+    setAttendanceRedux = (response) => {
+        this.props.setAttendance(response);
+        this.setState({
+            modalLoading: false
+        })
     }
 
     render() {
@@ -73,6 +86,7 @@ class SetLocationScreen extends React.Component {
                         />)
                     }
                 </View>
+                <ModalLoading visible={this.state.modalLoading} msg='Changing your location...' />
             </React.Fragment>
         );
     }
@@ -90,6 +104,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setDefaultLocationStudents: (students) => {
             dispatch(setDefaultLocationStudents(students))
+        },
+        setAttendance: (attendance) => {
+            dispatch(setAttendance(attendance))
         }
     }
 }

@@ -28,9 +28,9 @@ class ManageStudentsScreen extends React.Component {
             locationId: 0,
             firstName: '',
             lastName: '',
+            messageModal: '',
             messageModalVisible: false,
-            messageModalSuccess: true,
-            messageModalType: ''
+            messageModalSuccess: true
         }
     }
 
@@ -58,11 +58,23 @@ class ManageStudentsScreen extends React.Component {
     }
 
     _displaySuccessMessage = (type) => {
+        let msg = '';
+        switch(type) {
+            case 'Add':
+                msg = 'Student added successfully!';
+                break;
+            case 'Update':
+                msg = 'Student updated successfully!';
+                break;
+            case 'Delete':
+                msg = 'Student removed successfully!';
+                break;
+        }
         this.setState({
             students: this.props.students,
+            messageModal: msg,
             messageModalVisible: true,
-            messageModalSuccess: true,
-            messageModalType: type
+            messageModalSuccess: true
         });
         setTimeout( () => {
             this.setState( {messageModalVisible: false})
@@ -70,11 +82,23 @@ class ManageStudentsScreen extends React.Component {
     }
 
     _displayErrorMessage = (type) => {
+        let msg = '';
+        switch(type) {
+            case 'Add':
+                msg = 'Student couldn\'t be added.';
+                break;
+            case 'Update':
+                msg = 'Student couldn\'t be updated.';
+                break;
+            case 'Delete':
+                msg = 'Student couldn\'t be deleted.';
+                break;
+        }
         this.setState( {
             students: this.props.students,
+            messageModal: msg,
             messageModalVisible: true,
-            messageModalSuccess: false,
-            messageModalType: type
+            messageModalSuccess: false
         });
         setTimeout( () => {
             this.setState( {messageModalVisible: false})
@@ -98,9 +122,8 @@ class ManageStudentsScreen extends React.Component {
                     }
                 </ScrollView>
                 <ModalMessage
-                    name='Student'
-                    visible={this.state.messageModalVisible} 
-                    type={this.state.messageModalType}
+                    msg={this.state.messageModal}
+                    visible={this.state.messageModalVisible}
                     success={this.state.messageModalSuccess}
                 />
                 <StudentForm 

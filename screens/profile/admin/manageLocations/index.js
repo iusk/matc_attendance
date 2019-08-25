@@ -27,9 +27,9 @@ class ManageLocationsScreen extends React.Component {
             startTime: '',
             endTime: '',
             formType: '',
+            messageModal: '',
             messageModalVisible: false,
             messageModalSuccess: true,
-            messageModalType: ''
         }
     }
 
@@ -58,11 +58,23 @@ class ManageLocationsScreen extends React.Component {
     }
 
     _displaySuccessMessage = (type) => {
+        let msg = '';
+        switch(type) {
+            case 'Add':
+                msg = 'Location added successfully!';
+                break;
+            case 'Update':
+                msg = 'Location updated successfully!';
+                break;
+            case 'Delete':
+                msg = 'Location removed successfully!';
+                break;
+        }
         this.setState({
             locations: this.props.locations,
+            messageModal: msg,
             messageModalVisible: true,
             messageModalSuccess: true,
-            messageModalType: type
         });
         setTimeout( () => {
             this.setState( {messageModalVisible: false})
@@ -70,11 +82,23 @@ class ManageLocationsScreen extends React.Component {
     }
 
     _displayErrorMessage = (type) => {
+        let msg = '';
+        switch(type) {
+            case 'Add':
+                msg = 'Location couldn\'t be added.';
+                break;
+            case 'Update':
+                msg = 'Location couldn\'t be updated.';
+                break;
+            case 'Delete':
+                msg = 'Location couldn\'t be deleted.';
+                break;
+        }
         this.setState( {
             locations: this.props.locations,
+            messageModal: msg,
             messageModalVisible: true,
             messageModalSuccess: false,
-            messageModalType: type
         });
         setTimeout( () => {
             this.setState( {messageModalVisible: false})
@@ -82,13 +106,12 @@ class ManageLocationsScreen extends React.Component {
     }
 
     render() {
-        let key = 0;
         return (
             <React.Fragment>
                 <ScrollView>
                     {this.state.locations.map( location => 
                         <LocationList 
-                            key={key++} 
+                            key={location.id} 
                             id={location.id} 
                             name={location.name}
                             iconName='edit-location'
@@ -101,9 +124,8 @@ class ManageLocationsScreen extends React.Component {
                     }
                 </ScrollView>
                 <ModalMessage
-                    name='Location'
-                    visible={this.state.messageModalVisible} 
-                    type={this.state.messageModalType}
+                    msg={this.state.messageModal}
+                    visible={this.state.messageModalVisible}
                     success={this.state.messageModalSuccess}
                 />
                 <LocationForm 

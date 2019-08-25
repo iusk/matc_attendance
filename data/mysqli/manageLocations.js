@@ -1,4 +1,6 @@
-const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageLocations.php';
+import domain from './domain';
+
+const URL = domain + 'manageLocations.php';
 
 const addLocation = (name, day, startTime, endTime, checkError, updateLocationRedux) => {
     const type = 'Add';

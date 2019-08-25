@@ -10,7 +10,7 @@ import { setUser, setDefaultLocationStudents, setAttendance } from '../../data/r
 import { getAttendance } from '../../data/mysqli/manageAttendance';
 import { getUserId } from '../../data/asyncStorage';
 import { getUserInfo } from '../../data/mysqli/getInfo';
-import URL from '../../data/mysqli/loginCheck';
+import { userLogin } from '../../data/mysqli/userLogin';
 
 import styles from './styles';
 
@@ -51,7 +51,7 @@ class LoginScreen extends React.Component {
             this.props.navigation.navigate('Profile-Only');
             return;
         }
-        getAttendance(defaultLocationId, this.setAttendanceRedux);
+        await getAttendance(defaultLocationId, this.setAttendanceRedux);
         getStudentsInfo(defaultLocationId, this.saveStudentsInfo);
     }
 
@@ -87,26 +87,7 @@ class LoginScreen extends React.Component {
     
     submitForm = () => {
         this.setState( {buttonLoading: true} );
-        this.userLoginFunction(this.state.email, this.state.password, this._login);
-    };
-
-    userLoginFunction = (givenEmail, givenPassword, login) => {
-        fetch(URL, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: givenEmail,
-                password: givenPassword
-            })
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            login(responseJson);
-        }).catch((error) => {
-            console.warn(error);
-        })
+        userLogin(this.state.email, this.state.password, this._login);
     };
     
     checkSignedIn = async (saveUserInfo, disableLoadingScreen) => {

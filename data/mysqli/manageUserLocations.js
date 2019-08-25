@@ -1,6 +1,8 @@
-const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageUserLocations.php';
+import domain from './domain';
 
-const addLocation = (userId, locationId, addLocationRedux) => {
+const URL = domain + 'manageUserLocations.php';
+
+const addUserLocation = (userId, locationId, addLocationRedux) => {
     const type = 'Add';
     fetch(URL, {
         method: 'POST',
@@ -21,7 +23,7 @@ const addLocation = (userId, locationId, addLocationRedux) => {
     })
 }
 
-const removeLocation = (userId, locationId, removeLocationRedux) => {
+const deleteUserLocation = (userId, locationId, removeLocationRedux) => {
     const type = 'Remove';
     fetch(URL, {
         method: 'POST',
@@ -42,4 +44,4 @@ const removeLocation = (userId, locationId, removeLocationRedux) => {
     })
 }
 
-export { addLocation, removeLocation };
+export { addUserLocation, deleteUserLocation };

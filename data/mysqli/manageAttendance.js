@@ -1,5 +1,7 @@
-const takeAttendance = (attendance, locationId, userId, checkError) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/takeAttendance.php', {
+import domain from './domain';
+
+const takeAttendance = (attendance, locationId, userId, updateAttendanceRedux) => {
+    fetch(domain + 'takeAttendance.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -12,33 +14,14 @@ const takeAttendance = (attendance, locationId, userId, checkError) => {
         })
     }).then((response) => response.json())
     .then((responseJson) => {
-        checkError(responseJson);
-    }).catch((error) => {
-        checkError(error);
-        console.warn(error);
-    })
-}
-
-const checkAttendance = (locationId, callback) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/checkAttendance.php', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            locationId: locationId
-        })
-    }).then((response) => response.json())
-    .then((responseJson) => {
-        callback(responseJson)
+        updateAttendanceRedux(responseJson);
     }).catch((error) => {
         console.warn(error);
     })
 }
 
 const getAttendance = (locationId, setAttendanceRedux) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/getAttendance.php', {
+    fetch(domain + 'getAttendance.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -56,7 +39,7 @@ const getAttendance = (locationId, setAttendanceRedux) => {
 }
 
 const updateAttendance = (studentId, present, updateAttendanceRedux) => {
-    fetch('https://iusk.000webhostapp.com/matc_attendance/updateAttendance.php', {
+    fetch(domain + 'updateAttendance.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -66,7 +49,7 @@ const updateAttendance = (studentId, present, updateAttendanceRedux) => {
             studentId: studentId,
             present: present
         })
-    }).then((response) => response.text())
+    }).then((response) => response.json())
     .then((responseJson) => {
         updateAttendanceRedux(responseJson);
     }).catch((error) => {
@@ -74,4 +57,4 @@ const updateAttendance = (studentId, present, updateAttendanceRedux) => {
     })
 }
 
-export { takeAttendance, getAttendance, checkAttendance, updateAttendance }
+export { takeAttendance, getAttendance, updateAttendance }

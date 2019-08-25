@@ -1,4 +1,6 @@
-const URL = 'https://iusk.000webhostapp.com/matc_attendance/manageStudents.php';
+import domain from './domain';
+
+const URL = domain + 'manageStudents.php';
 
 const addStudent = (locationId, firstName, lastName, checkError, updateStudentRedux) => {
     const type = 'Add';
