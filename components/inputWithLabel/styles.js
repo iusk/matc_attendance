@@ -3,6 +3,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     wrapper: {
+        width: wp(90),
         margin: wp(2),
         borderBottomWidth: 1,
         borderColor: '#fefdfa',

@@ -10,13 +10,35 @@ class InputWithLabel extends React.Component {
     //     icon: React.propTypes.string.isRequired,
     // }
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            secureTextEntry: this.props.secure,
+            secureIcon: 'eye-outline'
+        }
+    }
+
+    _changeSecureState = () => {
+        if (this.state.secureTextEntry) {
+            this.setState({
+                secureTextEntry: false,
+                secureIcon: 'eye-off-outline'
+            });
+        } else {
+            this.setState({
+                secureTextEntry: true,
+                secureIcon: 'eye-outline'
+            });
+        }
+    }
+
     render() {
-        const secure = (this.props.name === 'Password');
         return (
             <View style={styles.wrapper}>
                 <Icon
                     name={this.props.icon}
-                    type='antdesign'
+                    type='material-community'
                     color='#fefdfa'
                 />
                 <TextInput
@@ -24,8 +46,17 @@ class InputWithLabel extends React.Component {
                     placeholder={this.props.name}
                     value={this.props.value}
                     onChangeText={this.props.onChangeText}
-                    secureTextEntry={secure}
+                    secureTextEntry={this.state.secureTextEntry}
                 />
+                {(this.props.secure) ?
+                    <Icon
+                        name={this.state.secureIcon}
+                        type='material-community'
+                        color='#fefdfa'
+                        onPress={this._changeSecureState}
+                        underlayColor='#d00000'
+                    /> : null
+                }
             </View>
         );
     }

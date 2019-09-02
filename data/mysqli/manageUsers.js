@@ -75,4 +75,26 @@ const deleteUser = (id, checkError, updateUserRedux) => {
     })
 }
 
-export { updateUser, deleteUser, addUser };
+const verifyUser = (id, checkError, updateUserRedux) => {
+    const type = 'Verify';
+    fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            type: type,
+            id: id
+        })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        updateUserRedux(responseJson);
+        checkError(type, 0);
+    }).catch((error) => {
+        checkError(type, 1);
+        console.warn(error);
+    }) 
+}
+
+export { updateUser, deleteUser, addUser, verifyUser };

@@ -1,11 +1,12 @@
 import React from 'react';
 import { Modal, View, Text, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { addLocation, removeLocation } from '../../data/mysqli/manageUserLocations';
+import { addUserLocation, deleteUserLocation } from '../../data/mysqli';
 import UserLocationsList from '../userLocationsList';
 import { updateUserLocations, updateUserInfoLocations } from '../../data/redux';
 import { getUserId } from '../../data/asyncStorage';
 import { connect } from 'react-redux';
+import memoize from 'memoize-one';
 import styles from './styles';
 
 class UserLocationsForm extends React.Component {
@@ -13,38 +14,39 @@ class UserLocationsForm extends React.Component {
         super(props);
 
         this.state = {
-            userId: this.props.userId,
-            visible: this.props.visible,
-            assignedLocations: [],
-            unassignedLocations: []
-        }        
+            visible: this.props.visible
+        }
+
+        this.assignedLocation = [];
+        this.unassignedLocation = [];
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(prevProps) {
+        if (prevProps.visible !== this.props.visible) {
+            this.setState({
+                visible: this.props.visible
+            });
+        }
+    }
+
+    _setLocations = memoize((userId, userLocations, locations) => {
         // getting an array of location objects that have been assigned and
         // mapping just the ids of the objects
 
-        const assignedLocationIds = (props.userLocations.filter(
-            obj =>  obj.userId === props.userId )).map(
+        const assignedLocationIds = (userLocations.filter(
+            obj =>  obj.userId === userId )).map(
             assignedUserLocations => assignedUserLocations.locationId);
 
-        const assignedLocations = props.locations.filter(obj => assignedLocationIds.includes(obj.id));
-        const unassignedLocations = props.locations.filter(obj => !assignedLocationIds.includes(obj.id));
-
-        this.setState({ 
-            visible: props.visible,
-            userId: props.userId,
-            assignedLocations: assignedLocations,
-            unassignedLocations: unassignedLocations
-        });
-    }
+        this.assignedLocations = locations.filter(obj => assignedLocationIds.includes(obj.id));
+        this.unassignedLocations = locations.filter(obj => !assignedLocationIds.includes(obj.id));
+    });
 
     _addLocation = (locationId) => {
-        addLocation(this.state.userId, locationId, this.updateLocationRedux);
+        addUserLocation(this.props.userId, locationId, this.updateLocationRedux);
     }
 
     _removeLocation = (locationId) => {
-        removeLocation(this.state.userId, locationId, this.updateLocationRedux);
+        deleteUserLocation(this.props.userId, locationId, this.updateLocationRedux);
     }
 
     updateLocationRedux = async (userLocations) => {
@@ -58,8 +60,7 @@ class UserLocationsForm extends React.Component {
     }
 
     render() {
-        let assignedKey = 0;
-        let unassignedKey = 0;
+        this._setLocations(this.props.userId, this.props.userLocations, this.props.locations);
         return (
             <Modal visible={this.state.visible} transparent={true} animationType='slide'>
                 <View style={styles.wrapper}>
@@ -71,9 +72,9 @@ class UserLocationsForm extends React.Component {
                         <View style={styles.locationWrapper}>
                             <Text style={styles.label}>Assigned Locations:</Text>
                             <ScrollView>
-                                {this.state.assignedLocations.map( assignedLocation => 
+                                {this.assignedLocations.map( assignedLocation => 
                                     <UserLocationsList
-                                        key={assignedKey++}
+                                        key={assignedLocation.id}
                                         id={assignedLocation.id}
                                         name={assignedLocation.name}
                                         iconName='map-marker-off'
@@ -85,9 +86,9 @@ class UserLocationsForm extends React.Component {
                         <View style={styles.locationWrapper}>
                             <Text style={styles.label}>Unassigned Locations:</Text>
                             <ScrollView>
-                                {this.state.unassignedLocations.map( unassignedLocation =>
+                                {this.unassignedLocations.map( unassignedLocation =>
                                     <UserLocationsList
-                                        key={unassignedKey++}
+                                        key={unassignedLocation.id}
                                         id={unassignedLocation.id}
                                         name={unassignedLocation.name}
                                         iconName='map-marker-plus'

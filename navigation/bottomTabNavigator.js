@@ -3,7 +3,7 @@ import { Icon } from 'react-native-elements';
 import { createBottomTabNavigator } from 'react-navigation';
 import { HomeStack, ReportStack, ProfileStack } from './stacks';
 
-// combining the stacks (except authentication stack) to create a bottom tab navigator
+// combining the stacks (except authentication stack and basic stack) to create a bottom tab navigator
 const BottomTabNavigator = createBottomTabNavigator({
     Home: {
         screen: HomeStack,

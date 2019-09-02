@@ -15,5 +15,10 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    iconSize: wp(8)
+    iconSize: wp(8),
+    info: {
+        color: '#8c8c8c',
+        marginLeft: wp(2.5),
+        fontSize: wp(5),
+    },
 });

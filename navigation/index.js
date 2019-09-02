@@ -1,4 +1,4 @@
-import { AuthStack } from './stacks';
+import { AuthStack, BasicStack } from './stacks';
 import BottomTabNavigator from './bottomTabNavigator';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
@@ -8,7 +8,8 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 export default createAppContainer(createSwitchNavigator(
     {
         App: BottomTabNavigator,
-        Auth: AuthStack
+        Auth: AuthStack,
+        Basic: BasicStack
     },
     {
         initialRouteName: 'Auth'

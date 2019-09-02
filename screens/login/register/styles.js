@@ -5,17 +5,29 @@ export default StyleSheet.create({
     mainWrapper: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#d00000'
     },
-    titleWrapper: {
-        flex: 9,
+    infoWrapper: {
+        flex: 4,
         justifyContent: 'center',
         alignItems: 'center'
     },
+    heading: {
+        fontSize: wp(8),
+        fontFamily: 'sans-serif-medium',
+        color: '#fefdfa',
+        marginBottom: hp(5)
+    },
+    info: {
+        fontSize: wp(4),
+        fontFamily: 'sans-serif-medium',
+        color: '#fefdfa',
+        margin: wp(2),
+        textAlign: 'center'
+    },
     formWrapper: {
-        flex: 11,
+        flex: 6,
         alignItems: 'center',
     },
     organization: {
@@ -29,11 +41,6 @@ export default StyleSheet.create({
         margin: wp(10),
         borderBottomWidth: 1,
         borderColor: '#fefdfa'
-    },
-    heading: {
-        fontSize: wp(6),
-        fontFamily: 'sans-serif-medium',
-        color: '#fefdfa'
     },
     gap: {
         height: wp(5)
@@ -51,12 +58,6 @@ export default StyleSheet.create({
     },
     buttonLoading: {
         color: '#d00000'
-    },
-    footerText: {
-        fontSize: wp(4),
-        fontFamily: 'sans-serif-medium',
-        color: '#fefdfa',
-        margin: wp(2),
     },
     link: {
         textDecorationLine: 'underline'

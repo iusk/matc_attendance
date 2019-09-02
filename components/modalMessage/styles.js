@@ -11,6 +11,7 @@ export default StyleSheet.create({
     innerWrapper: {
         width: wp(60),
         height: hp(15),
+        padding: wp(5),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fefdfa'

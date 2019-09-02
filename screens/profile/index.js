@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { signOut } from '../../data/asyncStorage';
 import { BoxLink, ModalLoading } from '../../components';
@@ -74,24 +74,46 @@ class ProfileScreen extends React.Component {
     _gotoViewSchedule = () => {
         this.props.navigation.navigate('ViewSchedule');
     }
+
+    _gotoChangePassword = () => {
+        this.props.navigation.navigate('ChangePassword');
+    }
+
+    _gotoChangePasswordBasic = () => {
+        this.props.navigation.navigate('ChangePasswordBasic');
+    }
     
     render() {
-        return (
-            <View style={styles.wrapper}>
-                <BoxLink name='Change Password' iconName='key-variant' iconType='material-community' />
-                <BoxLink name='View Schedule' iconName='calendar-range' iconType='material-community' onPress={this._gotoViewSchedule} />
-                <BoxLink name='Manage Students' iconName='users' iconType='font-awesome' 
-                        onPress={() => this.props.navigation.navigate('ManageStudents')} />
-                {((this.props.locations !== undefined) && (this.props.locations.length > 0)) ?
-                <BoxLink name='Set Current Location' iconName='my-location' iconType='material' onPress={this._gotoSetLocation} />
-                : null}
-                {(this.props.admin === 1) ?
-                <BoxLink name='Admin Control Panel' iconName='account-key' iconType='material-community' onPress={this._gotoAdmin} />
-                : null}
-                <BoxLink name='Logout' iconName='logout' iconType='material-community' onPress={this._signOut} />
-                <ModalLoading msg='Gathering Information for Admins...' visible={this.state.modalLoading} />
-            </View>
-        );
+        if (this.props.locations.length > 0) {
+            return (
+                <View style={styles.wrapper}>
+                    <BoxLink name='Change Password' iconName='key-variant' iconType='material-community' onPress={this._gotoChangePassword} />
+                    <BoxLink name='View Schedule' iconName='calendar-range' iconType='material-community' onPress={this._gotoViewSchedule} />
+                    <BoxLink name='Manage Students' iconName='users' iconType='font-awesome' 
+                            onPress={() => this.props.navigation.navigate('ManageStudents')} />
+                    {((this.props.locations !== undefined) && (this.props.locations.length > 1)) ?
+                    <BoxLink name='Set Current Location' iconName='my-location' iconType='material' onPress={this._gotoSetLocation} />
+                    : null}
+                    {(this.props.admin === 1) ?
+                    <BoxLink name='Admin Control Panel' iconName='account-key' iconType='material-community' onPress={this._gotoAdmin} />
+                    : null}
+                    <BoxLink name='Logout' iconName='logout' iconType='material-community' onPress={this._signOut} />
+                    <ModalLoading msg='Gathering Information for Admins...' visible={this.state.modalLoading} />
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.wrapper}>
+                    <Text style={styles.info}>
+                        You have not been assigned to any locations yet. Please contact the administrators to be assigned the locations that
+                        you are taking the attendance for. Thank you!
+                    </Text>
+                    <BoxLink name='Change Password' iconName='key-variant' iconType='material-community' onPress={this._gotoChangePasswordBasic} />
+                    <BoxLink name='Logout' iconName='logout' iconType='material-community' onPress={this._signOut} />
+                </View>
+            );
+        }
+        
     }
 }
 

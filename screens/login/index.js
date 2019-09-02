@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
@@ -10,7 +10,7 @@ import { setUser, setDefaultLocationStudents, setAttendance } from '../../data/r
 import { getAttendance } from '../../data/mysqli/manageAttendance';
 import { getUserId } from '../../data/asyncStorage';
 import { getUserInfo } from '../../data/mysqli/getInfo';
-import { userLogin } from '../../data/mysqli/userLogin';
+import { userLogin } from '../../data/mysqli';
 
 import styles from './styles';
 
@@ -22,15 +22,14 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            modalLoading: true,
+        this.state = { 
             email: '',
             password: '',
-            errMessage: '',
+            modalLoading: true,
             buttonLoading: false
         };
 
-        this.checkSignedIn(this.saveUserInfo, this.saveStudentsInfo, this.disableLoadingScreen);
+        this.checkSignedIn(this.saveUserInfo);
     }
 
     disableLoadingScreen = () => {
@@ -38,6 +37,7 @@ class LoginScreen extends React.Component {
     }
 
     saveUserInfo = async (response, getStudentsInfo) => {
+        console.log('saving user info');
         this.props.setUser(
             response.username, 
             response.admin,
@@ -48,7 +48,8 @@ class LoginScreen extends React.Component {
             defaultLocationId = response.locations[0].id;
             setDefaultLocationId(defaultLocationId);
         } else if (response.locations.length === 0) { // user hasn't been assigned any locations yet
-            this.props.navigation.navigate('Profile-Only');
+            this.disableLoadingScreen();
+            this.props.navigation.navigate('ProfileOnly');
             return;
         }
         await getAttendance(defaultLocationId, this.setAttendanceRedux);
@@ -73,15 +74,28 @@ class LoginScreen extends React.Component {
     onChangePassword = (text) => {
         this.setState( {password: text} );
     }
-    
+
+    _gotoRegisterScreen = () => {
+        this.props.navigation.navigate('Register');
+    }
+
+    _gotoForgotPasswordScreen = () => {
+        this.props.navigation.navigate('ForgotPassword');
+    }
+
     _login = (response) => {
-        if (response === 'Username/Password not recognized.') {
+        if (typeof response === 'string') { // string means login failed
             this.setState({
-                errMessage: response,
                 buttonLoading: false
             });
-        } else {
-            signIn(response, this.checkSignedIn, this.saveUserInfo, this.disableLoadingScreen);
+            Alert.alert(
+                'Couldn\'t Login',
+                response,
+                [{ text: 'Ok' }],
+                { cancelable: true }
+            );
+        } else { // login passed if its an id (int)
+            signIn(response, this.checkSignedIn, this.saveUserInfo);
         }
     }
     
@@ -90,12 +104,13 @@ class LoginScreen extends React.Component {
         userLogin(this.state.email, this.state.password, this._login);
     };
     
-    checkSignedIn = async (saveUserInfo, disableLoadingScreen) => {
+    checkSignedIn = async (saveUserInfo) => {
         const userId = await getUserId();
-        if (userId) {
+        if (!isNaN(userId)) {
+            console.log('gettign user info');
             getUserInfo(userId, saveUserInfo);
         } else {
-            disableLoadingScreen();
+            this.disableLoadingScreen();
         }
     };
 
@@ -117,18 +132,19 @@ class LoginScreen extends React.Component {
                     <Text style={styles.heading}>Login</Text>
                 </View>
                 <View style={styles.formWrapper}>
-                    <Text>{this.state.errMessage}</Text>
                     <InputWithLabel 
-                        icon="user" 
-                        name="Email Address" 
+                        icon="email-outline" 
+                        name="Email Address"
                         onChangeText={this.onChangeEmail} 
-                        value={this.state.email} 
+                        value={this.state.email}
+                        secure={false}
                     />
-                    <InputWithLabel 
-                        icon="lock" 
-                        name="Password" 
-                        onChangeText={this.onChangePassword} 
-                        value={this.state.password} 
+                    <InputWithLabel
+                        icon="lock-outline"
+                        name="Password"
+                        onChangeText={this.onChangePassword}
+                        value={this.state.password}
+                        secure={true}
                     />
                     <Button
                         title="Login"
@@ -138,6 +154,12 @@ class LoginScreen extends React.Component {
                         loading={this.state.buttonLoading}
                         loadingProps={styles.buttonLoading}
                     />
+                    <Text style={styles.footerText}>
+                        Not Registered? <Text onPress={this._gotoRegisterScreen} style={styles.link}>Tap here</Text> to sign up.
+                    </Text>
+                    <Text style={styles.footerText}>
+                        <Text onPress={this._gotoForgotPasswordScreen} style={styles.link}>Forgot password?</Text>
+                    </Text>
                 </View>
                 <ModalLoading visible={this.state.modalLoading} msg='Please wait while we gather your info...' />
             </View>

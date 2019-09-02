@@ -3,8 +3,9 @@ import { takeAttendance, getAttendance, updateAttendance } from './manageAttenda
 import { addLocation, updateLocation, deleteLocation } from './manageLocations';
 import { addStudent, updateStudent, deleteStudent } from './manageStudents';
 import { addUserLocation, deleteUserLocation } from './manageUserLocations';
-import { addUser, updateUser, deleteUser } from './manageUsers';
+import { addUser, updateUser, deleteUser, verifyUser } from './manageUsers';
 import userLogin from './userLogin';
+import { changePassword, registerUser } from './manageUser';
 
 export {
     getUserInfo, getStudentsInfo, getAdminInfo,
@@ -12,6 +13,7 @@ export {
     addLocation, updateLocation, deleteLocation,
     addStudent, updateStudent, deleteStudent,
     addUserLocation, deleteUserLocation,
-    addUser, updateUser, deleteUser,
-    userLogin
+    addUser, updateUser, deleteUser, verifyUser,
+    userLogin,
+    changePassword, registerUser
 }

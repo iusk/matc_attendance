@@ -3,7 +3,7 @@ import { Modal, View, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FormInput from '../formInput';
 import FormSelect from '../formSelect';
-import { updateUser, deleteUser, addUser } from '../../data/mysqli/manageUsers';
+import { updateUser, deleteUser, addUser } from '../../data/mysqli';
 import { updateUsers } from '../../data/redux';
 import { connect } from 'react-redux';
 import styles from './styles';
