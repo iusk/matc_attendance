@@ -36,15 +36,19 @@ class LoginScreen extends React.Component {
         this.setState({ modalLoading: false });
     }
 
+    _checkDefaultLocationExists = (locationId, locations) => {
+        return ((locations.find(obj => obj.id === locationId)) !== undefined);
+    }
+
     saveUserInfo = async (response, getStudentsInfo) => {
-        console.log('saving user info');
         this.props.setUser(
             response.username, 
             response.admin,
             response.locations
         );
         let defaultLocationId = await getDefaultLocationId();
-        if (!defaultLocationId && response.locations.length > 0) {
+        const defaultLocationExists = this._checkDefaultLocationExists(defaultLocationId, response.locations);
+        if (!(defaultLocationId && defaultLocationExists) && response.locations.length > 0) {
             defaultLocationId = response.locations[0].id;
             setDefaultLocationId(defaultLocationId);
         } else if (response.locations.length === 0) { // user hasn't been assigned any locations yet
@@ -107,7 +111,6 @@ class LoginScreen extends React.Component {
     checkSignedIn = async (saveUserInfo) => {
         const userId = await getUserId();
         if (!isNaN(userId)) {
-            console.log('gettign user info');
             getUserInfo(userId, saveUserInfo);
         } else {
             this.disableLoadingScreen();

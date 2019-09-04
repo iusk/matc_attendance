@@ -6,7 +6,7 @@ import FormSelect from '../formSelect';
 import FormTime from '../formTime';
 import { updateLocation, deleteLocation, addLocation } from '../../data/mysqli/manageLocations';
 import { updateLocations, updateUserInfoLocations } from '../../data/redux';
-import { getUserId } from '../../data/asyncStorage';
+import { getUserId, getDefaultLocationId } from '../../data/asyncStorage';
 import { connect } from 'react-redux';
 import styles from './styles';
 
@@ -61,15 +61,26 @@ class LocationForm extends React.Component {
             this.state.updateStartTime, this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
     }
 
-    _deleteLocation = () => {
+    _deleteLocation = async () => {
         this.props.closeForm();
         Alert.alert(
             'Are you sure?',
-            'Deleting this location will remove all the schedules for this location too.',
+            'Deleting this location will remove all the students and attendance for this location too.',
             [
                 {
                     text: 'Yes', 
-                    onPress: () => deleteLocation(this.props.id, this.props.checkError, this.updateLocationRedux)
+                    onPress: async () => {
+                        if (this.props.id !== await getDefaultLocationId()) {
+                            deleteLocation(this.props.id, this.props.checkError, this.updateLocationRedux);
+                        } else {
+                            Alert.alert(
+                                'Can\'t delete', 
+                                'You can\'t delete the location you are currently set as. Change your current location first.',
+                                [ {text: 'Okay'} ]
+                            )
+                        }
+                        
+                    }
                 },
                 {
                     text: 'No',

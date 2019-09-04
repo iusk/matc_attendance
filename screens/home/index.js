@@ -52,7 +52,6 @@ class HomeScreen extends React.Component {
     }
 
     setLocationName = memoize((currentLocationId) => {
-        console.log('setting location name');
         if (currentLocationId) {
             const locationName = this.props.locations.find(
                 obj => obj.id === this.currentLocationId
@@ -63,7 +62,6 @@ class HomeScreen extends React.Component {
 
     checkAttendance = memoize((attendance) => {
         if (attendance !== undefined) {
-            console.log('checking attendance');
             return attendance.hasOwnProperty(convertDate(this.today));
         }
     });    
