@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal, View, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FormInput from '../formInput';
-import { addStudent, updateStudent, deleteStudent } from '../../data/mysqli/manageStudents';
-import { setDefaultLocationStudents } from '../../data/redux';
+import { addStudent, updateStudent, deleteStudent, getAttendance } from '../../data/mysqli';
+import { setDefaultLocationStudents, setAttendance } from '../../data/redux';
 import { connect } from 'react-redux';
 import styles from './styles';
 
@@ -66,6 +66,11 @@ class StudentForm extends React.Component {
 
     updateStudentRedux = (response) => {
         this.props.updateStudents(response);
+        getAttendance(this.props.locationId, this.setAttendanceRedux);
+    }
+
+    setAttendanceRedux = (response) => {
+        this.props.setAttendance(response);
     }
 
     render() {
@@ -96,7 +101,7 @@ class StudentForm extends React.Component {
                     </View>
                 </View>
             </Modal>
-        );
+        );updateStudents
     }
 }
 
@@ -113,6 +118,9 @@ const mapDispatchToProps = dispatch => {
     return {
         updateStudents: (students) => {
             dispatch(setDefaultLocationStudents(students));
+        },
+        setAttendance: (attendance) => {
+            dispatch(setAttendance(attendance));
         }
     }
 }

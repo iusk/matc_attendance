@@ -76,6 +76,8 @@ class ReportScreen extends React.Component {
         const date = this.state.date;
         if (this.state.dateSelected && this.props.attendance[date] !== undefined) {
             const today = convertDate(this.today);
+            console.log(today);
+            console.log(this.props.attendance);
             this.sortAttendance([...this.props.attendance[date]]);
             return (
                 <View style={styles.wrapper}>

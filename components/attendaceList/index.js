@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import styles from './styles';
 
@@ -24,6 +24,13 @@ class AttendanceList extends React.Component {
         } else if (this.props.type === 'View') {
             if (this.props.updatable) {
                 this.props.onPress(this.props.id, this.props.checked);
+            } else {
+                Alert.alert(
+                    'Can\'t update!',
+                    'Only today\'s attendance can be updated!',
+                    [{ text: 'Okay' }],
+                    {cancelable: true},
+                );
             }
         }
         
