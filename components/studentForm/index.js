@@ -34,14 +34,34 @@ class StudentForm extends React.Component {
         this.setState( {updateLastName: text} );
     }
 
+    _fieldsNotEmpty = () => {
+        if (this.state.updateFirstName !== '' && this.state.updateLastName !== '') {
+            return true;
+        } else {
+            Alert.alert(
+                'Please make sure none of the fields are empty.',
+                response,
+                [{ text: 'Okay' }],
+                { cancelable: true }
+            );
+            return false;
+        }
+    }
+
     _addStudent = async () => {
-        this.props.closeForm();
-        addStudent(this.props.locationId, this.state.updateFirstName, this.state.updateLastName, this.props.checkError, this.updateStudentRedux);
+        if (this._fieldsNotEmpty) {
+            this.props.closeForm();
+            addStudent(this.props.locationId, this.state.updateFirstName, 
+                    this.state.updateLastName, this.props.checkError, this.updateStudentRedux);
+        }
     }
 
     _updateStudent = () => {
-        this.props.closeForm();
-        updateStudent(this.props.id, this.props.locationId, this.state.updateFirstName, this.state.updateLastName, this.props.checkError, this.updateStudentRedux);
+        if (this._fieldsNotEmpty) {
+            this.props.closeForm();
+            updateStudent(this.props.id, this.props.locationId, 
+                        this.state.updateFirstName, this.state.updateLastName, this.props.checkError, this.updateStudentRedux);
+        }
     }
 
     _deleteStudent = () => {

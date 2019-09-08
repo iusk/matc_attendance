@@ -139,7 +139,7 @@ class ManageLocationsScreen extends React.Component {
                     type={this.state.formType}
                     closeForm={this.closeForm}
                 />
-                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', 0, null, null, 'Add')}>
+                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', 0, '', '', 'Add')}>
                     <Icon type='material-community' name='map-marker-plus' color='#fefdfa' size={styles.iconSize} />
                 </TouchableOpacity>
             </React.Fragment>

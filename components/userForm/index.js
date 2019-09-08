@@ -41,14 +41,34 @@ class UserForm extends React.Component {
         this.setState( {updateAdmin: value} );
     }
 
+    _fieldsNotEmpty = () => {
+        if (this.state.updateName !== '' && this.state.updateEmail !== '') {
+            return true;
+        } else {
+            Alert.alert(
+                'Please make sure none of the fields are empty.',
+                response,
+                [{ text: 'Okay' }],
+                { cancelable: true }
+            );
+            return false;
+        }
+    }
+
     _addUser = () => {
-        this.props.closeForm();
-        addUser(this.state.updateName, this.state.updateEmail, this.state.updateAdmin, 1, this.props.checkError, this.updateUserRedux);
+        if (this._fieldsNotEmpty) {
+            this.props.closeForm();
+            addUser(this.state.updateName, this.state.updateEmail, 
+                    this.state.updateAdmin, 1, this.props.checkError, this.updateUserRedux);
+        }
     }
 
     _updateUser = () => {
-        this.props.closeForm();
-        updateUser(this.props.id, this.state.updateName, this.state.updateEmail, this.state.updateAdmin, this.props.checkError, this.updateUserRedux);
+        if (this._fieldsNotEmpty) {
+            this.props.closeForm();
+            updateUser(this.props.id, this.state.updateName, this.state.updateEmail, 
+                        this.state.updateAdmin, this.props.checkError, this.updateUserRedux);
+        }
     }
 
     _deleteUser = () => {

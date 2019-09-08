@@ -49,16 +49,35 @@ class LocationForm extends React.Component {
         this.setState( {updateEndTime: value} );
     }
 
+    _fieldsNotEmpty = () => {
+        if (this.state.updateName !== '' && this.state.updateDay !== 0
+            && this.state.updateStartTime && this.state.updateEndTime !== '') {
+            return true;
+        } else {
+            Alert.alert(
+                'Please make sure none of the fields are empty.',
+                response,
+                [{ text: 'Okay' }],
+                { cancelable: true }
+            );
+            return false;
+        }
+    }
+
     _addLocation = () => {
-        this.props.closeForm();
-        addLocation(this.state.updateName, this.state.updateDay, this.state.updateStartTime, 
-            this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
+        if (this._fieldsNotEmpty) {
+            this.props.closeForm();
+            addLocation(this.state.updateName, this.state.updateDay, this.state.updateStartTime, 
+                        this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
+        }
     }
 
     _updateLocation = () => {
-        this.props.closeForm();
-        updateLocation(this.props.id, this.state.updateName, this.state.updateDay, 
-            this.state.updateStartTime, this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
+        if (this._fieldsNotEmpty) {
+            this.props.closeForm();
+            updateLocation(this.props.id, this.state.updateName, this.state.updateDay, 
+                        this.state.updateStartTime, this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
+        }
     }
 
     _deleteLocation = async () => {
