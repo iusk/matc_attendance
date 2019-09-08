@@ -88,7 +88,6 @@ class UserForm extends React.Component {
             ],
             {cancelable: true},
         );
-        
     }
 
     updateUserRedux = (response) => {
