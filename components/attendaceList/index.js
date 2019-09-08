@@ -33,7 +33,6 @@ class AttendanceList extends React.Component {
                 );
             }
         }
-        
     }
 
     render() {

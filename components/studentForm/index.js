@@ -39,8 +39,8 @@ class StudentForm extends React.Component {
             return true;
         } else {
             Alert.alert(
-                'Please make sure none of the fields are empty.',
-                response,
+                'Invalid Input',
+                'Please make sure none of the fields are empty',
                 [{ text: 'Okay' }],
                 { cancelable: true }
             );
@@ -49,7 +49,7 @@ class StudentForm extends React.Component {
     }
 
     _addStudent = async () => {
-        if (this._fieldsNotEmpty) {
+        if (this._fieldsNotEmpty()) {
             this.props.closeForm();
             addStudent(this.props.locationId, this.state.updateFirstName, 
                     this.state.updateLastName, this.props.checkError, this.updateStudentRedux);
@@ -57,7 +57,7 @@ class StudentForm extends React.Component {
     }
 
     _updateStudent = () => {
-        if (this._fieldsNotEmpty) {
+        if (this._fieldsNotEmpty()) {
             this.props.closeForm();
             updateStudent(this.props.id, this.props.locationId, 
                         this.state.updateFirstName, this.state.updateLastName, this.props.checkError, this.updateStudentRedux);

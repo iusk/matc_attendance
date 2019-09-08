@@ -46,8 +46,8 @@ class UserForm extends React.Component {
             return true;
         } else {
             Alert.alert(
-                'Please make sure none of the fields are empty.',
-                response,
+                'Invalid Input',
+                'Please make sure none of the fields are empty',
                 [{ text: 'Okay' }],
                 { cancelable: true }
             );
@@ -56,7 +56,7 @@ class UserForm extends React.Component {
     }
 
     _addUser = () => {
-        if (this._fieldsNotEmpty) {
+        if (this._fieldsNotEmpty()) {
             this.props.closeForm();
             addUser(this.state.updateName, this.state.updateEmail, 
                     this.state.updateAdmin, 1, this.props.checkError, this.updateUserRedux);
@@ -64,7 +64,7 @@ class UserForm extends React.Component {
     }
 
     _updateUser = () => {
-        if (this._fieldsNotEmpty) {
+        if (this._fieldsNotEmpty()) {
             this.props.closeForm();
             updateUser(this.props.id, this.state.updateName, this.state.updateEmail, 
                         this.state.updateAdmin, this.props.checkError, this.updateUserRedux);

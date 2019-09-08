@@ -63,7 +63,7 @@ class HomeScreen extends React.Component {
     checkAttendance = memoize((attendance) => {
         if (attendance !== undefined) {
             return attendance.hasOwnProperty(convertDate(this.today));
-        }
+        } else return true; // this prevents the else condition in render from running
     });    
 
     _sortStudents = memoize((students) => {

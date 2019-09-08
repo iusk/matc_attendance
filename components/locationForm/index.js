@@ -6,7 +6,7 @@ import FormSelect from '../formSelect';
 import FormTime from '../formTime';
 import { updateLocation, deleteLocation, addLocation } from '../../data/mysqli/manageLocations';
 import { updateLocations, updateUserInfoLocations } from '../../data/redux';
-import { getUserId, getDefaultLocationId } from '../../data/asyncStorage';
+import { getDefaultLocationId } from '../../data/asyncStorage';
 import { connect } from 'react-redux';
 import styles from './styles';
 
@@ -55,8 +55,8 @@ class LocationForm extends React.Component {
             return true;
         } else {
             Alert.alert(
-                'Please make sure none of the fields are empty.',
-                response,
+                'Invalid Input',
+                'Please make sure none of the fields are empty',
                 [{ text: 'Okay' }],
                 { cancelable: true }
             );
@@ -65,7 +65,7 @@ class LocationForm extends React.Component {
     }
 
     _addLocation = () => {
-        if (this._fieldsNotEmpty) {
+        if (this._fieldsNotEmpty()) {
             this.props.closeForm();
             addLocation(this.state.updateName, this.state.updateDay, this.state.updateStartTime, 
                         this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
@@ -73,7 +73,7 @@ class LocationForm extends React.Component {
     }
 
     _updateLocation = () => {
-        if (this._fieldsNotEmpty) {
+        if (this._fieldsNotEmpty()) {
             this.props.closeForm();
             updateLocation(this.props.id, this.state.updateName, this.state.updateDay, 
                         this.state.updateStartTime, this.state.updateEndTime, this.props.checkError, this.updateLocationRedux);
@@ -111,13 +111,8 @@ class LocationForm extends React.Component {
     }
 
     updateLocationRedux = async (locations, checkError, type) => {
-        const userId = await getUserId();
-        const userLocationIds = (this.props.userLocations.filter(
-                                obj =>  obj.userId === userId )).map(
-                                userLocations => userLocations.locationId);
-        const userLocations = locations.filter(obj => userLocationIds.includes(obj.id));
         this.props.updateLocations(locations);
-        this.props.updateUserInfoLocations(userLocations);
+        this.props.updateUserInfoLocations(locations);
         checkError(type, 0);
     }
 

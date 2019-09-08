@@ -11,7 +11,7 @@ const convertDate = memoize((dateObject=null, year, month, day) => {
 })
 
 const convertTime = memoize((time) => {
-    if (typeof time === 'string') {
+    if (time !== '') {
         [hour, minute, _] = time.split(":");
         let suffix = '';
         if (hour >= 12) {
