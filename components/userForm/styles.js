@@ -30,6 +30,11 @@ export default StyleSheet.create({
         marginRight: wp(5),
         marginTop: hp(2)
     },
+    notRegistered: {
+        textAlign: 'center',
+        color: '#d00000',
+        fontSize: wp(4),
+    },
     addButton: {
         width: wp(60),
         height: hp(5)

@@ -31,6 +31,7 @@ class ManageUsersScreen extends React.Component {
             name: '',
             email: '',
             admin: 0,
+            registered: true,
             formType: '',
             messageModalVisible: false,
             messageModalSuccess: true,
@@ -38,13 +39,16 @@ class ManageUsersScreen extends React.Component {
         }
     }
 
-    openForm = (id, name, email, admin, type) => {
+    openForm = (id, name, email, admin, registered, type) => {
+        console.log('opening form');
+        console.log(registered);
         this.setState({
             formType: type,
             id: id,
             name: name,
             email: email,
             admin: admin,
+            registered: registered,
             formVisible: true,
         });
     }
@@ -178,6 +182,7 @@ class ManageUsersScreen extends React.Component {
     }
 
     _getVerifiedUsers = memoize((users) => {
+        console.log('getting verifiedUsers');
         let verifiedUsers = [...users];
         return verifiedUsers.filter(
             obj => obj.verified === 1
@@ -194,6 +199,7 @@ class ManageUsersScreen extends React.Component {
     render() {
         const verifiedUsers = this._getVerifiedUsers(this.state.users);
         const unverifiedUsers = this._getUnverifiedUsers(this.state.users);
+        console.log(verifiedUsers);
         return (
             <React.Fragment>
                 <ScrollView>
@@ -222,6 +228,7 @@ class ManageUsersScreen extends React.Component {
                             email={user.email}
                             admin={user.admin}
                             verified={true}
+                            registered={user.registered}
                             firstIconPress={this.openForm}
                             secondIconPress={this.openLocationsForm}
                         />)
@@ -238,6 +245,7 @@ class ManageUsersScreen extends React.Component {
                     name={this.state.name}
                     email={this.state.email}
                     admin={this.state.admin}
+                    registered={this.state.registered}
                     checkError={this.checkError}
                     type={this.state.formType}
                     closeForm={this.closeForm}
@@ -247,7 +255,7 @@ class ManageUsersScreen extends React.Component {
                     userId={this.state.id}
                     closeForm={this.closeLocationsForm}
                 />
-                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 'Add')}>
+                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 0, 'Add')}>
                     <Icon type='material-community' name='account-plus' color='#fefdfa' size={styles.iconSize} />
                 </TouchableOpacity>
             </React.Fragment>

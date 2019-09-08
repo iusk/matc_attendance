@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, Alert } from 'react-native';
+import { Modal, View, Text, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FormInput from '../formInput';
 import FormSelect from '../formSelect';
@@ -103,6 +103,9 @@ class UserForm extends React.Component {
                             <Icon iconStyle={styles.cancelButton} type='material-community' 
                                 name='close' color='#d00000' onPress={this.props.closeForm} />
                         </View>
+                        {(this.props.registered === 0) ? 
+                            <Text style={styles.notRegistered}>This user has not yet registered.</Text> 
+                        : null}
                         <View style={styles.inputWrapper}>
                             <FormInput name='Name' value={this.state.updateName} onChangeText={this._onChangeUserName} />
                             <FormInput name='Email' value={this.state.updateEmail} onChangeText={this._onChangeEmail} />

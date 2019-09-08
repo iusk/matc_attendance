@@ -26,6 +26,7 @@ class UserList extends React.Component {
             this.props.name,
             this.props.email,
             this.props.admin,
+            this.props.registered,
             'Edit'
         );
     }
