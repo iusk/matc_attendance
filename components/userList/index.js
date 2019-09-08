@@ -39,7 +39,7 @@ class UserList extends React.Component {
     }
 
     _verifyUser = () => {
-        this.props.firstIconPress(this.props.id, this.props.name);
+        this.props.firstIconPress(this.props.id, this.props.name, this.props.email);
     }
 
     _deleteUser = () => {

@@ -77,14 +77,14 @@ class ManageUsersScreen extends React.Component {
         this.setState( { locationsFormVisible: false} );
     }
 
-    verifyUser = (id, name) => {
+    verifyUser = (id, name, email) => {
         Alert.alert(
             'Verify User',
-            'Are you sure you want to verify \'' + name + '\'?',
+            'Are you sure you want to verify \'' + name + '\'? The user will be notified upon verification.',
             [
                 {
                     text: 'Yes', 
-                    onPress: () => verifyUser(id, this.checkError, this.updateUserRedux)
+                    onPress: () => verifyUser(id, name, email, this.checkError, this.updateUserRedux)
                 },
                 {
                     text: 'No',
@@ -207,6 +207,7 @@ class ManageUsersScreen extends React.Component {
                                     key={user.id}
                                     id={user.id}
                                     name={user.username}
+                                    email={user.email}
                                     verified={false}
                                     firstIconPress={this.verifyUser}
                                     secondIconPress={this.deleteUser}
@@ -251,7 +252,7 @@ class ManageUsersScreen extends React.Component {
                     userId={this.state.id}
                     closeForm={this.closeLocationsForm}
                 />
-                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 0, 'Add')}>
+                <TouchableOpacity style={styles.addButtonWrapper} onPress={() => this.openForm(null, '', '', 0, 1, 'Add')}>
                     <Icon type='material-community' name='account-plus' color='#fefdfa' size={styles.iconSize} />
                 </TouchableOpacity>
             </React.Fragment>

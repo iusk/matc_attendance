@@ -75,7 +75,7 @@ const deleteUser = (id, checkError, updateUserRedux) => {
     })
 }
 
-const verifyUser = (id, checkError, updateUserRedux) => {
+const verifyUser = (id, name, email, checkError, updateUserRedux) => {
     const type = 'Verify';
     fetch(URL, {
         method: 'POST',
@@ -85,7 +85,9 @@ const verifyUser = (id, checkError, updateUserRedux) => {
         },
         body: JSON.stringify({
             type: type,
-            id: id
+            id: id,
+            name: name,
+            email: email
         })
     }).then((response) => response.json())
     .then((responseJson) => {
