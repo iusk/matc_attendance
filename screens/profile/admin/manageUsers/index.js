@@ -40,8 +40,6 @@ class ManageUsersScreen extends React.Component {
     }
 
     openForm = (id, name, email, admin, registered, type) => {
-        console.log('opening form');
-        console.log(registered);
         this.setState({
             formType: type,
             id: id,
@@ -182,7 +180,6 @@ class ManageUsersScreen extends React.Component {
     }
 
     _getVerifiedUsers = memoize((users) => {
-        console.log('getting verifiedUsers');
         let verifiedUsers = [...users];
         return verifiedUsers.filter(
             obj => obj.verified === 1
@@ -199,7 +196,6 @@ class ManageUsersScreen extends React.Component {
     render() {
         const verifiedUsers = this._getVerifiedUsers(this.state.users);
         const unverifiedUsers = this._getUnverifiedUsers(this.state.users);
-        console.log(verifiedUsers);
         return (
             <React.Fragment>
                 <ScrollView>

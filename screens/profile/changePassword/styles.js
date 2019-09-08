@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from '../../../utils/responsiveScreen';
 
 export default StyleSheet.create({
     wrapper: {
