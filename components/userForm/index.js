@@ -75,7 +75,7 @@ class UserForm extends React.Component {
         this.props.closeForm();
         Alert.alert(
             'Are you sure?',
-            'Deleting this user will remove all the schedules for this user too.',
+            'Deleting this user will remove all the locations assigned for this user too.',
             [
                 {
                     text: 'Yes', 
