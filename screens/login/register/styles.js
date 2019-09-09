@@ -30,21 +30,6 @@ export default StyleSheet.create({
         flex: 6,
         alignItems: 'center',
     },
-    organization: {
-        fontSize: wp(8),
-        fontWeight: 'bold',
-        fontFamily: 'sans-serif-medium',
-        color: '#fefdfa'
-    },
-    horizontalRule: {
-        width: wp(30),
-        margin: wp(10),
-        borderBottomWidth: 1,
-        borderColor: '#fefdfa'
-    },
-    gap: {
-        height: wp(5)
-    },
     button: {
         width: wp(50),
         marginTop: wp(8),
@@ -58,8 +43,5 @@ export default StyleSheet.create({
     },
     buttonLoading: {
         color: '#d00000'
-    },
-    link: {
-        textDecorationLine: 'underline'
     }
 });

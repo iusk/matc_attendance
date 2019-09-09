@@ -54,7 +54,7 @@ const registerUser = (username, email, password, confirmPassword, checkError) =>
         .then((responseJson) => {
             checkError(responseJson);
         }).catch((error) => {
-            checkError(3);
+            checkError(4);
             console.warn(error);
         })
     } else {
@@ -62,4 +62,28 @@ const registerUser = (username, email, password, confirmPassword, checkError) =>
     }
 } 
 
-export { changePassword, registerUser };
+const forgotPassword = (username, email, checkError) => {
+    // errorType => 0 - Username and Email matched and New password will be sent,
+    // 1 - Not matched, 2 - error from server
+    const type='Forgot Password';
+    fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            type: type,
+            username: username,
+            email: email,
+        })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        checkError(responseJson);
+    }).catch((error) => {
+        checkError(2);
+        console.warn(error);
+    })
+} 
+
+export { changePassword, registerUser, forgotPassword };

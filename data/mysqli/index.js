@@ -5,7 +5,7 @@ import { addStudent, updateStudent, deleteStudent } from './manageStudents';
 import { addUserLocation, deleteUserLocation } from './manageUserLocations';
 import { addUser, updateUser, deleteUser, verifyUser } from './manageUsers';
 import userLogin from './userLogin';
-import { changePassword, registerUser } from './manageUser';
+import { changePassword, registerUser, forgotPassword } from './manageUser';
 
 export {
     getUserInfo, getStudentsInfo, getAdminInfo,
@@ -15,5 +15,5 @@ export {
     addUserLocation, deleteUserLocation,
     addUser, updateUser, deleteUser, verifyUser,
     userLogin,
-    changePassword, registerUser
+    changePassword, registerUser, forgotPassword
 }

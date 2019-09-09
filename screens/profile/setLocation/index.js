@@ -71,7 +71,7 @@ class SetLocationScreen extends React.Component {
                         id={this.state.currentLocation.id} 
                         name={this.state.currentLocation.name}
                         iconName='my-location'
-                        onPress={() => {console.log('log')}}
+                        onPress={() => {return}}
                     />
                 </View>
                 <View style={styles.wrapper}>

@@ -72,6 +72,7 @@ class RegisterScreen extends React.Component {
                     text: 'Okay',
                     onPress: () => {
                         if (navigate) {
+                            this.setState({ email: '', name: '', password: '', confirmPassword: ''});
                             this.props.navigation.navigate('Login')
                         } else {
                             this.setState({ buttonLoading: false });
