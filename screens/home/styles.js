@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from '../../utils/responsiveScreen';
 
 export default StyleSheet.create({
-    attendanceTakenWrapper: {
+    noteWrapper: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -16,7 +16,7 @@ export default StyleSheet.create({
     gap: {
         height: hp(5)
     },
-    attendanceTakenNote: {
+    note: {
         textAlign: 'center',
         color: '#8c8c8c',
         fontSize: wp(4),

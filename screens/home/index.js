@@ -95,48 +95,58 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const attendanceTaken = this.checkAttendance(this.props.attendance);
-        if (attendanceTaken) {
+        if (this.props.students.length > 0) {
+            const attendanceTaken = this.checkAttendance(this.props.attendance);
+            if (attendanceTaken) {
+                return (
+                    <View style={styles.noteWrapper}>
+                        <Text style={styles.attendanceTakenMsg}>
+                            Today's attendace for this location has been taken!
+                        </Text>
+                        <View style={styles.gap}></View>
+                        <Text style={styles.note}>
+                            You can edit today's attendance from "Attendance Report" screen if you wish to.
+                        </Text>
+                    </View>
+                );
+            } else {
+                this._sortStudents(this.props.students);
+                return (
+                    <React.Fragment>
+                        <ScrollView>
+                            <View style={styles.row}>
+                                <View style={styles.firstColumn}>
+                                    <Text style={styles.heading}>Student Name</Text>
+                                </View>
+                                <View style={styles.secondColumn}>
+                                    <Text style={styles.heading}>Present</Text>
+                                </View>
+                            </View>
+                            {this.sortedStudents.map( student => 
+                                <AttendanceList
+                                    key={student.id}
+                                    id={student.id}
+                                    name={student.firstName + ' ' + student.lastName}
+                                    type='Take'
+                                    checked={this.state.attendance.get(student.id)}
+                                    onPress={this.manageAttendance}
+                                />
+                            )}
+                            <View style={styles.buttonWrapper}>
+                                <Button buttonStyle={styles.submitButton} title='Submit Attendance' onPress={this._submitForm} />
+                            </View>
+                        </ScrollView>
+                        <ModalLoading msg="Submitting Attendance..." visible={this.state.modalLoading} />
+                    </React.Fragment>
+                );
+            }
+        } else {
             return (
-                <View style={styles.attendanceTakenWrapper}>
-                    <Text style={styles.attendanceTakenMsg}>
-                        Today's attendace for this location has been taken!
-                    </Text>
-                    <View style={styles.gap}></View>
-                    <Text style={styles.attendanceTakenNote}>
-                        You can edit today's attendance from "Attendance Report" screen if you wish to.
+                <View style={styles.noteWrapper}>
+                    <Text style={styles.note}>
+                        No students found for this location. Add them from Profile -> Manage Students
                     </Text>
                 </View>
-            );
-        } else {
-            this._sortStudents(this.props.students);
-            return (
-                <React.Fragment>
-                    <ScrollView>
-                        <View style={styles.row}>
-                            <View style={styles.firstColumn}>
-                                <Text style={styles.heading}>Student Name</Text>
-                            </View>
-                            <View style={styles.secondColumn}>
-                                <Text style={styles.heading}>Present</Text>
-                            </View>
-                        </View>
-                        {this.sortedStudents.map( student => 
-                            <AttendanceList
-                                key={student.id}
-                                id={student.id}
-                                name={student.firstName + ' ' + student.lastName}
-                                type='Take'
-                                checked={this.state.attendance.get(student.id)}
-                                onPress={this.manageAttendance}
-                            />
-                        )}
-                        <View style={styles.buttonWrapper}>
-                            <Button buttonStyle={styles.submitButton} title='Submit Attendance' onPress={this._submitForm} />
-                        </View>
-                    </ScrollView>
-                    <ModalLoading msg="Submitting Attendance..." visible={this.state.modalLoading} />
-                </React.Fragment>
             );
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import { createBottomTabNavigator } from 'react-navigation';
 import { HomeStack, ReportStack, ProfileStack } from './stacks';
 
@@ -9,7 +9,10 @@ const BottomTabNavigator = createBottomTabNavigator({
         screen: HomeStack,
         navigationOptions: {
             tabBarIcon: ( {tintColor} ) => (
-                <Icon name='form' type='antdesign' color={tintColor} />
+                <React.Fragment>
+                    <Icon name='form' type='antdesign' color={tintColor} />
+                    <Text style={ {color: tintColor} }>Take Attendance</Text>
+                </React.Fragment>
             )
         }
     },
@@ -17,7 +20,11 @@ const BottomTabNavigator = createBottomTabNavigator({
         screen: ReportStack,
         navigationOptions: {
             tabBarIcon: ( {tintColor} ) => (
-                <Icon name='profile' type='antdesign' color={tintColor} />
+                <React.Fragment>
+                    <Icon name='profile' type='antdesign' color={tintColor} />
+                    <Text style={ {color: tintColor} }>Report</Text>
+                </React.Fragment>
+                
             )
         }
     },
@@ -25,7 +32,11 @@ const BottomTabNavigator = createBottomTabNavigator({
         screen: ProfileStack,
         navigationOptions: {
             tabBarIcon: ( {tintColor} ) => (
-                <Icon name='user' type='antdesign' color={tintColor} />
+                <React.Fragment>
+                    <Icon name='user' type='antdesign' color={tintColor} />
+                    <Text style={ {color: tintColor} }>Profile</Text>
+                </React.Fragment>
+                
             )
         }
     }
