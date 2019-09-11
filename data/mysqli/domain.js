@@ -1,1 +1,1 @@
-export default domain = 'https://iusk.000webhostapp.com/matc_attendance/';
+export default domain = 'https://attendanceappmatc.000webhostapp.com/';

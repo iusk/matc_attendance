@@ -111,9 +111,14 @@ class LocationForm extends React.Component {
     }
 
     updateLocationRedux = async (locations, checkError, type) => {
-        this.props.updateLocations(locations);
-        this.props.updateUserInfoLocations(locations);
-        checkError(type, 0);
+        if (this.props.location !== undefined) {
+            this.props.updateLocations(locations);
+            this.props.updateUserInfoLocations(locations);
+            checkError(type, 0);
+        } else {
+            this.props.navigation.navigate('Auth');
+        }
+        
     }
 
     render() {

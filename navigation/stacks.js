@@ -23,7 +23,8 @@ const AuthStack = createStackNavigator({
 // creating a basic stack for users with no locations assigned
 const BasicStack = createStackNavigator({
     ProfileOnly: ProfileScreen,
-    ChangePasswordBasic: ChangePasswordScreen
+    ChangePasswordBasic: ChangePasswordScreen,
+    ManageLocationsBasic: ManageLocationsScreen
 });
 
 // creating a stack for home pages

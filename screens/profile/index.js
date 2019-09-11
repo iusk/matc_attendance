@@ -82,6 +82,10 @@ class ProfileScreen extends React.Component {
     _gotoChangePasswordBasic = () => {
         this.props.navigation.navigate('ChangePasswordBasic');
     }
+
+    _gotoManageLocationsBasic = () => {
+        this.props.navigation.navigate('ManageLocationsBasic');
+    }
     
     render() {
         if (this.props.locations.length > 0) {
@@ -105,9 +109,15 @@ class ProfileScreen extends React.Component {
             return (
                 <View style={styles.wrapper}>
                     <Text style={styles.info}>
-                        You have not been assigned to any locations yet. Please contact the administrators to be assigned the locations that
-                        you are taking the attendance for. Thank you!
+                        {(this.props.admin) ? 
+                          'No locations found. Please add a location and restart the app to unlock full functionality.'
+                        : 'You have not been assigned to any locations yet. Please contact the administrators to be assigned the locations that ' +
+                        'you are taking the attendance for. Thank you!'}
                     </Text>
+                    {(this.props.admin) ? 
+                        <BoxLink name='Manage Locations' iconName='map-marker' iconType='material-community' onPress={this._gotoManageLocationsBasic} />
+                        : null
+                    }
                     <BoxLink name='Change Password' iconName='key-variant' iconType='material-community' onPress={this._gotoChangePasswordBasic} />
                     <BoxLink name='Logout' iconName='logout' iconType='material-community' onPress={this._signOut} />
                 </View>
