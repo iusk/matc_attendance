@@ -50,10 +50,14 @@ class ManageLocationsScreen extends React.Component {
     }
     
     checkError = (type, error) => {
-        if (!error) {
-            this._displaySuccessMessage(type);
+        if (error == 2) { // special case - when admin adds the first location, reload the app
+            this.props.navigation.navigate('Auth');
         } else {
-            this._displayErrorMessage(type);
+            if (!error) {
+                this._displaySuccessMessage(type);
+            } else {
+                this._displayErrorMessage(type);
+            }
         }
     }
 
