@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, DatePickerAndroid, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { updateAttendanceInfo } from '../../data/redux';
@@ -27,28 +28,32 @@ class ReportScreen extends React.Component {
         this.state = {
             dateSelected: false,
             date: '',
-            modalVisible: false
+            modalVisible: false,
+            datePickerVisible: false
         }
 
         this.sortedAttendence;
         this.today = new Date();
     }
 
-    selectDate = async () => {
+    selectDate = () => {
         this.setState({
-            dateSelected: false
+            datePickerVisible: true
         });
-        const {action, year, month, day} = await DatePickerAndroid.open({
-            date: this.today,
-            maxDate: this.today,
-            mode: 'calendar'
-        });
-        if (action === DatePickerAndroid.dateSetAction) {
-            this.setState({
-                date: convertDate(null, year, month, day),
-                dateSelected: true
-            })
-        }
+    }
+
+    handelDatePicked = (date) => {
+        this.setState({
+            date: convertDate(date),
+            datePickerVisible: false,
+            dateSelected: true
+        })
+    }
+
+    hideDatePicker = () => {
+        this.setState({
+            datePickerVisible: false
+        })
     }
 
     updateAttendance = (studentId, present) => {
@@ -97,6 +102,12 @@ class ReportScreen extends React.Component {
                     <View style={styles.selectDateSelected}>
                         <Text>Selected Date: {this.state.date}</Text>
                         <Button buttonStyle={styles.button} title='Select Another Date' onPress={this.selectDate} />
+                        <DateTimePicker mode='date'
+                            isVisible={this.state.datePickerVisible}
+                            onConfirm={this.handelDatePicked}
+                            onCancel={this.hideDatePicker}
+                            maximumDate={new Date()}
+                        />
                     </View>
                     <ModalLoading visible={this.state.modalVisible} msg='Updating Attendance - Please Wait' />
                 </View>
@@ -105,7 +116,13 @@ class ReportScreen extends React.Component {
             return (
                 <View style={styles.selectDateNotSelected}>
                     <Text>No attendance found for: {this.state.date}</Text>
-                    <Button buttonStyle={styles.button} title='Select Date' onPress={this.selectDate} />
+                    <Button buttonStyle={styles.button} title='Select Another Date' onPress={this.selectDate} />
+                    <DateTimePicker mode='date'
+                        isVisible={this.state.datePickerVisible}
+                        onConfirm={this.handelDatePicked}
+                        onCancel={this.hideDatePicker}
+                        maximumDate={new Date()}
+                    />
                 </View>
             );
         } else {
@@ -113,6 +130,12 @@ class ReportScreen extends React.Component {
                 <View style={styles.selectDateNotSelected}>
                     <Text>Please select a date:</Text>
                     <Button buttonStyle={styles.button} title='Select Date' onPress={this.selectDate} />
+                    <DateTimePicker mode='date'
+                        isVisible={this.state.datePickerVisible}
+                        onConfirm={this.handelDatePicked}
+                        onCancel={this.hideDatePicker}
+                        maximumDate={new Date()}
+                    />
                 </View>
             )
         }

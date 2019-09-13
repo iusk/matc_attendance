@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TimePickerAndroid } from 'react-native';
+import { View, Text } from 'react-native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import { convertTime } from '../../utils/functions';
 import styles from './styles';
 
@@ -9,26 +10,29 @@ class FormTime extends React.Component {
         super(props);
         
         this.state = {
-            value: convertTime(this.props.value)
+            value: convertTime(this.props.value),
+            timePickerVisible: false
         }
-    }
-
-    componentWillReceiveProps(props) {
-        this.setState({
-            value: convertTime(props.value)
-        });
     }
 
     openTimePicker = async () => {
-        const {action, hour, minute} = await TimePickerAndroid.open({
-            is24Hour: false,
-        });
-        if (action === TimePickerAndroid.timeSetAction) {
-            const newHour = hour;
-            const newMinute = minute;
-            const time = newHour + ':' + newMinute;
-            this.props.timeSetAction(time);
-        }
+        this.setState({
+            timePickerVisible: true
+        })
+    }
+
+    handelTimePicked = (time) => {
+        const timeString = time.getHours() + ':' + time.getMinutes();
+        this.setState({
+            value: convertTime(timeString),
+            timePickerVisible: false
+        })
+    }
+
+    hideTimePicker = () => {
+        this.setState({
+            timePickerVisible: false
+        })
     }
 
     render() {
@@ -36,6 +40,12 @@ class FormTime extends React.Component {
             <View style={styles.wrapper}>
                 <Text style={styles.label}>{this.props.name}</Text>
                 <Text style={styles.input} onPress={this.openTimePicker}>{this.state.value}</Text>
+                <DateTimePicker mode='time'
+                    is24Hour={false}
+                    isVisible={this.state.timePickerVisible}
+                    onConfirm={this.handelTimePicked}
+                    onCancel={this.hideTimePicker}
+                />
             </View>
         );
     }

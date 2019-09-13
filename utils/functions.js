@@ -2,12 +2,8 @@
 
 import memoize from 'memoize-one';
 
-const convertDate = memoize((dateObject=null, year, month, day) => {
-    if (dateObject === null) {
-        return year + '-' + (month+1).toString().padStart(2, 0) + '-' + day.toString().padStart(2, 0);
-    } else {
-        return dateObject.getFullYear() + '-' + (dateObject.getMonth()+1).toString().padStart(2, 0) + '-' + dateObject.getDate().toString().padStart(2, 0);
-    }
+const convertDate = memoize((dateObject) => {
+    return dateObject.getFullYear() + '-' + (dateObject.getMonth()+1).toString().padStart(2, 0) + '-' + dateObject.getDate().toString().padStart(2, 0);
 })
 
 const convertTime = memoize((time) => {
