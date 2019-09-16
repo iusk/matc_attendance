@@ -10,7 +10,7 @@ class FormTime extends React.Component {
         super(props);
         
         this.state = {
-            value: convertTime(this.props.value),
+            value: '',
             timePickerVisible: false
         }
     }
@@ -23,8 +23,8 @@ class FormTime extends React.Component {
 
     handelTimePicked = (time) => {
         const timeString = time.getHours() + ':' + time.getMinutes();
+        this.props.timeSetAction(timeString);
         this.setState({
-            value: convertTime(timeString),
             timePickerVisible: false
         })
     }
@@ -36,10 +36,11 @@ class FormTime extends React.Component {
     }
 
     render() {
+        const time = convertTime(this.props.value);
         return (
             <View style={styles.wrapper}>
                 <Text style={styles.label}>{this.props.name}</Text>
-                <Text style={styles.input} onPress={this.openTimePicker}>{this.state.value}</Text>
+                <Text style={styles.input} onPress={this.openTimePicker}>{time}</Text>
                 <DateTimePicker mode='time'
                     is24Hour={false}
                     isVisible={this.state.timePickerVisible}
